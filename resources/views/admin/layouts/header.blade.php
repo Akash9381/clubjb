@@ -5,14 +5,11 @@
             <div class="navbar-header">
                 <a href="javascript:void(0);" class="bars"></a>
                 <a class="navbar-brand" href="index.html"><span class="m-l-10">
-                        <img width="80px" src="{{asset('admin/assets/images/Logo.png')}}"> </span></a>
+                        <img width="80px" src="{{ asset('admin/assets/images/Logo.png') }}"> </span></a>
             </div>
         </li>
         <li><a href="javascript:void(0);" class="ls-toggle-btn" data-close="true"><i class="zmdi zmdi-swap"></i></a>
         </li>
-
-
-
 
         <li class="hidden-sm-down">
             <div class="input-group">
@@ -21,7 +18,8 @@
             </div>
         </li>
         <li class="float-right">
-            <a href="sign-in.html" class="mega-menu" data-close="true"><i class="zmdi zmdi-power"></i></a>
+            <a href="{{ url('logout') }}" class="mega-menu" data-close="true" title="logout"><i
+                    class="zmdi zmdi-power"></i></a>
 
         </li>
     </ul>

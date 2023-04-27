@@ -1,11 +1,6 @@
 @extends('admin.layouts.admin_layouts')
 
 
-    <!-- Right Sidebar -->
-
-
-    <!-- Chat-launcher -->
-
 @section('content')
 
 <section class="content">

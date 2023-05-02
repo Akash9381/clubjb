@@ -99,7 +99,7 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-3 col-md-6">
-                                        <p> <b>Empl Number</b> (<small>Login Number</small> )</p>
+                                        <p> <b>Employee Number</b> (<small>Login Number</small> )</p>
                                         <div class="form-group">
                                             <input type="text" class="form-control" name="employee_number"
                                                 placeholder="employee Number" />

@@ -1,15 +1,13 @@
-
 @extends('admin.layouts.admin_layouts')
 
 
 
-    <!-- Right Sidebar -->
+<!-- Right Sidebar -->
 
 
-    <!-- Chat-launcher -->
+<!-- Chat-launcher -->
 
 @section('content')
-
     <section class="content">
         <div class="block-header">
             <div class="row">
@@ -27,265 +25,199 @@
                 </div>
             </div>
         </div>
-        <div class="container-fluid">
-            <!-- Color Pickers -->
-
-            <!-- #END# Color Pickers -->
-            <!-- Masked Input -->
-
-            <!-- #END# Masked Input -->
-            <!-- Multi Select -->
-
-            <!-- #END# Multi Select -->
-
-
-
-            <!-- Advanced Select2 -->
-            <div class="row clearfix">
-                <div class="col-lg-12 col-md-12 col-sm-12">
-                    <div class="card">
-
-                        <div class="body">
-                            <div class="row clearfix">
-                                <div class="col-lg-6 col-md-6">
-                                    <p> <b>State </b> </p>
-                                    <select class="form-control show-tick ms select2" data-placeholder="Select">
-                                        <option></option>
-                                        <option>Andhra Pradesh</option>
-                                        <option>Arunachal Pradesh</option>
-                                        <option>Assam</option>
-                                        <option>Bihar</option>
-                                        <option>Chhattisgarh</option>
-                                        <option>Goa</option>
-                                        <option>Gujarat</option>
-                                        <option>Haryana</option>
-                                        <option>Himachal Pradesh</option>
-                                        <option>Jharkhand</option>
-                                        <option>Karnataka</option>
-                                        <option>Kerala</option>
-                                        <option>Madhya Pradesh</option>
-                                        <option>Maharashtra</option>
-                                        <option>Manipur</option>
-                                        <option>Meghalaya</option>
-                                        <option>Mizoram</option>
-                                        <option>Nagaland</option>
-                                        <option>Odisha</option>
-                                        <option>Punjab</option>
-                                        <option>Rajasthan</option>
-                                        <option>Sikkim</option>
-                                        <option>Tamil Nadu</option>
-                                        <option>Telangana</option>
-                                        <option>Tripura</option>
-                                        <option>Uttar Pradesh</option>
-                                        <option>Uttarakhand</option>
-                                        <option>West Bengal</option>
-
-                                    </select>
-                                </div>
-                                <div class="col-lg-6 col-md-6">
-                                    <p> <b>City</b> </p>
-                                    <select class="form-control show-tick ms select2" data-placeholder="Select">
-                                        <option></option>
-                                        <option>Mumbai</option>
-                                        <option>Delhi</option>
-                                        <option>Bangalore</option>
-                                        <option>Hyderabad</option>
-                                        <option>Ahmedabad</option>
-                                        <option>Chennai</option>
-                                        <option>Kolkata</option>
-                                        <option>Surat</option>
-                                        <option>Pune</option>
-                                    </select>
-                                </div>
-
-
-
-
-
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
+        @if (session()->has('error'))
+            <div class="alert alert-danger">
+                {{ session()->get('error') }}
             </div>
-            <!-- #END# Select2 -->
+        @endif
+        @if (session()->has('success'))
+            <div class="alert alert-success">
+                {{ session()->get('success') }}
+            </div>
+        @endif
+        <form method="POST" action="{{ url('admin/employee-add') }}" enctype="multipart/form-data">
+            @csrf
+            <div class="container-fluid">
+                <!-- Color Pickers -->
+                <!-- #END# Multi Select -->
 
 
-            <div class="row clearfix">
-                <div class="col-lg-12 col-md-12 col-sm-12">
-                    <div class="card">
+                <!-- Advanced Select2 -->
+                <div class="row clearfix">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="card">
 
-                        <div class="body">
-                            <div class="row clearfix">
-
-                                <div class="col-lg-2 col-md-6">
-                                    <p> <b>S.no</b> </p>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="S.no" />
+                            <div class="body">
+                                <div class="row clearfix">
+                                    <div class="col-lg-6 col-md-6">
+                                        <p> <b>State </b> </p>
+                                        <select class="form-control show-tick ms select2" name="state" id="state"
+                                            data-placeholder="Select">
+                                            <option>Select State</option>
+                                            @foreach ($states as $state)
+                                                <option>{{ $state['name'] }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
-                                </div>
-
-                                <div class="col-lg-3 col-md-6">
-                                    <p> <b>Add date</b> </p>
-                                    <div class="form-group">
-                                        <input type="date" class="form-control" placeholder="Add date" />
+                                    <div class="col-lg-6 col-md-6">
+                                        <p> <b>City</b> </p>
+                                        <select class="form-control show-tick ms select2" name="city" id="city"
+                                            data-placeholder="Select">
+                                            <option value="">Select City</option>
+                                        </select>
                                     </div>
+
                                 </div>
-
-
-                                <div class="col-lg-3 col-md-6">
-                                    <p> <b>Active date</b> </p>
-                                    <div class="form-group">
-                                        <input type="date" class="form-control" placeholder="Active date" />
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-4 col-md-6">
-                                    <p> <b>Emp id</b> </p>
-                                    <div class="form-group">
-
-                                        <form>
-                                            <h5 class="pin-title">E</h5>
-                                            <input class="pin" type="text" maxlength="1" />
-                                            <input class="pin" type="text" maxlength="1" />
-                                            <input class="pin" type="text" maxlength="1" />
-                                            <input class="pin" type="text" maxlength="1" />
-                                            <input class="pin" type="text" maxlength="1" />
-                                            <input class="pin" type="text" maxlength="1" />
-                                        </form>
-
-
-                                    </div>
-                                </div>
-
-
-
-
 
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
+                <!-- Advanced Select -->
+                <div class="row clearfix">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="card">
 
+                            <div class="body">
+                                <div class="row clearfix">
+                                    <div class="col-lg-3 col-md-6">
+                                        <p> <b>Employee type</b> </p>
+                                        <select class="form-control show-tick ms select2" name="employee_type"
+                                            data-placeholder="Select">
+                                            <option>Full Time</option>
+                                            <option>Part Time</option>
+                                            <option>Student</option>
 
-
-            <!-- Advanced Select -->
-            <div class="row clearfix">
-                <div class="col-lg-12 col-md-12 col-sm-12">
-                    <div class="card">
-
-                        <div class="body">
-                            <div class="row clearfix">
-
-
-
-                                <div class="col-lg-4 col-md-6">
-                                    <p> <b>Employee type</b> </p>
-                                    <select class="form-control show-tick ms select2" data-placeholder="Select">
-                                        <option>Full Time </option>
-                                        <option>Part Time</option>
-                                        <option>Student</option>
-
-                                    </select>
-                                </div>
-                                <div class="col-lg-4 col-md-6">
-                                    <p> <b>Employee Name</b> </p>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="employee Name" />
+                                        </select>
                                     </div>
-                                </div>
-                                <div class="col-lg-4 col-md-6">
-                                    <p> <b>Empl Number</b> (<small>Login Number</small> )</p>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="employee Number" />
+                                    <div class="col-lg-3 col-md-6">
+                                        <p> <b>Employee Name</b> </p>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" name="employee_name"
+                                                placeholder="employee Name" />
+                                        </div>
                                     </div>
-                                </div>
-
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- #END# Advanced Select -->
-            <!-- Input Slider -->
-
-
-
-
-
-
-
-
-            <div class="row clearfix">
-                <div class="col-lg-12 col-md-12 col-sm-12">
-                    <div class="card">
-
-                        <div class="body">
-                            <div class="row clearfix">
-
-                                <div class="col-lg-2 col-md-6">
-                                    <p> <b>Login Pin</b> </p>
-                                    <form>
-
-                                        <input class="pin" type="text" maxlength="1" />
-                                        <input class="pin" type="text" maxlength="1" />
-                                        <input class="pin" type="text" maxlength="1" />
-                                        <input class="pin" type="text" maxlength="1" />
-
-                                    </form>
-                                </div>
-                                <div class="col-lg-4 col-md-6">
-                                    <p> <b>Ref mobile number</b> </p>
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="Ref mobile number" />
+                                    <div class="col-lg-3 col-md-6">
+                                        <p> <b>Empl Number</b> (<small>Login Number</small> )</p>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" name="employee_number"
+                                                placeholder="employee Number" />
+                                        </div>
                                     </div>
-                                </div>
-
-
-                                <div class="col-lg-3 col-md-6">
-                                    <p> <b>Upload documents</b> </p>
-                                    <div class="form-group">
-                                        <input type="file" class="form-control" placeholder="Upload documents" />
+                                    <div class="col-lg-3 col-md-6">
+                                        <p> <b>Login Pin</b> </p>
+                                        <input type="number" value="1111" name="login_pin" maxlength="4" minlength="4"
+                                            class="form-control" placeholder="Login pin" />
                                     </div>
-                                </div>
-
-                                <div class="col-lg-3 col-md-6">
-                                    <p> <b>Upload agreement</b> </p>
-                                    <div class="form-group">
-                                        <input type="file" class="form-control" placeholder="Upload agreement" />
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-12">
-                                    <button type="submit" class="btn btn-primary btn-round"> Add Employee</button>
 
                                 </div>
-                                <div style="visibility: hidden;" id="nouislider_basic_example"></div>
-
-                                <div style="visibility: hidden;" id="nouislider_range_example"></div>
-
 
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <!-- Input Slider -->
+
+                <div class="row clearfix">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="card">
+
+                            <div class="body">
+                                <div class="row clearfix">
+
+
+                                    <div class="col-lg-12 col-md-6">
+                                        <p> <b>Ref mobile number</b> </p>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" name="ref_number"
+                                                placeholder="Ref mobile number" />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6 col-md-6 rounded border">
+                                        <p> <b>Upload Pictures</b> </p>
+                                        <div class="form-group">
+                                            <input type="file" name="picture_document[]" multiple class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 rounded border">
+                                        <p> <b>Upload Aadharcard</b> </p>
+                                        <div class="form-group">
+                                            <input type="file" name="aadhar_document[]" multiple class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 rounded border">
+                                        <p> <b>Upload Driving Licence</b> </p>
+                                        <div class="form-group">
+                                            <input type="file" name="driving_document[]" multiple class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 rounded border">
+                                        <p> <b>Upload CV</b> </p>
+                                        <div class="form-group">
+                                            <input type="file" name="cv_document[]" multiple class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 rounded border">
+                                        <p> <b>Upload Passport</b> </p>
+                                        <div class="form-group">
+                                            <input type="file" name="passport_document[]" multiple class="form-control" " />
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-lg-6 col-md-6 rounded border">
+                                        <p> <b>Upload agreement</b> </p>
+                                        <div class="form-group">
+                                            <input type="file" name="agreement_document[]" multiple class="form-control"  />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12">
+                                        <button type="submit" class="btn btn-primary btn-round"> Add Employee</button>
+
+                                    </div>
+                                    <div style="visibility: hidden;" id="nouislider_basic_example"></div>
+
+                                    <div style="visibility: hidden;" id="nouislider_range_example"></div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
-
-
-
-
-
-
-        </div>
-    </section>
-
+        </form>
+        </section>
 @endsection
 
 @section('js')
-
-
+        <script>
+            $(document).ready(function() {
+                $('#state').on('change', function() {
+                    var state = this.value;
+                    $("#city").html('');
+                    $.ajax({
+                        url: "/admin/get-city",
+                        type: "get",
+                        dataType: 'json',
+                        data: {
+                            state: state
+                        },
+                        success: function(result) {
+                            $('#city').html('<option value="">Select City</option>');
+                            $.each(result.cities, function(key, value) {
+                                $("#city").append('<option value="' + value.city +
+                                    '">' + value.city + '</option>');
+                            });
+                        }
+                    })
+                })
+            });
+        </script>
 @endsection

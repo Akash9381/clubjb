@@ -45,7 +45,8 @@
 @include('admin.layouts.sidebar')
 @yield('content')
 
- <!-- Jquery Core Js -->
+<!-- Jquery Core Js -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
  <script src="{{asset('admin/light/assets/bundles/libscripts.bundle.js')}}"></script> <!-- Lib Scripts Plugin Js -->
  <script src="{{asset('admin/light/assets/bundles/vendorscripts.bundle.js')}}"></script> <!-- Lib Scripts Plugin Js -->
 

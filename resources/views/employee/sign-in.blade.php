@@ -30,6 +30,9 @@
         input[type=number] {
             -moz-appearance: textfield;
         }
+        .error{
+            color: red;
+        }
     </style>
 </head>
 
@@ -65,7 +68,7 @@
                             {{ session()->get('success') }}
                         </div>
                     @endif
-                    <form class="form" method="post" action="{{ url('employee/authenticate') }}">
+                    <form id="user-form" class="form" method="post" action="{{ url('employee/authenticate') }}">
                         @csrf
                         <div class="header">
                             <div class="logo-container">
@@ -80,6 +83,7 @@
 
                                 </span>
                             </div>
+                            <label id="phone-error" class="error" for="phone"></label>
                         </div>
 
                         <div class="content">
@@ -90,6 +94,7 @@
 
                                 </span>
                             </div>
+                            <label id="login_pin-error" class="error" for="login_pin"></label>
                         </div>
 
 
@@ -134,6 +139,32 @@
             $(this).parent('.input-group').addClass("input-group-focus");
         }).on("blur", function() {
             $(this).parent(".input-group").removeClass("input-group-focus");
+        });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script>
+        $(document).ready(function() {
+
+            jQuery.validator.addMethod("phoneUS", function(phone, element) {
+                phone = phone.replace(/\s+/g, "");
+                return this.optional(element) || phone.length > 9 && phone.match(
+                    /^(\+?1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/);
+            }, "Please specify a valid phone number");
+
+            $('#user-form').validate({ // initialize the plugin
+                rules: {
+                    phone: {
+                        required: true,
+                        phoneUS: true
+                    },
+                    login_pin: {
+                        required: true,
+                        number: true,
+                        minlength: 4,
+                        maxlength: 4
+                    }
+                }
+            });
         });
     </script>
 </body>

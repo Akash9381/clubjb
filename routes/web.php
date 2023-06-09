@@ -113,9 +113,10 @@ Route::group(['middleware' => ['role:customer']], function () {
     Route::get('users/deal', [DealController::class, 'UserDeal']);
     Route::get('user/logout',[AuthController::class,'UserLogout']);
 });
-// ******************************* Customer ****************************************
-// Route::view('shopkeeper/login','shopkeeper.login')->middleware('guest');
-// Route::post('shopkeeper/authenticate',[AuthController::class,'ShopKeeperAuth']);
-// Route::group(['middleware' => ['role:shopkeeper']], function (){
-//     Route::view('shopkeeper/dashboard','shopkeeper.dashboard');
-// });
+// ******************************* ShopKeeper ****************************************
+Route::view('shopkeeper/login','shopkeeper.login')->middleware('guest')->name('shop.login');
+Route::post('shopkeeper/authenticate',[AuthController::class,'ShopKeeperAuth']);
+Route::group(['middleware' => ['role:shopkeeper']], function (){
+    Route::view('shopkeeper/dashboard','shopkeeper.dashboard');
+    Route::get('shopkeeper/logout',[AuthController::class,'ShopLogout']);
+});

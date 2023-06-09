@@ -11,9 +11,6 @@
          <li><a href="javascript:void(0);" class="ls-toggle-btn" data-close="true"><i class="zmdi zmdi-swap"></i></a>
          </li>
 
-
-
-
          <li class="hidden-sm-down">
              <div class="input-group">
                  <input type="text" class="form-control" placeholder="Search...">
@@ -21,7 +18,7 @@
              </div>
          </li>
          <li class="float-right">
-             <a href="{{url('employee/logout')}}" class="mega-menu" data-close="true"><i class="zmdi zmdi-power"></i></a>
+             <a href="{{url('shopkeeper/logout')}}" class="mega-menu" data-close="true"><i class="zmdi zmdi-power"></i></a>
 
          </li>
      </ul>

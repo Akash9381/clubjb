@@ -32,9 +32,16 @@ class AuthController extends Controller
         return redirect(route('login'));
     }
 
-    public function UserLogout(){
+    public function UserLogout()
+    {
         Auth::logout();
         return redirect(route('user.login'));
+    }
+
+    public function ShopLogout()
+    {
+        Auth::logout();
+        return redirect(route('shop.login'));
     }
 
     public function EmployeeAuthenticate(Request $request)
@@ -45,11 +52,14 @@ class AuthController extends Controller
         ]);
 
         $user = User::where('phone', $request['phone'])->where('login_pin', $request['login_pin'])->first();
-
-        if ($user->hasRole('employee')) {
-            Auth::login($user);
-            $request->session()->regenerate();
-            return redirect('/employee/dashboard');
+        if ($user) {
+            if ($user->hasRole('employee')) {
+                Auth::login($user);
+                $request->session()->regenerate();
+                return redirect('/employee/dashboard');
+            } else {
+                return back()->with('error', 'Whoops! invalid number and login pin.');
+            }
         } else {
             return back()->with('error', 'Whoops! invalid number and login pin.');
         }
@@ -69,16 +79,20 @@ class AuthController extends Controller
         ]);
 
         $user = User::where('phone', $request['phone'])->where('login_pin', $request['login_pin'])->first();
-        try {
-            if ($user->hasRole('shopkeeper')) {
-                Auth::login($user);
-                $request->session()->regenerate();
-                return view('shopkeeper.dashboard');
-            } else {
-                return back()->with('error', 'Whoops! invalid number and login pin.');
+        if ($user) {
+            try {
+                if ($user->hasRole('shopkeeper')) {
+                    Auth::login($user);
+                    $request->session()->regenerate();
+                    return view('shopkeeper.dashboard');
+                } else {
+                    return back()->with('error', 'Whoops! invalid number and login pin.');
+                }
+            } catch (\Exception $e) {
+                return back()->with('error', $e->getMessage());
             }
-        } catch (\Exception $e) {
-            return back()->with('error', $e->getMessage());
+        } else {
+            return back()->with('error', 'Whoops! invalid number and login pin.');
         }
     }
 
@@ -89,33 +103,38 @@ class AuthController extends Controller
         ]);
         $user = User::where('phone', $request['phone_number'])->first();
         $phone = $request['phone_number'];
-        if($user){
-            return view('users.login-pin',compact('phone'));
-        }else{
-            return view('users.register',compact('phone'));
+        if ($user) {
+            return view('users.login-pin', compact('phone'));
+        } else {
+            return view('users.register', compact('phone'));
         }
     }
 
-    public function UserLogin(Request $request){
-        $this->validate($request,[
+    public function UserLogin(Request $request)
+    {
+        $this->validate($request, [
             'pin1' => 'required|numeric|digits:1',
             'pin2' => 'required|numeric|digits:1',
             'pin3' => 'required|numeric|digits:1',
             'pin4' => 'required|numeric|digits:1',
             'phone_number' => 'required|numeric|digits:10',
         ]);
-        $login = $request['pin1'].$request['pin2'].$request['pin3'].$request['pin4'];
+        $login = $request['pin1'] . $request['pin2'] . $request['pin3'] . $request['pin4'];
         $user = User::where('phone', $request['phone_number'])->where('login_pin', $login)->first();
-        try {
-            if ($user->hasRole('customer')) {
-                Auth::login($user);
-                $request->session()->regenerate();
-                return redirect('users/home');
-            } else {
-                return back()->with('error', 'Whoops! invalid number and login pin.');
+        if ($user) {
+            try {
+                if ($user->hasRole('customer')) {
+                    Auth::login($user);
+                    $request->session()->regenerate();
+                    return redirect('users/home');
+                } else {
+                    return back()->with('error', 'Whoops! invalid number and login pin.');
+                }
+            } catch (\Exception $e) {
+                return back()->with('error', $e->getMessage());
             }
-        } catch (\Exception $e) {
-            return back()->with('error', $e->getMessage());
+        } else {
+            return back()->with('error', 'Whoops! invalid number and login pin.');
         }
     }
 }

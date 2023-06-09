@@ -42,4 +42,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function InActiveEmployee(){
+        return $this->hasOne(Employee::class,'user_id','id')->where('status','=',0);
+    }
+    public function ActiveEmployee(){
+        return $this->hasOne(Employee::class,'user_id','id')->where('status','=',1);
+    }
+    public function GetCustomer(){
+        return $this->hasOne(Customer::class,'user_id','id');
+    }
 }

@@ -9,7 +9,7 @@
 }
 
 .input-group-addon{
-	
+
 	border-radius: 0px !important;
 }
 
@@ -22,8 +22,8 @@
 }
 
 .theme-purple .btn-primary{
-	
- 
+
+
 	background: #e55825 !important;
 }
 
@@ -63,7 +63,18 @@ form {
 }
 
 .pin-title{
-	
+
 	margin: 13px;
 }
 
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}

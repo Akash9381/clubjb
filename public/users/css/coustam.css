@@ -1,0 +1,141 @@
+@charset "utf-8";
+/* CSS Document */
+
+
+
+.mt-n1 {
+  margin-top: -38px; !important;
+}
+
+
+.mt-n30 {
+  margin-top: -30px; !important;
+}
+
+
+.mt-n2{
+	margin-top: -5px; !important;
+	
+}
+
+.mt-n3{
+margin-top: -10px; !important;	
+	
+}
+
+
+.call{
+	
+	background-color: #be3606 !important;
+	margin-top: 10px!important;
+	border-radius: 60px;
+	
+}
+
+
+.search-city{
+	
+	padding-top: 0rem!important;
+}
+
+.faq-search-form input{
+	
+	border-radius: 0px !important;
+}
+
+.suha-navbar-toggler{
+	
+	border: 0px solid #ebebeb !important;
+}
+
+.form-select{
+	
+	/*height: 50px;*/
+	box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+
+
+.single-vendor-wrap .vendor-profile{
+	
+	background-color: transparent !important;
+	
+}
+
+.single-vendor-wrap .vendor-info span {
+  font-size: 14px !important;
+  margin-left: 10px !important;
+}
+
+.user-data-card .title {
+  font-size: 16px !important;
+  color: #020310;
+  
+}
+
+.title{
+	
+	text-align: center;
+	font-size: 11px;
+	margin-top: 10px;
+	/*margin-left: 5px;*/
+	color: #111;
+	
+}
+
+
+
+.product-catagories a {
+	
+	 border-radius: 50% !important;
+	width: 57px;
+	height: 57px;
+}
+
+
+.nav-tabs {
+	width: 370px!important;
+  --bs-nav-tabs-border-width: 1px;
+  --bs-nav-tabs-border-color: #dee2e6;
+  --bs-nav-tabs-border-radius: 0.375rem;
+  --bs-nav-tabs-link-hover-border-color: #e9ecef #e9ecef #dee2e6;
+  --bs-nav-tabs-link-active-color: #495057;
+  --bs-nav-tabs-link-active-bg: #e45826;
+  --bs-nav-tabs-link-active-border-color: #dee2e6 #dee2e6 #fff;
+  border-bottom: var(--bs-nav-tabs-border-width) solid var(--bs-nav-tabs-border-color);
+}
+
+
+.nav-link.active {
+  color: #fff !important;
+  background-color: var(--bs-nav-tabs-link-active-bg);
+  border-color: var(--bs-nav-tabs-link-active-border-color);
+}
+
+
+
+.flash-sale-card {
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+  width: 60px;
+  height: 70px;
+}
+
+.flash-sale-card img {
+  margin-bottom: 0rem !important;
+ 
+}
+
+.flash-sale-card .product-title{
+	margin-top: 3px;
+	text-align: center !important;
+	font-size: 12px !important;
+}
+
+.pagination{
+	margin-top: 10px;
+	float: inli
+	
+}
+
+
+

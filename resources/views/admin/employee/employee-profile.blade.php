@@ -40,11 +40,11 @@
                             <div class="row clearfix">
                                 <div class="col-lg-6 col-md-6 col-6">
                                     <h6 class="mt-2 m-b-0">State </h6>
-                                    <span class="job_post">text</span>
+                                    <span class="job_post">{{ $employee['state'] ?? 'NA' }}</span>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-6">
                                     <h6 class="mt-2 m-b-0">City </h6>
-                                    <span class="job_post">text</span>
+                                    <span class="job_post">{{ $employee['city'] ?? 'NA' }}</span>
                                 </div>
 
 
@@ -82,7 +82,7 @@
                                 </div>
                                 <div class="col-lg-3 col-md-6">
                                     <h6 class="mt-2 m-b-0">Emp id </h6>
-                                    <span class="job_post">text</span>
+                                    <span class="job_post">{{ $employee['employee_id'] ?? 'NA' }}</span>
                                 </div>
 
                             </div>
@@ -102,15 +102,15 @@
                             <div class="row clearfix">
                                 <div class="col-lg-4 col-md-6">
                                     <h6 class="mt-2 m-b-0">Employee type </h6>
-                                    <span class="job_post">text</span>
+                                    <span class="job_post">{{ $employee['employee_type'] ?? 'NA' }}</span>
                                 </div>
                                 <div class="col-lg-4 col-md-6">
                                     <h6 class="mt-2 m-b-0">Employee Name </h6>
-                                    <span class="job_post">text</span>
+                                    <span class="job_post">{{ $employee['employee_name'] ?? 'NA' }}</span>
                                 </div>
                                 <div class="col-lg-4 col-md-6">
                                     <h6 class="mt-2 m-b-0">Employee Number </h6>
-                                    <span class="job_post">text</span>
+                                    <span class="job_post">{{ $employee['employee_number'] ?? 'NA' }}</span>
                                 </div>
 
                             </div>
@@ -131,14 +131,14 @@
 
                                 <div class="col-lg-3 col-md-6">
                                     <h6 class="mt-2 m-b-0">Login Pin </h6>
-                                    <span class="job_post">text</span>
+                                    <span class="job_post">{{ $employee['GetEmployee']['login_pin'] ?? 'NA' }}</span>
 
                                 </div>
 
 
                                 <div class="col-lg-3 col-md-6">
                                     <h6 class="mt-2 m-b-0">Ref mobile number </h6>
-                                    <span class="job_post">text</span>
+                                    <span class="job_post">{{ $employee['ref_number'] ?? 'NA' }}</span>
 
                                 </div>
 
@@ -163,13 +163,7 @@
 
                                 </div>
 
-
-
-
                                 <div style="visibility: hidden;" id="nouislider_basic_example"></div>
-
-
-
 
                                 <div style="visibility: hidden;" id="nouislider_range_example"></div>
 

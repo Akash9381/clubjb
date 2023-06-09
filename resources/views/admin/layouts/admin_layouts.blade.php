@@ -32,6 +32,7 @@
     <link rel="stylesheet" href="{{asset('admin/light/assets/css/main.css')}}">
     <link rel="stylesheet" href="{{asset('admin/light/assets/css/coustam.css')}}">
     <link rel="stylesheet" href="{{asset('admin/light/assets/css/color_skins.css')}}">
+    @yield('css')
 </head>
 
 <body class="theme-purple">

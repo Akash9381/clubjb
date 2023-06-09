@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, shrink-to-fit=no">
@@ -11,7 +11,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <!-- The above tags *must* come first in the head, any other head content must come *after* these tags -->
     <!-- Title -->
-    <title>Club JB</title>
+    <title>Profile Edit | Club JB</title>
     <link rel="preconnect" href="https://fonts.googleapis.com/">
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
@@ -38,7 +38,7 @@
   </head>
   <body>
     <!-- Preloader-->
-    
+
     <!-- Header Area-->
     <div class="header-area" id="headerArea">
       <div class="container h-100 d-flex align-items-center justify-content-between rtl-flex-d-row-r">
@@ -138,7 +138,7 @@
           <li><a href="my-services.html"><i class="fa-solid fa-bag-shopping"></i>My Services</a></li>
           <li><a href="#"><i class="fa-solid fa-heart"></i>My Reference</a></li>
           <li><a href="#"><i class="fa-solid fa-gear"></i>Settings</a></li>
-          
+
         </ul>
       </div>
     </div>

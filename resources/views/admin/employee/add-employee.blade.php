@@ -35,7 +35,7 @@
                 {{ session()->get('success') }}
             </div>
         @endif
-        <form method="POST" action="{{ url('admin/employee-add') }}" enctype="multipart/form-data">
+        <form id="user-form" method="POST" action="{{ url('admin/employee-add') }}" enctype="multipart/form-data">
             @csrf
             <div class="container-fluid">
                 <!-- Color Pickers -->
@@ -101,7 +101,7 @@
                                     <div class="col-lg-3 col-md-6">
                                         <p> <b>Empl Number</b> (<small>Login Number</small> )</p>
                                         <div class="form-group">
-                                            <input type="text" class="form-control" name="employee_number"
+                                            <input type="number" class="form-control" name="employee_number"
                                                 placeholder="employee Number" />
                                         </div>
                                     </div>
@@ -197,6 +197,50 @@
 @endsection
 
 @section('js')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script>
+        $(document).ready(function() {
+
+            jQuery.validator.addMethod("phoneUS", function(employee_number, element) {
+                employee_number = employee_number.replace(/\s+/g, "");
+                return this.optional(element) || employee_number.length > 9 && employee_number.match(
+                    /^(\+?1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/);
+            }, "Please specify a valid phone number");
+
+            jQuery.validator.addMethod("Ref", function(ref_number, element) {
+                ref_number = ref_number.replace(/\s+/g, "");
+                return this.optional(element) || ref_number.length > 9 && ref_number.match(
+                    /^(\+?1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/);
+            }, "Please specify a valid phone number");
+
+            jQuery.validator.addMethod("lettersonlys", function(employee_name, element) {
+                return this.optional(element) || /^[a-zA-Z ]*$/.test(employee_name);
+            }, "Letters only please");
+
+            $('#user-form').validate({ // initialize the plugin
+                rules: {
+                    employee_number: {
+                        required: true,
+                        phoneUS: true
+                    },
+                    ref_number: {
+                        required: true,
+                        Ref: true
+                    },
+                    employee_name: {
+                        required: true,
+                        lettersonlys:true
+                    },
+                    login_pin: {
+                        required: true,
+                        number: true,
+                        minlength: 4,
+                        maxlength: 4
+                    }
+                }
+            });
+        });
+    </script>
         <script>
             $(document).ready(function() {
                 $('#state').on('change', function() {

@@ -22,7 +22,7 @@
                 </div>
             </div>
         </div>
-        <form action="{{ url('admin/create-global-shop') }}" method="POST" enctype="multipart/form-data">
+        <form id="user-form" action="{{ url('admin/create-global-shop') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="container-fluid">
                 <!-- Color Pickers -->
@@ -102,7 +102,7 @@
                                     <div class="col-lg-4 col-md-6">
                                         <p> <b> Shop Name</b> </p>
                                         <div class="form-group">
-                                            <input type="text" required name="shop_name" class="form-control"
+                                            <input type="text" name="shop_name" class="form-control"
                                                 placeholder="Shop Name" />
                                         </div>
                                     </div>
@@ -110,16 +110,16 @@
                                     <div class="col-lg-4 col-md-6">
                                         <p> <b> Shop Number</b> </p>
                                         <div class="form-group">
-                                            <input type="text" value="{{old('shop_number')}}" required name="shop_number" class="form-control"
-                                                placeholder="Shop Number" />
+                                            <input type="text" value="{{ old('shop_number') }}" name="shop_number"
+                                                class="form-control" placeholder="Shop Number" />
                                         </div>
                                     </div>
 
 
                                     <div class="col-lg-4 col-md-6">
                                         <p> <b>Login Pin</b> </p>
-                                        <input class="pin form-control" value="1111" required name="login_pin" type="text"
-                                            maxlength="4" />
+                                        <input class="form-control" placeholder="Login Pin" value="1111" name="login_pin"
+                                            type="number" maxlength="4" />
                                     </div>
                                 </div>
                             </div>
@@ -292,29 +292,6 @@
 
                             <div class="body">
                                 <div class="row clearfix">
-
-                                    {{-- <div class="col-lg-7 col-md-6">
-                                        <p> <b>Deal 1</b> </p>
-                                        <div class="form-group">
-                                            <input type="text" class="form-control" placeholder="Deal 1" />
-                                        </div>
-                                    </div>
-
-
-                                    <div class="col-lg-3 col-md-6">
-                                        <p> <b>Saving Up to</b> </p>
-                                        <div class="form-group">
-                                            <input type="text" class="form-control" placeholder="Saving Up to" />
-                                        </div>
-                                    </div> --}}
-
-                                    {{-- <div class="col-lg-2 col-md-6 mt-5">
-
-                                        <div class="form-group">
-                                            <button type="button" class="btn btn-primary btn-round">
-                                                Add More Deal</button>
-                                        </div>
-                                    </div> --}}
                                     <br><br>
                                     <div class="form-group">
                                         <input type='button' class="btn btn-primary btn-round" value='Add Deal'
@@ -494,6 +471,51 @@
 
 @endsection
 @section('js')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script>
+        $(document).ready(function() {
+
+            jQuery.validator.addMethod("phoneUS", function(shop_number, element) {
+                shop_number = shop_number.replace(/\s+/g, "");
+                return this.optional(element) || shop_number.length > 9 && shop_number.match(
+                    /^(\+?1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/);
+            }, "Please specify a valid phone number");
+
+            jQuery.validator.addMethod("Ref", function(ref_number, element) {
+                ref_number = ref_number.replace(/\s+/g, "");
+                return this.optional(element) || ref_number.length > 9 && ref_number.match(
+                    /^(\+?1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/);
+            }, "Please specify a valid phone number");
+
+            jQuery.validator.addMethod("lettersonlys", function(shop_name, element) {
+                return this.optional(element) || /^[a-zA-Z ]*$/.test(shop_name);
+            }, "Letters only please");
+
+            $('#user-form').validate({ // initialize the plugin
+                rules: {
+                    shop_number: {
+                        required: true,
+                        phoneUS: true
+                    },
+                    ref_number: {
+                        required: true,
+                        Ref: true
+                    },
+                    shop_name: {
+                        required: true,
+                        lettersonlys: true
+                    },
+                    login_pin: {
+                        required: true,
+                        number: true,
+                        minlength: 4,
+                        maxlength: 4
+                    }
+                }
+            });
+
+        });
+    </script>
     <script>
         $(document).ready(function() {
             $('#state').on('change', function() {

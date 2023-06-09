@@ -22,7 +22,7 @@
                 </div>
             </div>
         </div>
-        <form action="{{ url('employee/create-shop') }}" method="POST" enctype="multipart/form-data">
+        <form id="user-form" action="{{ url('employee/create-shop') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="container-fluid">
                 <!-- Color Pickers -->
@@ -548,6 +548,51 @@
 
 @endsection
 @section('js')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script>
+        $(document).ready(function() {
+
+            jQuery.validator.addMethod("phoneUS", function(shop_number, element) {
+                shop_number = shop_number.replace(/\s+/g, "");
+                return this.optional(element) || shop_number.length > 9 && shop_number.match(
+                    /^(\+?1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/);
+            }, "Please specify a valid phone number");
+
+            jQuery.validator.addMethod("Ref", function(ref_number, element) {
+                ref_number = ref_number.replace(/\s+/g, "");
+                return this.optional(element) || ref_number.length > 9 && ref_number.match(
+                    /^(\+?1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/);
+            }, "Please specify a valid phone number");
+
+            jQuery.validator.addMethod("lettersonlys", function(shop_name, element) {
+                return this.optional(element) || /^[a-zA-Z ]*$/.test(shop_name);
+            }, "Letters only please");
+
+            $('#user-form').validate({ // initialize the plugin
+                rules: {
+                    shop_number: {
+                        required: true,
+                        phoneUS: true
+                    },
+                    ref_number: {
+                        required: true,
+                        Ref: true
+                    },
+                    shop_name: {
+                        required: true,
+                        lettersonlys: true
+                    },
+                    login_pin: {
+                        required: true,
+                        number: true,
+                        minlength: 4,
+                        maxlength: 4
+                    }
+                }
+            });
+
+        });
+    </script>
     <script>
         $(document).ready(function() {
             $('#state').on('change', function() {

@@ -1,5 +1,4 @@
 @extends('admin.layouts.admin_layouts')
-
 @section('content')
     <section class="content">
         <div class="block-header">
@@ -28,7 +27,7 @@
                 {{ session()->get('success') }}
             </div>
         @endif
-        <form method="POST" action="{{ url('admin/new-customer') }}">
+        <form id="user-form" method="POST" action="{{ url('admin/new-customer') }}">
             @csrf
             <div class="container-fluid">
                 <!-- Color Pickers -->
@@ -42,14 +41,14 @@
                                     <div class="col-lg-6 col-md-6">
                                         <p> <b>Customer Name</b> </p>
                                         <div class="form-group">
-                                            <input type="text" class="form-control" required name="customer_name"
+                                            <input type="text" class="form-control" name="customer_name"
                                                 placeholder="Customer Name" />
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-6">
                                         <p> <b>Customer Mobile</b></p>
                                         <div class="form-group">
-                                            <input type="number" name="customer_number" required class="form-control"
+                                            <input type="number" name="customer_number" class="form-control"
                                                 placeholder="Customer Number" />
                                         </div>
                                     </div>
@@ -78,7 +77,7 @@
                                             </div>
                                             <div class="radio inlineblock">
                                                 <input type="radio" name="payment_status" id="unPaid" class="with-gap"
-                                                    value="Silver" >
+                                                    value="Silver">
                                                 <label for="unPaid">Silver</label>
                                             </div>
                                         </div>
@@ -101,8 +100,8 @@
                                     <div class="col-lg-6 col-md-6">
                                         <p> <b>Ref mobile number</b> </p>
                                         <div class="form-group">
-                                            <input type="text" name="ref_number" value="admin" readonly class="form-control"
-                                                placeholder="Ref mobile number" />
+                                            <input type="number" name="ref_number" value="admin" readonly
+                                                class="form-control" placeholder="Ref mobile number" />
                                         </div>
                                     </div>
 
@@ -137,4 +136,50 @@
             </div>
         </form>
     </section>
+@endsection
+@section('js')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script>
+        $(document).ready(function() {
+
+            jQuery.validator.addMethod("phoneUS", function(customer_number, element) {
+                customer_number = customer_number.replace(/\s+/g, "");
+                return this.optional(element) || customer_number.length > 9 && customer_number.match(
+                    /^(\+?1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/);
+            }, "Please specify a valid phone number");
+
+            jQuery.validator.addMethod("Ref", function(ref_number, element) {
+                ref_number = ref_number.replace(/\s+/g, "");
+                return this.optional(element) || ref_number.length > 9 && ref_number.match(
+                    /^(\+?1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/);
+            }, "Please specify a valid phone number");
+
+            jQuery.validator.addMethod("lettersonlys", function(customer_name, element) {
+                return this.optional(element) || /^[a-zA-Z ]*$/.test(customer_name);
+            }, "Letters only please");
+
+            $('#user-form').validate({ // initialize the plugin
+                rules: {
+                    customer_number: {
+                        required: true,
+                        phoneUS: true
+                    },
+                    ref_number: {
+                        required: true,
+                        Ref: true
+                    },
+                    customer_name: {
+                        required: true,
+                        lettersonlys: true
+                    },
+                    login_pin: {
+                        required: true,
+                        number: true,
+                        minlength: 4,
+                        maxlength: 4
+                    }
+                }
+            });
+        });
+    </script>
 @endsection

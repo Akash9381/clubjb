@@ -29,7 +29,7 @@
                 {{ session()->get('success') }}
             </div>
         @endif
-        <form method="POST" action="{{ url('employee/new-customer') }}">
+        <form id="user-form" method="POST" action="{{ url('employee/new-customer') }}">
             @csrf
             <div class="container-fluid">
                 <!-- Color Pickers -->
@@ -132,4 +132,50 @@
             </div>
         </form>
     </section>
+@endsection
+@section('js')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script>
+        $(document).ready(function() {
+
+            jQuery.validator.addMethod("phoneUS", function(customer_number, element) {
+                customer_number = customer_number.replace(/\s+/g, "");
+                return this.optional(element) || customer_number.length > 9 && customer_number.match(
+                    /^(\+?1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/);
+            }, "Please specify a valid phone number");
+
+            jQuery.validator.addMethod("Ref", function(ref_number, element) {
+                ref_number = ref_number.replace(/\s+/g, "");
+                return this.optional(element) || ref_number.length > 9 && ref_number.match(
+                    /^(\+?1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/);
+            }, "Please specify a valid phone number");
+
+            jQuery.validator.addMethod("lettersonlys", function(customer_name, element) {
+                return this.optional(element) || /^[a-zA-Z ]*$/.test(customer_name);
+            }, "Letters only please");
+
+            $('#user-form').validate({ // initialize the plugin
+                rules: {
+                    customer_number: {
+                        required: true,
+                        phoneUS: true
+                    },
+                    ref_number: {
+                        required: true,
+                        Ref: true
+                    },
+                    customer_name: {
+                        required: true,
+                        lettersonlys: true
+                    },
+                    login_pin: {
+                        required: true,
+                        number: true,
+                        minlength: 4,
+                        maxlength: 4
+                    }
+                }
+            });
+        });
+    </script>
 @endsection

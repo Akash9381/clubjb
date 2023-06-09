@@ -32,6 +32,11 @@ class AuthController extends Controller
         return redirect(route('login'));
     }
 
+    public function UserLogout(){
+        Auth::logout();
+        return redirect(route('user.login'));
+    }
+
     public function EmployeeAuthenticate(Request $request)
     {
         $this->Validate($request, [

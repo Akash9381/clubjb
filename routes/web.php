@@ -103,7 +103,7 @@ Route::group(['middleware' => ['role:employee']], function () {
 // *********************************** Users **************************************
 Route::get('/', function () {
     return view('users.login');
-});
+})->name('user.login')->middleware('guest');
 Route::get('users/login', [AuthController::class, 'UserAuth']);
 Route::post('users/authenticate', [AuthController::class, 'UserLogin']);
 Route::group(['middleware' => ['role:customer']], function () {
@@ -111,6 +111,7 @@ Route::group(['middleware' => ['role:customer']], function () {
     Route::get('users/profile', [UserController::class, 'UserProfile']);
     Route::get('users/deal-list', [DealController::class, 'UserDealList']);
     Route::get('users/deal', [DealController::class, 'UserDeal']);
+    Route::get('user/logout',[AuthController::class,'UserLogout']);
 });
 // ******************************* Customer ****************************************
 // Route::view('shopkeeper/login','shopkeeper.login')->middleware('guest');

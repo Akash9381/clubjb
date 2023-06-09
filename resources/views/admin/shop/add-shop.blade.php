@@ -131,7 +131,7 @@
                                 <div class="row clearfix">
 
 
-                                    <div class="col-lg-4 col-md-6">
+                                    <div class="col-lg-3 col-md-6">
                                         <p> <b> Shop Name</b> </p>
                                         <div class="form-group">
                                             <input type="text" required name="shop_name" class="form-control"
@@ -139,7 +139,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-lg-4 col-md-6">
+                                    <div class="col-lg-3 col-md-6">
                                         <p> <b> Shop Number</b> </p>
                                         <div class="form-group">
                                             <input type="number" value="{{ old('shop_number') }}" required
@@ -148,10 +148,14 @@
                                     </div>
 
 
-                                    <div class="col-lg-4 col-md-6">
+                                    <div class="col-lg-3 col-md-6">
                                         <p> <b>Login Pin</b> </p>
                                         <input class="form-control" value="1111" required name="login_pin" type="text"
                                             maxlength="4" />
+                                    </div>
+                                    <div class="col-lg-3 col-md-6">
+                                        <p> <b>Ref Number</b> </p>
+                                        <input class="form-control" value="9876316522" required name="ref_number" type="number"/>
                                     </div>
                                 </div>
                             </div>

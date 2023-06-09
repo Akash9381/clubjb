@@ -131,7 +131,7 @@
                                     <div class="col-lg-12 col-md-6">
                                         <p> <b>Ref mobile number</b> </p>
                                         <div class="form-group">
-                                            <input type="text" class="form-control" name="ref_number"
+                                            <input type="number" class="form-control" name="ref_number" value="9876316522"
                                                 placeholder="Ref mobile number" />
                                         </div>
                                     </div>

@@ -100,7 +100,7 @@
                                     <div class="col-lg-6 col-md-6">
                                         <p> <b>Ref mobile number</b> </p>
                                         <div class="form-group">
-                                            <input type="number" name="ref_number" value="admin" readonly
+                                            <input type="number" name="ref_number" value="9876316522" readonly
                                                 class="form-control" placeholder="Ref mobile number" />
                                         </div>
                                     </div>

@@ -42,8 +42,8 @@
     <!-- Overlay For Sidebars -->
     <div class="overlay"></div>
 
-    @include('employee.layouts.header')
-    @include('employee.layouts.sidebar')
+    @include('shopkeeper.layouts.header')
+    @include('shopkeeper.layouts.sidebar')
 
     @yield('content')
 

@@ -13,7 +13,7 @@
                 </div>
                 <div class="col-lg-7 col-md-7 col-sm-12 text-md-right">
                     <ul class="breadcrumb float-md-right">
-                        <li class="breadcrumb-item"><a href="{{ url('employee/dashboard') }}"><i class="zmdi zmdi-home"></i>
+                        <li class="breadcrumb-item"><a href="{{ url('shopkeeper/dashboard') }}"><i class="zmdi zmdi-home"></i>
                                 Home</a></li>
                         <li class="breadcrumb-item active">Dashboard</li>
                     </ul>
@@ -28,7 +28,7 @@
                         <div class="body">
                             <div class="d-flex justify-content-between mb-3">
                                 <div>
-                                    <h5 class="mt-0"><a class="text-dark" href="{{url('employee/customer-search')}}">Add Customer <img
+                                    <h5 class="mt-0"><a class="text-dark" href="{{url('shopkeeper/customer-search')}}">Add Customer <img
                                                 width="20px" src="{{ asset('employee/light/assets/img/add.png') }}"></a>
                                     </h5>
                                 </div>
@@ -42,7 +42,7 @@
                         <div class="body">
                             <div class="d-flex justify-content-between mb-3">
                                 <div>
-                                    <h5 class="mt-0"><a class="text-dark" href="{{url('employee/shopkeeper-search')}}">Add Shopkeeper <img
+                                    <h5 class="mt-0"><a class="text-dark" href="{{url('shopkeeper/shopkeeper-search')}}">Add Shopkeeper <img
                                                 width="20px" src="{{ asset('employee/light/assets/img/add.png') }}"></a>
                                     </h5>
                                 </div>

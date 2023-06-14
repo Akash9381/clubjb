@@ -260,6 +260,24 @@ class EmployeeController extends Controller
         }
     }
 
+    public function ShopkeeperSearch(Request $request)
+    {
+        $search = $request['search'];
+        $data = [];
+        if ($search) {
+            $data = User::whereHas('roles', function ($query) {
+                $query->where('name', '<>', 'admin'); // role with no admin
+            })->where(function ($query) use ($search) {
+                if ($search) {
+                    $query->where('phone', 'like', '%' . $search . '%');
+                }
+            })->get();
+            return view('shopkeeper.search_shopkeeper', compact('data'));
+        } else {
+            return view('shopkeeper.search_shopkeeper', compact('data'));
+        }
+    }
+
     public function EmployeeNewEmployee()
     {
         $states = ModelsState::all();
@@ -419,7 +437,8 @@ class EmployeeController extends Controller
         return view('employee.update-shopkeeper', compact('states', 'shop'));
     }
 
-    public function EmployeeUpdateShopKeeper($shop_id = null){
-        return back()->with('success','Shop Keeper Not Update yet');
+    public function EmployeeUpdateShopKeeper($shop_id = null)
+    {
+        return back()->with('success', 'Shop Keeper Not Update yet');
     }
 }

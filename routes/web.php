@@ -117,6 +117,17 @@ Route::group(['middleware' => ['role:customer']], function () {
 Route::view('shopkeeper/login','shopkeeper.login')->middleware('guest')->name('shop.login');
 Route::post('shopkeeper/authenticate',[AuthController::class,'ShopKeeperAuth']);
 Route::group(['middleware' => ['role:shopkeeper']], function (){
-    Route::view('shopkeeper/dashboard','shopkeeper.dashboard');
-    Route::get('shopkeeper/logout',[AuthController::class,'ShopLogout']);
+    Route::prefix('shopkeeper')->group(function(){
+        Route::get('/customer-search',[ShopKeeperController::class,'SearchCustomer']);
+        Route::get('/shopkeeper-search',[EmployeeController::class,'ShopkeeperSearch']);
+        Route::view('/add-customer','shopkeeper.add-customer');
+        Route::post('/new-customer',[CustomerController::class,'ShopKeeperNewCustomer']);
+        Route::view('/dashboard','shopkeeper.dashboard');
+        Route::get('/logout',[AuthController::class,'ShopLogout']);
+        Route::get('/add-shopkeeper',[ShopKeeperController::class,'CreateNewShopKeeper']);
+        Route::post('/create-shop',[ShopKeeperController::class,'StoreShopKeeper']);
+        Route::get('/customer-report',[CustomerController::class,'ShopkeeperCustomerReport']);
+        Route::get('/shopkeeper-reports',[ShopKeeperController::class,'ShopkeeperCustomerReport']);
+
+    });
 });

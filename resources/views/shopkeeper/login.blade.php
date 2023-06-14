@@ -95,8 +95,6 @@
                             </div>
                             <label id="login_pin-error" class="error" for="login_pin"></label>
                         </div>
-
-
                         <div class="footer text-center">
                             <button type="submit" class="btn btn-primary btn-round btn-lg btn-block ">SUBMIT</button>
 

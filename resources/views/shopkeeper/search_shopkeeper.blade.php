@@ -1,9 +1,7 @@
-﻿@extends('employee.layouts.employe_layouts')
-@section('title', 'Search')
+@extends('shopkeeper.layouts.shopkeeper_layouts');
+@section('title', 'Search Shopkeeper')
 
 <!-- Chat-launcher -->
-
-
 @section('content')
     <section class="content">
         <div class="block-header">
@@ -18,6 +16,7 @@
                         <li class="breadcrumb-item"><a href="{{ url('employee/dashboard') }}"><i class="zmdi zmdi-home"></i>
                                 Home</a></li>
 
+
                     </ul>
                 </div>
             </div>
@@ -30,11 +29,13 @@
                         <div class="body">
                             <div class="row clearfix">
                                 <div class="col-lg-12 col-md-6">
-                                    <form id="search-customer" action="{{url()->current()}}">
+                                    <form id="customer-form" action="{{ url()->current() }}">
                                         <div class="input-group">
-                                            <input type="number" value="{{ request()->get('search') }}" required name="search" class="form-control" placeholder="Enter Mobile Number...">
+                                            <input type="number" value="{{ request()->get('search') }}" required
+                                                name="search" class="form-control" placeholder="Enter Mobile Number...">
                                             <button class="input-group-addon"><i class="zmdi zmdi-search"></i></button>
                                         </div>
+                                        <label id="search-error" class="error" for="search"></label>
                                     </form>
                                 </div>
                             </div>
@@ -49,22 +50,24 @@
 
                     <div class="card">
                         <div class="body">
-                            @forelse ($data as $customer)
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <strong for="customer_edit">{{$customer['name']}}</strong>
-                                </div>
-                                <hr>
-                                <div class="col-md-6">
-                                    <a><i class="zmdi zmdi-edit"></i></a>
+                            @forelse ($data as $shop)
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <strong for="customer_edit">{{ $shop['name'] }}</strong>
+                                    </div>
+                                    <hr>
+                                    <div class="col-md-6">
+                                        <a href="{{ url('shopkeeper/edit-shopkeeper/' . $shop['id']) }}"><i
+                                                class="zmdi zmdi-edit"></i></a>
 
+                                    </div>
                                 </div>
-                            </div>
                             @empty
-                            <div class="text-center">
-                                <strong>No Customer Found</strong><br>
-                                <a href="{{url('employee/add-customer')}}" class="btn btn-primary">Create New Customer</a>
-                            </div>
+                                <div class="text-center">
+                                    <strong>No Shopkeeper Found</strong><br>
+                                    <a href="{{ url('shopkeeper/add-shopkeeper?search='.request()->get('search')) }}" class="btn btn-primary">Create New
+                                        Shopkeeper</a>
+                                </div>
                             @endforelse
                         </div>
                     </div>
@@ -87,7 +90,6 @@
 
     <script src="{{ asset('employee/lightassets/bundles/mainscripts.bundle.js') }}"></script><!-- Custom Js -->
     <script src="{{ asset('employee/lightassets/js/pages/forms/advanced-form-elements.js') }}"></script>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
     <script>
         $(document).ready(function() {
@@ -98,12 +100,12 @@
                     /^(\+?1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/);
             }, "Please specify a valid phone number");
 
-            $('#search-customer').validate({ // initialize the plugin
+            $('#customer-form').validate({ // initialize the plugin
                 rules: {
                     search: {
                         required: true,
                         phoneUS: true
-                    },
+                    }
                 }
             });
         });

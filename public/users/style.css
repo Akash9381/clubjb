@@ -1376,6 +1376,19 @@ textarea:invalid {
   padding: 8px 8px 8px 24px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.15);
 }
+/* Akash changes */
+.register-form .form-control.error {
+  border-radius: 0;
+  border: 0;
+  color: red;
+  font-size: 13px;
+  background-color: transparent;
+  height: 40px;
+  padding: 8px 8px 8px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  border-color: red;
+}
+/* End Akash Changes */
 .register-form .form-control::-webkit-input-placeholder {
   color: #ffffff;
   opacity: 0.5;

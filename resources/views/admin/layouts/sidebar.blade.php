@@ -16,8 +16,15 @@
 
                         </div>
                     </li>
-
-                    <li class="active"><a href="javascript:void(0);" class="menu-toggle"><span>Employee</span></a>
+                    <li @if (strpos(Request::url(), "admin/add-employee") !== false)
+                        class="active"
+                    @endif
+                    @if (strpos(Request::url(), "admin/inactive-employee") !== false)
+                    class="active"
+                    @endif
+                    @if (strpos(Request::url(), "admin/active-employee") !== false)
+                        class="active"
+                    @endif><a href="javascript:void(0);" class="menu-toggle"><span>Employee</span></a>
                         <ul class="ml-menu">
                             <li class="{{setActiveClass('admin/add-employee')}}"><a href="{{url('admin/add-employee')}}">Add New</a></li>
                             <li class="{{setActiveClass('admin/inactive-employee')}}"><a href="{{url('admin/inactive-employee')}}">Inactive Table</a></li>
@@ -25,22 +32,48 @@
 
                         </ul>
                     </li>
-                    <li><a href="javascript:void(0);" class="menu-toggle"><span>Customer</span></a>
+                    <li @if (strpos(Request::url(), "admin/add-customer") !== false)
+                    class="active"
+                @endif
+                @if (strpos(Request::url(), "inactive-customers") !== false)
+                        class="active"
+                    @endif
+                    @if (strpos(Request::url(), "admin/active-customers") !== false)
+                        class="active"
+                    @endif
+                    ><a href="javascript:void(0);" class="menu-toggle"><span>Customer</span></a>
                         <ul class="ml-menu">
-                            <li><a href="{{url('admin/add-customer')}}">Add New</a></li>
-                            <li><a href="{{url('admin/inactive-customers')}}">Inactive Table</a></li>
-                            <li><a href="{{url('admin/active-customers')}}">Active Table</a></li>
+                            <li class="{{setActiveClass('admin/add-customer')}}"><a href="{{url('admin/add-customer')}}">Add New</a></li>
+                            <li class="{{setActiveClass('admin/inactive-customers')}}" ><a href="{{url('admin/inactive-customers')}}">Inactive Table</a></li>
+                            <li class="{{setActiveClass('admin/active-customers')}}"><a href="{{url('admin/active-customers')}}">Active Table</a></li>
 
                         </ul>
                     </li>
-                    <li><a href="javascript:void(0);" class="menu-toggle"><span>Shopkeeper</span></a>
+                    <li
+                    @if (strpos(Request::url(), "admin/local-shop-form") !== false)
+                        class="active"
+                    @endif
+                    @if (strpos(Request::url(), "admin/active-local-shops") !== false)
+                        class="active"
+                    @endif
+                    @if (strpos(Request::url(), "admin/inactive-local-shops") !== false)
+                        class="active"
+                    @endif
+                    @if (strpos(Request::url(), "admin/inactive-global-shops") !== false)
+                        class="active"
+                    @endif
+                    ><a href="javascript:void(0);" class="menu-toggle"><span>Shopkeeper</span></a>
                         <ul class="ml-menu">
-                            <li><a href="{{url('admin/local-shop-form')}}">Add Local Shop</a></li>
-                            <li><a href="{{url('admin/global-shop-form')}}">Add Global Shop</a></li>
+                            <li><b>Local</b></li>
+                            <li class="{{setActiveClass('admin/local-shop-form')}}"><a href="{{url('admin/local-shop-form')}}">Add Local Shop</a></li>
+                            <li class="{{setActiveClass('admin/active-local-shops')}}"><a href="{{url('admin/active-local-shops')}}">Active Local Shop</a></li>
+                            <li class="{{setActiveClass('admin/inactive-local-shops')}}"><a href="{{url('admin/inactive-local-shops')}}">Inactive Local Shop</a></li>
+
+                            <li><b>Global</b></li>
+
+                            <li class="{{setActiveClass('admin/global-shop-form')}}"><a href="{{url('admin/global-shop-form')}}">Add Global Shop</a></li>
                             <li><a href="#">Active Global Shop</a></li>
-                            <li><a href="#">Inactive Global Shop</a></li>
-                            <li><a href="{{url('admin/active-local-shops')}}">Active Local Shop</a></li>
-                            <li><a href="{{url('admin/inactive-local-shops')}}">Inactive Local Shop</a></li>
+                            <li class="{{setActiveClass('admin/inactive-global-shops')}}"><a href="{{url('admin/inactive-global-shops')}}">Inactive Global Shop</a></li>
 
                         </ul>
                     </li>

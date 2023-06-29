@@ -48,7 +48,7 @@
                                     <div class="col-lg-6 col-md-6">
                                         <p> <b>Customer Mobile</b></p>
                                         <div class="form-group">
-                                            <input type="number" name="customer_number" class="form-control"
+                                            <input type="number" id="customer_number" name="customer_number" class="form-control"
                                                 placeholder="Customer Number" />
                                         </div>
                                     </div>
@@ -72,11 +72,11 @@
                                         <div class="form-group mt-5">
                                             <div class="radio inlineblock m-r-20">
                                                 <input type="radio" name="payment_status" id="Paid" class="with-gap"
-                                                    value="Gold" checked="">
+                                                    value="Gold" >
                                                 <label for="Paid">Gold</label>
                                             </div>
                                             <div class="radio inlineblock">
-                                                <input type="radio" name="payment_status" id="unPaid" class="with-gap"
+                                                <input type="radio" name="payment_status" id="unPaid" checked="" class="with-gap"
                                                     value="Silver">
                                                 <label for="unPaid">Silver</label>
                                             </div>
@@ -100,7 +100,7 @@
                                     <div class="col-lg-6 col-md-6">
                                         <p> <b>Ref mobile number</b> </p>
                                         <div class="form-group">
-                                            <input type="number" name="ref_number" value="9876316522" readonly
+                                            <input type="number" id="ref_number" name="ref_number" value="9999999999"
                                                 class="form-control" placeholder="Ref mobile number" />
                                         </div>
                                     </div>
@@ -117,7 +117,7 @@
 
                                     </div>
                                     <div class="col-sm-12">
-                                        <button type="submit" class="btn btn-primary btn-round"> Add Employee</button>
+                                        <button type="submit" class="btn btn-primary btn-round"> Add Customer</button>
 
                                     </div>
                                     <div style="visibility: hidden;" id="nouislider_basic_example"></div>
@@ -130,15 +130,37 @@
                         </div>
                     </div>
                 </div>
-
-
-
             </div>
         </form>
     </section>
 @endsection
 @section('js')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script>
+        // max 10 digits number and do n't accept zero as the first digit.
+
+        jQuery("#customer_number").keypress(function(e) {
+            var length = jQuery(this).val().length;
+            if (length > 9) {
+                return false;
+            } else if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                return false;
+            } else if ((length == 0) && (e.which == 48)) {
+                return false;
+            }
+        });
+
+        jQuery("#ref_number").keypress(function(e) {
+            var length = jQuery(this).val().length;
+            if (length > 9) {
+                return false;
+            } else if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                return false;
+            } else if ((length == 0) && (e.which == 48)) {
+                return false;
+            }
+        });
+    </script>
     <script>
         $(document).ready(function() {
 
@@ -154,10 +176,6 @@
                     /^(\+?1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/);
             }, "Please specify a valid phone number");
 
-            jQuery.validator.addMethod("lettersonlys", function(customer_name, element) {
-                return this.optional(element) || /^[a-zA-Z ]*$/.test(customer_name);
-            }, "Letters only please");
-
             $('#user-form').validate({ // initialize the plugin
                 rules: {
                     customer_number: {
@@ -169,8 +187,7 @@
                         Ref: true
                     },
                     customer_name: {
-                        required: true,
-                        lettersonlys: true
+                        required: true
                     },
                     login_pin: {
                         required: true,

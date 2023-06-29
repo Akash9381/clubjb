@@ -83,7 +83,8 @@
                                 {{ session()->get('success') }}
                             </div>
                         @endif
-                        <form id="user-form" action="{{ url('users/login') }}" method="get">
+                        <form id="user-form" action="{{ url('users/login') }}" method="post">
+                            @csrf
                             <div class="mb-4 d-flex rtl-flex-d-row-r">
                                 <select id="countryCodeSelect" aria-label="Default select example">
                                     <option value="">+91</option>
@@ -99,8 +100,10 @@
                     </div>
                     <!-- Login Meta-->
                     <div class="login-meta-data">
-                        <!--<a class="forgot-password d-block mt-3 mb-1" href="forget-password.html">Forgot Password?</a>-->
-                        <!--<p class="mb-0 mt-3">Didn't have an account?<a class="mx-1" href="register.html">Register Now</a></p>-->
+                        <a class="forgot-password d-block mt-3 mb-1" href="{{url('shopkeeper/login')}}">Shopkeeper Login</a>
+                        <a class="forgot-password d-block mt-3 mb-1" href="{{url('employee/login')}}">Employee Login</a>
+                        <a class="forgot-password d-block mt-3 mb-1" href="{{url('admin/sign-in')}}">Admin Login</a>
+                        {{-- <p class="mb-0 mt-3">Didn't have an account?<a class="mx-1" href="register.html">Register Now</a></p> --}}
                     </div>
                     <!-- View As Guest-->
 
@@ -124,6 +127,17 @@
     <script src="{{ asset('users/js/pwa.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
     <script>
+        jQuery("#phone_number").keypress(function(e) {
+            var length = jQuery(this).val().length;
+            if (length > 9) {
+                return false;
+            } else if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                return false;
+            } else if ((length == 0) && (e.which == 48)) {
+                return false;
+            }
+        });
+
         $(document).ready(function() {
 
             jQuery.validator.addMethod("phoneUS", function(phone_number, element) {

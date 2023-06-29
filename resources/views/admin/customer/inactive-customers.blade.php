@@ -127,8 +127,6 @@
                                                     <button class="btn btn-icon btn-neutral btn-icon-mini"><i
                                                             class="zmdi zmdi-edit"></i></button>
                                                     <button class="btn btn-icon btn-neutral btn-icon-mini"><i
-                                                            class="zmdi zmdi-check-all"></i></button>
-                                                    <button class="btn btn-icon btn-neutral btn-icon-mini"><i
                                                             class="zmdi zmdi-delete"></i></button>
                                                 </td>
                                             </tr>

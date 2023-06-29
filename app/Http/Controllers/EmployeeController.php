@@ -14,6 +14,7 @@ use App\Models\EmployePictureDocument;
 use App\Models\Shop;
 use App\Models\state as ModelsState;
 use App\Models\User;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use NunoMaduro\Collision\Adapters\Phpunit\State;
@@ -200,10 +201,19 @@ class EmployeeController extends Controller
 
     public function EmployeeStatus(Request $request)
     {
-        $data['status'] = Employee::where('employee_id', $request['employee_id'])->update([
-            'status' => $request['status']
-        ]);
-        return response()->json($data);
+        if ($request['status'] == '0') {
+            $data['status'] = Employee::where('employee_id', $request['employee_id'])->update([
+                'status' => $request['status'],
+                'active_date' => null
+            ]);
+            return response()->json($data);
+        } else {
+            $data['status'] = Employee::where('employee_id', $request['employee_id'])->update([
+                'status' => $request['status'],
+                'active_date' => Carbon::now()
+            ]);
+            return response()->json($data);
+        }
     }
 
     public function CustomerSearch(Request $request)

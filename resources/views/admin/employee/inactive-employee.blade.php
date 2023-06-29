@@ -127,43 +127,15 @@
                                                     <button class="btn btn-icon btn-neutral btn-icon-mini"><i
                                                             class="zmdi zmdi-edit"></i></button>
                                                     <button class="btn btn-icon btn-neutral btn-icon-mini"><i
-                                                            class="zmdi zmdi-check-all"></i></button>
-                                                    <button class="btn btn-icon btn-neutral btn-icon-mini"><i
                                                             class="zmdi zmdi-delete"></i></button>
                                                 </td>
                                             </tr>
                                         @empty
                                             <tr>
-                                                <th colspan=""></th>
+                                                <th colspan="8">No Data Available</th>
                                             </tr>
                                         @endforelse
 
-                                        <tr>
-                                            <td>1</td>
-                                            <td>20-04-2023</td>
-                                            <td>E xxxxxx</td>
-                                            <td>Lorem Ipsum is simply</td>
-                                            <td>1234567890</td>
-
-                                            <td>
-                                                <select class="form-control show-tick ms select2" data-placeholder="Select">
-                                                    <option>Active</option>
-                                                    <option> In Active</option>
-                                                </select>
-                                            </td>
-
-                                            <td>
-                                                <button class="btn btn-icon btn-neutral btn-icon-mini"><a
-                                                        href="{{ url('admin/employee-profile') }}"><i
-                                                            class="zmdi zmdi-eye"></i></a></button>
-                                                <button class="btn btn-icon btn-neutral btn-icon-mini"><i
-                                                        class="zmdi zmdi-edit"></i></button>
-                                                <button class="btn btn-icon btn-neutral btn-icon-mini"><i
-                                                        class="zmdi zmdi-check-all"></i></button>
-                                                <button class="btn btn-icon btn-neutral btn-icon-mini"><i
-                                                        class="zmdi zmdi-delete"></i></button>
-                                            </td>
-                                        </tr>
                                     </tbody>
                                 </table>
                             </div>

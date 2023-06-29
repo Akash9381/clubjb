@@ -16,6 +16,11 @@ use Illuminate\Http\Request;
 
 class GlobalShopController extends Controller
 {
+
+    public function InactiveGlobal(){
+        $inactive_shops = GlobalShop::with('GetLocalShop')->where('status', 0)->orderBy('id', 'desc')->get();
+        return view('admin.shop.inactive-global-shop', compact('inactive_shops'));
+    }
     public function GlobalShop()
     {
         return view('admin.shop.global-shop');
@@ -63,14 +68,16 @@ class GlobalShopController extends Controller
                 $shop->shop_terms   = $request->shop_terms;
                 $shop->status       = '0';
                 $shop->save();
-                if (count($request['deal']) > 0) {
-                    foreach ($request['deal'] as $key => $deal) {
-                        $dl = new ShopDeal();
-                        $dl->user_id = $user->id;
-                        $dl->shop_id = $shop_id;
-                        $dl->shop_deal = $request['deal'][$key];
-                        $dl->saving_up_to = $request['saving_up_to'][$key];
-                        $dl->save();
+                if($request['deal']){
+                    if (count($request['deal']) > 0) {
+                        foreach ($request['deal'] as $key => $deal) {
+                            $dl = new ShopDeal();
+                            $dl->user_id = $user->id;
+                            $dl->shop_id = $shop_id;
+                            $dl->shop_deal = $request['deal'][$key];
+                            $dl->saving_up_to = $request['saving_up_to'][$key];
+                            $dl->save();
+                        }
                     }
                 }
                 if ($request->hasFile('shop_menu')) {

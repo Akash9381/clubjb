@@ -101,8 +101,8 @@
                                     <div class="col-lg-3 col-md-6">
                                         <p> <b>Empl Number</b> (<small>Login Number</small> )</p>
                                         <div class="form-group">
-                                            <input type="number" class="form-control" name="employee_number"
-                                                placeholder="employee Number" />
+                                            <input type="number" id="employee_number" class="form-control" maxlength="10"
+                                                name="employee_number" placeholder="employee Number" />
                                         </div>
                                     </div>
                                     <div class="col-lg-3 col-md-6">
@@ -131,7 +131,7 @@
                                     <div class="col-lg-12 col-md-6">
                                         <p> <b>Ref mobile number</b> </p>
                                         <div class="form-group">
-                                            <input type="number" class="form-control" name="ref_number" value="9876316522"
+                                            <input type="number" id="ref_number" class="form-control" name="ref_number" value="9999999999"
                                                 placeholder="Ref mobile number" />
                                         </div>
                                     </div>
@@ -164,104 +164,125 @@
                                         <p> <b>Upload Passport</b> </p>
                                         <div class="form-group">
                                             <input type="file" name="passport_document[]" multiple class="form-control" " />
+                                            </div>
                                         </div>
-                                    </div>
 
 
-                                    <div class="col-lg-6 col-md-6 rounded border">
-                                        <p> <b>Upload agreement</b> </p>
-                                        <div class="form-group">
-                                            <input type="file" name="agreement_document[]" multiple class="form-control"  />
+                                        <div class="col-lg-6 col-md-6 rounded border">
+                                            <p> <b>Upload agreement</b> </p>
+                                            <div class="form-group">
+                                                <input type="file" name="agreement_document[]" multiple class="form-control"  />
+                                            </div>
                                         </div>
+
+                                        <div class="col-sm-12">
+                                            <button type="submit" class="btn btn-primary btn-round"> Add Employee</button>
+
+                                        </div>
+                                        <div style="visibility: hidden;" id="nouislider_basic_example"></div>
+
+                                        <div style="visibility: hidden;" id="nouislider_range_example"></div>
+
+
                                     </div>
-
-                                    <div class="col-sm-12">
-                                        <button type="submit" class="btn btn-primary btn-round"> Add Employee</button>
-
-                                    </div>
-                                    <div style="visibility: hidden;" id="nouislider_basic_example"></div>
-
-                                    <div style="visibility: hidden;" id="nouislider_range_example"></div>
-
-
                                 </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
 
-            </div>
-
-        </form>
-        </section>
+            </form>
+            </section>
 @endsection
 
 @section('js')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
     <script>
-        $(document).ready(function() {
+        // max 10 digits number and do n't accept zero as the first digit.
 
-            jQuery.validator.addMethod("phoneUS", function(employee_number, element) {
-                employee_number = employee_number.replace(/\s+/g, "");
-                return this.optional(element) || employee_number.length > 9 && employee_number.match(
-                    /^(\+?1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/);
-            }, "Please specify a valid phone number");
+        jQuery("#employee_number").keypress(function(e) {
+            var length = jQuery(this).val().length;
+            if (length > 9) {
+                return false;
+            } else if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                return false;
+            } else if ((length == 0) && (e.which == 48)) {
+                return false;
+            }
+        });
 
-            jQuery.validator.addMethod("Ref", function(ref_number, element) {
-                ref_number = ref_number.replace(/\s+/g, "");
-                return this.optional(element) || ref_number.length > 9 && ref_number.match(
-                    /^(\+?1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/);
-            }, "Please specify a valid phone number");
-
-            jQuery.validator.addMethod("lettersonlys", function(employee_name, element) {
-                return this.optional(element) || /^[a-zA-Z ]*$/.test(employee_name);
-            }, "Letters only please");
-
-            $('#user-form').validate({ // initialize the plugin
-                rules: {
-                    employee_number: {
-                        required: true,
-                        phoneUS: true
-                    },
-                    ref_number: {
-                        required: true,
-                        Ref: true
-                    },
-                    employee_name: {
-                        required: true,
-                        lettersonlys:true
-                    },
-                    login_pin: {
-                        required: true,
-                        number: true,
-                        minlength: 4,
-                        maxlength: 4
-                    }
-                }
-            });
+        jQuery("#ref_number").keypress(function(e) {
+            var length = jQuery(this).val().length;
+            if (length > 9) {
+                return false;
+            } else if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                return false;
+            } else if ((length == 0) && (e.which == 48)) {
+                return false;
+            }
         });
     </script>
         <script>
+            // validation
             $(document).ready(function() {
-                $('#state').on('change', function() {
-                    var state = this.value;
-                    $("#city").html('');
-                    $.ajax({
-                        url: "/admin/get-city",
-                        type: "get",
-                        dataType: 'json',
-                        data: {
-                            state: state
+
+                jQuery.validator.addMethod("phoneUS", function(employee_number, element) {
+                    employee_number = employee_number.replace(/\s+/g, "");
+                    return this.optional(element) || employee_number.length > 9 && employee_number.match(
+                        /^(\+?1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/);
+                }, "Please specify a valid phone number");
+
+                jQuery.validator.addMethod("Ref", function(ref_number, element) {
+                    ref_number = ref_number.replace(/\s+/g, "");
+                    return this.optional(element) || ref_number.length > 9 && ref_number.match(
+                        /^(\+?1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/);
+                }, "Please specify a valid phone number");
+
+                $('#user-form').validate({ // initialize the plugin
+                    rules: {
+                        employee_number: {
+                            required: true,
+                            phoneUS: true
                         },
-                        success: function(result) {
-                            $('#city').html('<option value="">Select City</option>');
-                            $.each(result.cities, function(key, value) {
-                                $("#city").append('<option value="' + value.city +
-                                    '">' + value.city + '</option>');
-                            });
+                        ref_number: {
+                            required:true,
+                            Ref: true
+                        },
+                        employee_name: {
+                            required: true,
+                        },
+                        login_pin: {
+                            required: true,
+                            number: true,
+                            minlength: 4,
+                            maxlength: 4
                         }
-                    })
-                })
+                    }
+                });
             });
         </script>
+            <script>
+                $(document).ready(function() {
+                    $('#state').on('change', function() {
+                        var state = this.value;
+                        $("#city").html('');
+                        $.ajax({
+                            url: "/admin/get-city",
+                            type: "get",
+                            dataType: 'json',
+                            data: {
+                                state: state
+                            },
+                            success: function(result) {
+                                $('#city').html('<option value="">Select City</option>');
+                                $.each(result.cities, function(key, value) {
+                                    $("#city").append('<option value="' + value.city +
+                                        '">' + value.city + '</option>');
+                                });
+                            }
+                        })
+                    })
+                });
+            </script>
 @endsection

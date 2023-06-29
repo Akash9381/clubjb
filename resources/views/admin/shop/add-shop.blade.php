@@ -143,7 +143,7 @@
                                         <p> <b> Shop Number</b> </p>
                                         <div class="form-group">
                                             <input type="number" value="{{ old('shop_number') }}" required
-                                                name="shop_number" class="form-control" placeholder="Shop Number" />
+                                                name="shop_number" id="shop_number" class="form-control" placeholder="Shop Number" />
                                         </div>
                                     </div>
 
@@ -155,7 +155,7 @@
                                     </div>
                                     <div class="col-lg-3 col-md-6">
                                         <p> <b>Ref Number</b> </p>
-                                        <input class="form-control" value="9876316522" required name="ref_number" type="number"/>
+                                        <input class="form-control" id="ref_number" value="9999999999" required name="ref_number" type="number"/>
                                     </div>
                                 </div>
                             </div>
@@ -184,7 +184,7 @@
                                     <div class="col-lg-4 col-md-6">
                                         <p> <b> Contact Number</b> </p>
                                         <div class="form-group">
-                                            <input type="number" name="contact_number" class="form-control"
+                                            <input type="number" id="contact_number" name="contact_number" class="form-control"
                                                 placeholder="Contact Number" />
                                         </div>
                                     </div>
@@ -247,12 +247,12 @@
                                             <div class="form-group mt-5">
                                                 <div class="radio inlineblock m-r-20">
                                                     <input type="radio" name="shop_type" id="Paid"
-                                                        class="with-gap" value="Gold" checked="">
+                                                        class="with-gap" value="Gold" >
                                                     <label for="Paid">Gold</label>
                                                 </div>
                                                 <div class="radio inlineblock">
                                                     <input type="radio" name="shop_type" id="unPaid"
-                                                        class="with-gap" value="Silver">
+                                                        class="with-gap" checked="" value="Silver">
                                                     <label for="unPaid">Silver</label>
                                                 </div>
                                             </div>
@@ -526,6 +526,42 @@
 @section('js')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
     <script>
+        // max 10 digits number and do n't accept zero as the first digit.
+
+        jQuery("#shop_number").keypress(function(e) {
+            var length = jQuery(this).val().length;
+            if (length > 9) {
+                return false;
+            } else if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                return false;
+            } else if ((length == 0) && (e.which == 48)) {
+                return false;
+            }
+        });
+
+        jQuery("#contact_number").keypress(function(e) {
+            var length = jQuery(this).val().length;
+            if (length > 9) {
+                return false;
+            } else if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                return false;
+            } else if ((length == 0) && (e.which == 48)) {
+                return false;
+            }
+        });
+
+        jQuery("#ref_number").keypress(function(e) {
+            var length = jQuery(this).val().length;
+            if (length > 9) {
+                return false;
+            } else if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                return false;
+            } else if ((length == 0) && (e.which == 48)) {
+                return false;
+            }
+        });
+    </script>
+    <script>
         $(document).ready(function() {
 
             jQuery.validator.addMethod("phoneUS", function(shop_number, element) {
@@ -540,10 +576,6 @@
                     /^(\+?1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/);
             }, "Please specify a valid phone number");
 
-            jQuery.validator.addMethod("lettersonlys", function(shop_name, element) {
-                return this.optional(element) || /^[a-zA-Z ]*$/.test(shop_name);
-            }, "Letters only please");
-
             $('#user-form').validate({ // initialize the plugin
                 rules: {
                     shop_number: {
@@ -555,8 +587,7 @@
                         Ref: true
                     },
                     shop_name: {
-                        required: true,
-                        lettersonlys: true
+                        required: true
                     },
                     login_pin: {
                         required: true,

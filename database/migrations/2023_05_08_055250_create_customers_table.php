@@ -20,9 +20,18 @@ return new class extends Migration
             $table->string('customer_name')->nullable();
             $table->string('customer_number')->nullable();
             $table->string('payment_status')->nullable();
+            $table->string('email')->nullable();
+            $table->string('address_1')->nullable();
+            $table->string('address_2')->nullable();
+            $table->string('pincode')->nullable();
+            $table->string('landmark')->nullable();
+            $table->string('state')->nullable();
+            $table->string('city')->nullable();
+            $table->string('bussiness_profile')->nullable();
             $table->string('ref_number')->nullable();
             $table->string('wp_msg')->nullable();
             $table->string('status')->nullable();
+            $table->string('active_date')->nullable();
             $table->timestamps();
         });
     }

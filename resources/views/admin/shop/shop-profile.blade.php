@@ -49,20 +49,19 @@
             <div class="row clearfix">
                 <div class="col-lg-12 col-md-12 col-sm-12">
                     <div class="card">
-
                         <div class="body">
                             <div class="row clearfix">
                                 <div class="col-lg-3 col-md-6">
                                     <h6 class="mt-2 m-b-0">S.no </h6>
-                                    <span class="job_post">text</span>
+                                    <span class="job_post">NA</span>
                                 </div>
                                 <div class="col-lg-3 col-md-6">
                                     <h6 class="mt-2 m-b-0">Add date </h6>
-                                    <span class="job_post">text</span>
+                                    <span class="job_post">{{ \Carbon\Carbon::parse($shop->created_at)->format('d-m-Y')}}</span>
                                 </div>
                                 <div class="col-lg-3 col-md-6">
                                     <h6 class="mt-2 m-b-0">Active date </h6>
-                                    <span class="job_post">text</span>
+                                    <span class="job_post">NA</span>
                                 </div>
                                 <div class="col-lg-3 col-md-6">
                                     <h6 class="mt-2 m-b-0">Shop id </h6>

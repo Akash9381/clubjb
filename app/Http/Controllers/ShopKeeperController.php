@@ -17,6 +17,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Stevebauman\Location\Facades\Location;
+use Carbon\Carbon;
 
 class ShopKeeperController extends Controller
 {
@@ -448,10 +449,21 @@ class ShopKeeperController extends Controller
 
     public function ShopStatus(Request $request)
     {
-        $data['status'] = Shop::where('shop_id', $request['shop_id'])->update([
-            'status' => $request['status']
-        ]);
-        return response()->json($data);
+        if ($request['status'] == '0') {
+            $data['status'] = Shop::where('shop_id', $request['shop_id'])->update([
+                'status' => $request['status'],
+                'active_date'=>null
+            ]);
+            return response()->json($data);
+
+        }else{
+            $data['status'] = Shop::where('shop_id', $request['shop_id'])->update([
+                'status' => $request['status'],
+                'active_date'=> Carbon::now()
+            ]);
+            return response()->json($data);
+
+        }
     }
 
     public function ShopProfile($shop_id = null)

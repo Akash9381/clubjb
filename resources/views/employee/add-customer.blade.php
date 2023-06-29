@@ -74,11 +74,11 @@
                                         <div class="form-group mt-5">
                                             <div class="radio inlineblock m-r-20">
                                                 <input type="radio" name="payment_status" id="Paid" class="with-gap"
-                                                    value="Gold" checked>
+                                                    value="Gold" >
                                                 <label for="Paid">Gold</label>
                                             </div>
                                             <div class="radio inlineblock">
-                                                <input type="radio" name="payment_status" id="unPaid" class="with-gap"
+                                                <input type="radio" name="payment_status" id="unPaid" checked="" class="with-gap"
                                                     value="Silver" >
                                                 <label for="unPaid">Silver</label>
                                             </div>
@@ -150,10 +150,6 @@
                     /^(\+?1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/);
             }, "Please specify a valid phone number");
 
-            jQuery.validator.addMethod("lettersonlys", function(customer_name, element) {
-                return this.optional(element) || /^[a-zA-Z ]*$/.test(customer_name);
-            }, "Letters only please");
-
             $('#user-form').validate({ // initialize the plugin
                 rules: {
                     customer_number: {
@@ -165,8 +161,7 @@
                         Ref: true
                     },
                     customer_name: {
-                        required: true,
-                        lettersonlys: true
+                        required: true
                     },
                     login_pin: {
                         required: true,

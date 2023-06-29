@@ -8,6 +8,9 @@ use App\Http\Controllers\GlobalShopController;
 use App\Http\Controllers\ShopKeeperController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,16 +22,15 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-
-
-Route::view('admin/sign-in', 'admin.sign-in')->name('login')->middleware('guest');
+Route::view('admin/sign-in', 'admin.sign-in')->name('admin.login')->middleware('guest');
 Route::get('logout', [AuthController::class, 'Logout'])->name('logout');
 Route::post('admin/authenticate', [AuthController::class, 'authenticate']);
 Route::get('admin/get-city', [EmployeeController::class, 'GetCity']);
 Route::get('employee/crnt_location', [ShopKeeperController::class, 'GetLocation']);
 
-Route::group(['middleware' => ['role:admin']], function () {
+Route::get('/home',[AuthController::class,'Home'])->name('home');
+
+Route::group(['middleware' => ['role:admin', 'auth']], function () {
     Route::prefix('admin')->group(function () {
 
         // ********************** Admin Employee ********************************************
@@ -70,6 +72,7 @@ Route::group(['middleware' => ['role:admin']], function () {
         Route::get('/shop/shop_cv/delete/{id}', [ShopKeeperController::class, 'ShopCvDelete']);
         Route::get('/shop/shop_agreement/delete/{id}', [ShopKeeperController::class, 'ShopAgreementDelete']);
         Route::post('/update-shop/{shop_id}', [ShopKeeperController::class, 'UpdateShop']);
+        Route::get('/inactive-global-shops',[GlobalShopController::class,'InactiveGlobal']);
     });
 });
 
@@ -77,7 +80,7 @@ Route::group(['middleware' => ['role:admin']], function () {
 
 Route::view('/employee/login', 'employee.sign-in')->name('employee.login')->middleware('guest');
 Route::post('employee/authenticate', [AuthController::class, 'EmployeeAuthenticate']);
-Route::group(['middleware' => ['role:employee']], function () {
+Route::group(['middleware' => ['role:employee', 'auth']], function () {
     Route::view('employee/dashboard', 'employee.dashboard');
     Route::get('employee/logout', [AuthController::class, 'EmployeeLogout']);
     Route::get('employee/customer-search', [EmployeeController::class, 'CustomerSearch']);
@@ -103,22 +106,30 @@ Route::group(['middleware' => ['role:employee']], function () {
 });
 
 // *********************************** Users **************************************
+
 Route::get('/', function () {
     return view('users.login');
-})->name('user.login')->middleware('guest');
-Route::get('users/login', [AuthController::class, 'UserAuth']);
+})->name('login')->middleware('guest');
+Route::post('users/login', [AuthController::class, 'UserAuth']);
+Route::get('user/register',[UserController::class,'Register'])->name('register')->middleware('guest');
+Route::post('user/insert',[UserController::class,'Store'])->middleware('guest');
+Route::get('user/login-pin',[UserController::class,'LoginPin'])->name('loginpin')->middleware('guest');
 Route::post('users/authenticate', [AuthController::class, 'UserLogin']);
-Route::group(['middleware' => ['role:customer']], function () {
+Route::group(['middleware' => ['role:customer', 'auth']], function () {
     Route::get('users/home', [UserController::class, 'UserHome']);
     Route::get('users/profile', [UserController::class, 'UserProfile']);
     Route::get('users/deal-list', [DealController::class, 'UserDealList']);
     Route::get('users/deal', [DealController::class, 'UserDeal']);
     Route::get('user/logout', [AuthController::class, 'UserLogout']);
 });
+
+
 // ******************************* ShopKeeper ****************************************
+
+
 Route::view('shopkeeper/login', 'shopkeeper.login')->middleware('guest')->name('shop.login');
 Route::post('shopkeeper/authenticate', [AuthController::class, 'ShopKeeperAuth']);
-Route::group(['middleware' => ['role:shopkeeper']], function () {
+Route::group(['middleware' => ['role:shopkeeper', 'auth']], function () {
     Route::prefix('shopkeeper')->group(function () {
         Route::get('/customer-search', [ShopKeeperController::class, 'SearchCustomer']);
         Route::get('/shopkeeper-search', [EmployeeController::class, 'ShopkeeperSearch']);

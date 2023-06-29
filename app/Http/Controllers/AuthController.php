@@ -5,9 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 
 class AuthController extends Controller
 {
+    public function Home()
+    {
+        Auth::logout();
+        return redirect(route('login'));
+    }
     public function authenticate(Request $request)
     {
         $this->Validate($request, [
@@ -29,13 +35,13 @@ class AuthController extends Controller
     public function Logout(Request $request)
     {
         Auth::logout();
-        return redirect(route('login'));
+        return redirect(route('admin.login'));
     }
 
     public function UserLogout()
     {
         Auth::logout();
-        return redirect(route('user.login'));
+        return redirect(route('login'));
     }
 
     public function ShopLogout()
@@ -106,7 +112,8 @@ class AuthController extends Controller
         if ($user) {
             return view('users.login-pin', compact('phone'));
         } else {
-            return view('users.register', compact('phone'));
+            return Redirect::route('register',['phn'=>$phone]);
+            // return view('users.register', compact('phone'));
         }
     }
 

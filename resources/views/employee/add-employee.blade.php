@@ -213,10 +213,6 @@
                                     /^(\+?1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/);
                             }, "Please specify a valid phone number");
 
-                            jQuery.validator.addMethod("lettersonlys", function(employee_name, element) {
-                                return this.optional(element) || /^[a-zA-Z ]*$/.test(employee_name);
-                            }, "Letters only please");
-
                             $('#user-form').validate({ // initialize the plugin
                                 rules: {
                                     employee_number: {
@@ -228,8 +224,7 @@
                                         Ref: true
                                     },
                                     employee_name: {
-                                        required: true,
-                                        lettersonlys: true
+                                        required: true
                                     },
                                     login_pin: {
                                         required: true,

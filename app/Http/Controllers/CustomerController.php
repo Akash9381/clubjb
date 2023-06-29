@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Customer;
 use App\Models\User;
+use Carbon\Carbon;
+use Closure;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -92,10 +94,19 @@ class CustomerController extends Controller
 
     public function CustomerStatus(Request $request)
     {
-        $data['status'] = Customer::where('customer_id', $request['customer_id'])->update([
-            'status' => $request['status']
-        ]);
-        return response()->json($data);
+        if($request['status'] == '0'){
+            $data['status'] = Customer::where('customer_id', $request['customer_id'])->update([
+                'status' => $request['status'],
+                'active_date' => null
+            ]);
+            return response()->json($data);
+        }else{
+            $data['status'] = Customer::where('customer_id', $request['customer_id'])->update([
+                'status' => $request['status'],
+                'active_date'=> Carbon::now()
+            ]);
+            return response()->json($data);
+        }
     }
 
     public function CustomerProfile($customer_id)
@@ -167,9 +178,10 @@ class CustomerController extends Controller
         $customers = Customer::where('ref_number', Auth::user()->phone)->get();
         return view('employee.customer_report', compact('customers'));
     }
-    public function ShopkeeperCustomerReport(){
+    public function ShopkeeperCustomerReport()
+    {
         $customers = Customer::where('ref_number', Auth::user()->phone)->get();
-        return view('shopkeeper.customer_report',compact('customers'));
+        return view('shopkeeper.customer_report', compact('customers'));
     }
     public function CustomerEmployeeProfile($customer_id = null)
     {

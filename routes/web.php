@@ -33,6 +33,10 @@ Route::get('/home',[AuthController::class,'Home'])->name('home');
 Route::group(['middleware' => ['role:admin', 'auth']], function () {
     Route::prefix('admin')->group(function () {
 
+        // ********************** Admin Dashboard ********************************************
+
+        Route::get('/dashboard',[EmployeeController::class,'Dashboard'])->name('dashboard');
+
         // ********************** Admin Employee ********************************************
         Route::get('/add-employee', [EmployeeController::class, 'Employee']);
         Route::post('/employee-add', [EmployeeController::class, 'NewEmployee']);

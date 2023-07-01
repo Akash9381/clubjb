@@ -21,6 +21,9 @@ use NunoMaduro\Collision\Adapters\Phpunit\State;
 
 class EmployeeController extends Controller
 {
+    public function Dashboard(){
+        return view('admin.dashboard');
+    }
     public function Employee()
     {
         $states = ModelsState::all();

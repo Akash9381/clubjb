@@ -17,6 +17,9 @@
 
                         </div>
                     </li>
+                    <li class="{{ setActiveClass('admin/dashboard') }}">
+                        <a href="{{url('admin/dashboard')}}"><span>Dashboard</span></a>
+                    </li>
                     <li @if (strpos(Request::url(), 'admin/add-employee') !== false) class="active" @endif
                         @if (strpos(Request::url(), 'admin/inactive-employee') !== false) class="active" @endif
                         @if (strpos(Request::url(), 'admin/active-employee') !== false) class="active" @endif><a href="javascript:void(0);"

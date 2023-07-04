@@ -12,9 +12,8 @@
                 </div>
                 <div class="col-lg-5 col-md-6 col-sm-12">
                     <ul class="breadcrumb float-md-right">
-                        <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i> Home</a></li>
+                        <li class="breadcrumb-item"><a href="{{url('employee/dashboard')}}"><i class="zmdi zmdi-home"></i> Home</a></li>
                         <li class="breadcrumb-item"><a href="javascript:void(0);">customer </a></li>
-
                     </ul>
                 </div>
             </div>
@@ -50,7 +49,8 @@
                                     <div class="col-lg-6 col-md-6">
                                         <p> <b>Customer Mobile</b></p>
                                         <div class="form-group">
-                                            <input type="number" name="customer_number" required class="form-control"
+                                            <input type="number" id
+                                            ="customer_number" value="{{$phone??''}}" name="customer_number" required class="form-control"
                                                 placeholder="Customer Number" />
                                         </div>
                                     </div>
@@ -72,15 +72,15 @@
                                     <div class="col-lg-6 col-md-6">
 
                                         <div class="form-group mt-5">
-                                            <div class="radio inlineblock m-r-20">
-                                                <input type="radio" name="payment_status" id="Paid" class="with-gap"
-                                                    value="Gold" >
-                                                <label for="Paid">Gold</label>
-                                            </div>
                                             <div class="radio inlineblock">
                                                 <input type="radio" name="payment_status" id="unPaid" checked="" class="with-gap"
                                                     value="Silver" >
                                                 <label for="unPaid">Silver</label>
+                                            </div>
+                                            <div class="radio inlineblock m-r-20">
+                                                <input type="radio" name="payment_status" id="Paid" class="with-gap"
+                                                    value="Gold" >
+                                                <label for="Paid">Gold</label>
                                             </div>
                                         </div>
                                     </div>
@@ -103,13 +103,13 @@
                                             <input type="text" name="ref_number" value="{{ Auth::user()->phone }}" class="form-control" placeholder="Ref mobile number" />
                                         </div>
                                     </div>
-
+                                    <input type="hidden" name="login_pin" value="1111">
                                     <div class="col-sm-12">
 
                                         <div class="form-group">
                                             <div class="checkbox">
                                                 <input id="checkbox" name="wp_msg" type="checkbox">
-                                                <label for="checkbox">Whatsapp Massage Sent My Gift </label>
+                                                <label for="checkbox">Whatsapp  Sent My Gift </label>
                                             </div>
                                         </div>
 
@@ -136,6 +136,16 @@
 @section('js')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
     <script>
+        jQuery("#customer_number").keypress(function(e) {
+            var length = jQuery(this).val().length;
+            if (length > 9) {
+                return false;
+            } else if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                return false;
+            } else if ((length == 0) && (e.which == 48)) {
+                return false;
+            }
+        });
         $(document).ready(function() {
 
             jQuery.validator.addMethod("phoneUS", function(customer_number, element) {

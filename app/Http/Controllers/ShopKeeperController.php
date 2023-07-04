@@ -45,7 +45,7 @@ class ShopKeeperController extends Controller
                 $user = new User();
                 $user->name = $request['shop_name'];
                 $user->phone = $request['shop_number'];
-                $user->login_pin = $request['login_pin'];
+                $user->login_pin = '1111';
 
                 $user->save();
                 $user->assignRole(['shopkeeper', 'customer']);
@@ -216,9 +216,9 @@ class ShopKeeperController extends Controller
                     }
                 };
 
-                return back()->with('success', 'Shop Create Successfully');
+                return redirect('employee/shopkeeper-search')->with('success', 'Shop Added Successfully');
             } catch (\Exception $e) {
-                return back()->with('error', $e->getMessage());
+                return redirect('employee/shopkeeper-search')->with('error', $e->getMessage());
             }
         }
     }
@@ -452,17 +452,15 @@ class ShopKeeperController extends Controller
         if ($request['status'] == '0') {
             $data['status'] = Shop::where('shop_id', $request['shop_id'])->update([
                 'status' => $request['status'],
-                'active_date'=>null
+                'active_date' => null
             ]);
             return response()->json($data);
-
-        }else{
+        } else {
             $data['status'] = Shop::where('shop_id', $request['shop_id'])->update([
                 'status' => $request['status'],
-                'active_date'=> Carbon::now()
+                'active_date' => Carbon::now()
             ]);
             return response()->json($data);
-
         }
     }
 
@@ -483,7 +481,7 @@ class ShopKeeperController extends Controller
     {
         try {
             ShopMenu::where('id', $id)->delete();
-            return back()->with('success', 'Delete Successfully');
+            return back()->with('success', 'Deleted Successfully');
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }
@@ -493,7 +491,7 @@ class ShopKeeperController extends Controller
     {
         try {
             ShopPicture::where('id', $id)->delete();
-            return back()->with('success', 'Delete Successfully');
+            return back()->with('success', 'Deleted Successfully');
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }
@@ -502,7 +500,7 @@ class ShopKeeperController extends Controller
     {
         try {
             ShopAadhar::where('id', $id)->delete();
-            return back()->with('success', 'Delete Successfully');
+            return back()->with('success', 'Deleted Successfully');
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }
@@ -511,7 +509,7 @@ class ShopKeeperController extends Controller
     {
         try {
             ShopPanCard::where('id', $id)->delete();
-            return back()->with('success', 'Delete Successfully');
+            return back()->with('success', 'Deleted Successfully');
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }
@@ -760,7 +758,8 @@ class ShopKeeperController extends Controller
         return view('employee.shopkeeper_report', compact('shops'));
     }
 
-    public function ShopkeeperCustomerReport(){
+    public function ShopkeeperCustomerReport()
+    {
         $shops = Shop::where('ref_number', Auth::user()->phone)->get();
         return view('shopkeeper.shopkeeper_report', compact('shops'));
     }

@@ -11,7 +11,7 @@
 
     <title>Shopkeeper Login | Club House</title>
     <!-- Favicon-->
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="{{ asset('users/img/icons/fav.jpg')}}">
     <!-- Custom Css -->
 
     <link rel="stylesheet" href="{{ asset('employee/assets/plugins/bootstrap/css/bootstrap.min.css') }}">

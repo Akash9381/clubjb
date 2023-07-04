@@ -75,19 +75,19 @@
                                     <div class="col-lg-6 col-md-6">
 
                                         <div class="form-group mt-5">
-                                            <div class="radio inlineblock m-r-20">
-                                                <input type="radio" name="payment_status" id="Paid" class="with-gap"
-                                                    value="Gold" @if ($customer['payment_status']=='gold')
-                                                        checked
-                                                    @endif>
-                                                <label for="Paid">Gold</label>
-                                            </div>
                                             <div class="radio inlineblock">
                                                 <input type="radio" @if ($customer['payment_status']=='Silver')
                                                 checked
                                             @endif name="payment_status" id="unPaid" class="with-gap"
                                                     value="Silver" >
                                                 <label for="unPaid">Silver</label>
+                                            </div>
+                                            <div class="radio inlineblock m-r-20">
+                                                <input type="radio" name="payment_status" id="Paid" class="with-gap"
+                                                    value="Gold" @if ($customer['payment_status']=='gold')
+                                                        checked
+                                                    @endif>
+                                                <label for="Paid">Gold</label>
                                             </div>
                                         </div>
                                     </div>
@@ -121,7 +121,7 @@
                                                 <input id="checkbox" @if($customer['wp_msg'])
                                                 checked
                                                 @endif name="wp_msg" type="checkbox">
-                                                <label for="checkbox">Whatsapp Massage Sent My Gift </label>
+                                                <label for="checkbox">Whatsapp Message Sent (My Gift) </label>
                                             </div>
                                         </div>
 

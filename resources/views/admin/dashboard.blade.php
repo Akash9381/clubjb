@@ -17,13 +17,8 @@
                     </h2>
                 </div>
                 <div class="col-lg-7 col-md-7 col-sm-12 text-md-right">
-
-
-                    <button class="btn btn-white btn-icon btn-round hidden-sm-down float-right ml-3" type="button">
-                        <i class="zmdi zmdi-plus"></i>
-                    </button>
                     <ul class="breadcrumb float-md-right">
-                        <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i> Dashboard</a>
+                        <li class="breadcrumb-item"><a href="{{url('admin/dashboard')}}"><i class="zmdi zmdi-home"></i> Dashboard</a>
                         </li>
 
                     </ul>

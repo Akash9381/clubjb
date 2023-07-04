@@ -11,7 +11,7 @@
 
     <title>Club House</title>
     <!-- Favicon-->
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="{{ asset('users/img/icons/fav.jpg')}}">
     <!-- Custom Css -->
 
     <link rel="stylesheet" href="{{ asset('employee/assets/plugins/bootstrap/css/bootstrap.min.css') }}">
@@ -108,13 +108,13 @@
         </div>
         <footer class="footer">
             <div class="container">
-                <nav>
+                {{-- <nav>
                     <ul>
 
                         <li><a href="#" target="_blank">Admin Login</a></li>
 
                     </ul>
-                </nav>
+                </nav> --}}
                 <div class="copyright">
                     &copy;
                     <script>

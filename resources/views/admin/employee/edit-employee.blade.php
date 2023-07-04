@@ -1,12 +1,5 @@
 @extends('admin.layouts.admin_layouts')
 
-
-
-<!-- Right Sidebar -->
-
-
-<!-- Chat-launcher -->
-
 @section('content')
     <section class="content">
         <div class="block-header">
@@ -35,7 +28,8 @@
                 {{ session()->get('success') }}
             </div>
         @endif
-        <form id="user-form" method="POST" action="{{ url('admin/employee-add') }}" enctype="multipart/form-data">
+        <form id="user-form" method="POST" action="{{ url('admin/update-employee/' . $employee['employee_id']) }}"
+            enctype="multipart/form-data">
             @csrf
             <div class="container-fluid">
                 <!-- Color Pickers -->
@@ -55,7 +49,8 @@
                                             data-placeholder="Select">
                                             <option value="none">Select State</option>
                                             @foreach ($states as $state)
-                                                <option>{{ $state['name'] }}</option>
+                                                <option @if ($employee['state'] == $state['name']) selected @endif>
+                                                    {{ $state['name'] }}</option>
                                             @endforeach
                                         </select>
                                         <div style="color:red;" id="msg_id"></div>
@@ -64,7 +59,7 @@
                                         <p> <b>City</b> </p>
                                         <select class="form-control show-tick ms select2" name="city" id="city"
                                             data-placeholder="Select">
-                                            <option value="none">Select City</option>
+                                            <option value="{{ $employee['city'] }}">{{ $employee['city'] }}</option>
                                         </select>
                                         <div style="color:red;" id="msg_city"></div>
                                     </div>
@@ -87,30 +82,33 @@
                                         <p> <b>Employee type</b> </p>
                                         <select class="form-control show-tick ms select2" name="employee_type"
                                             data-placeholder="Select">
-                                            <option>Full Time</option>
-                                            <option>Part Time</option>
-                                            <option>Student</option>
+                                            <option @if ($employee['employee_type'] == 'Full Time') selected @endif>Full Time</option>
+                                            <option @if ($employee['employee_type'] == 'Part Time') selected @endif>Part Time</option>
+                                            <option @if ($employee['employee_type'] == 'Student') selected @endif>Student</option>
 
                                         </select>
                                     </div>
                                     <div class="col-lg-3 col-md-6">
                                         <p> <b>Employee Name</b> </p>
                                         <div class="form-group">
-                                            <input type="text" class="form-control" name="employee_name"
+                                            <input type="text" class="form-control"
+                                                value="{{ $employee['employee_name'] }}" name="employee_name"
                                                 placeholder="employee Name" />
                                         </div>
                                     </div>
                                     <div class="col-lg-3 col-md-6">
                                         <p> <b>Empl Number</b> (<small>Login Number</small> )</p>
                                         <div class="form-group">
-                                            <input type="number" id="employee_number" class="form-control" maxlength="10"
+                                            <input type="number" value="{{ $employee['employee_number'] }}"
+                                                id="employee_number" readonly class="form-control" maxlength="10"
                                                 name="employee_number" placeholder="employee Number" />
                                         </div>
                                     </div>
                                     <div class="col-lg-3 col-md-6">
                                         <p> <b>Login Pin</b> </p>
-                                        <input type="number" value="1111" name="login_pin" maxlength="4" minlength="4"
-                                            class="form-control" placeholder="Login pin" />
+                                        <input type="number" value="{{ $employee['GetEmployee']['login_pin'] }}"
+                                            name="login_pin" maxlength="4" minlength="4" class="form-control"
+                                            placeholder="Login pin" />
                                     </div>
 
                                 </div>
@@ -128,13 +126,11 @@
 
                             <div class="body">
                                 <div class="row clearfix">
-
-
                                     <div class="col-lg-12 col-md-6">
                                         <p> <b>Ref mobile number</b> </p>
                                         <div class="form-group">
                                             <input type="number" id="ref_number" class="form-control" name="ref_number"
-                                                value="9999999999" placeholder="Ref mobile number" />
+                                                value="{{ $employee['ref_number'] }}" placeholder="Ref mobile number" />
                                         </div>
                                     </div>
 
@@ -142,24 +138,70 @@
                                         <p> <b>Upload Pictures</b> </p>
                                         <div class="form-group">
                                             <input type="file" name="picture_document[]" multiple class="form-control" />
+                                            @foreach ($employee['GetEmployeePicture'] as $key => $picture)
+                                                <label for=""><b>{{ $key + 1 }}.</b>
+                                                    {{ $picture['picture_document'] }}</label>
+                                                <a href="{{ asset('/storage/employee/picture_document/' . $picture['picture_document']) }}"
+                                                    download="{{ $picture['picture_document'] }}" title="Download"> <i
+                                                        class="material-icons">move_to_inbox</i></a>
+                                                <a href="{{ url('admin/employee/employee_picture/delete/' . $picture['id']) }}"
+                                                    title="Delete"
+                                                    onclick="return confirm('Are you sure you want to delete this item?');"><i
+                                                        class="material-icons">delete</i></a>
+                                            @endforeach
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-6 rounded border">
                                         <p> <b>Upload Aadharcard</b> </p>
                                         <div class="form-group">
-                                            <input type="file" name="aadhar_document[]" multiple class="form-control" />
+                                            <input type="file" name="aadhar_document[]" multiple
+                                                class="form-control" />
+                                            @foreach ($employee['GetEmployeeAadhar'] as $key => $picture)
+                                                <label for=""><b>{{ $key + 1 }}.</b>
+                                                    {{ $picture['aadhar_document'] }}</label>
+                                                <a href="{{ asset('/storage/employee/aadhar_document/' . $picture['aadhar_document']) }}"
+                                                    download="{{ $picture['aadhar_document'] }}" title="Download"> <i
+                                                        class="material-icons">move_to_inbox</i></a>
+                                                <a href="{{ url('admin/employee/aadhar_document/delete/' . $picture['id']) }}"
+                                                    title="Delete"
+                                                    onclick="return confirm('Are you sure you want to delete this item?');"><i
+                                                        class="material-icons">delete</i></a>
+                                            @endforeach
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-6 rounded border">
                                         <p> <b>Upload Driving Licence</b> </p>
                                         <div class="form-group">
-                                            <input type="file" name="driving_document[]" multiple class="form-control" />
+                                            <input type="file" name="driving_document[]" multiple
+                                                class="form-control" />
+                                            @foreach ($employee['GetEmployeeDriving'] as $key => $picture)
+                                                <label for=""><b>{{ $key + 1 }}.</b>
+                                                    {{ $picture['driving_document'] }}</label>
+                                                <a href="{{ asset('/storage/employee/driving_document/' . $picture['driving_document']) }}"
+                                                    download="{{ $picture['driving_document'] }}" title="Download"> <i
+                                                        class="material-icons">move_to_inbox</i></a>
+                                                <a href="{{ url('admin/employee/driving_document/delete/' . $picture['id']) }}"
+                                                    title="Delete"
+                                                    onclick="return confirm('Are you sure you want to delete this item?');"><i
+                                                        class="material-icons">delete</i></a>
+                                            @endforeach
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-6 rounded border">
                                         <p> <b>Upload CV</b> </p>
                                         <div class="form-group">
                                             <input type="file" name="cv_document[]" multiple class="form-control" />
+                                            @foreach ($employee['GetEmployeeCV'] as $key => $picture)
+                                                <label for=""><b>{{ $key + 1 }}.</b>
+                                                    {{ $picture['cv_document'] }}</label>
+                                                <a href="{{ asset('/storage/employee/cv_document/' . $picture['cv_document']) }}"
+                                                    download="{{ $picture['cv_document'] }}" title="Download"> <i
+                                                        class="material-icons">move_to_inbox</i></a>
+                                                <a href="{{ url('admin/employee/cv_document/delete/' . $picture['id']) }}"
+                                                    title="Delete"
+                                                    onclick="return confirm('Are you sure you want to delete this item?');"><i
+                                                        class="material-icons">delete</i></a>
+                                            @endforeach
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-6 rounded border">
@@ -167,20 +209,41 @@
                                         <div class="form-group">
                                             <input type="file" name="passport_document[]" multiple
                                                 class="form-control" />
+                                            @foreach ($employee['GetEmployeePassPort'] as $key => $picture)
+                                                <label for=""><b>{{ $key + 1 }}.</b>
+                                                    {{ $picture['passport_document'] }}</label>
+                                                <a href="{{ asset('/storage/employee/passport_document/' . $picture['passport_document']) }}"
+                                                    download="{{ $picture['passport_document'] }}" title="Download"> <i
+                                                        class="material-icons">move_to_inbox</i></a>
+                                                <a href="{{ url('admin/employee/passport_document/delete/' . $picture['id']) }}"
+                                                    title="Delete"
+                                                    onclick="return confirm('Are you sure you want to delete this item?');"><i
+                                                        class="material-icons">delete</i></a>
+                                            @endforeach
                                         </div>
                                     </div>
-
 
                                     <div class="col-lg-6 col-md-6 rounded border">
                                         <p> <b>Upload agreement</b> </p>
                                         <div class="form-group">
                                             <input type="file" name="agreement_document[]" multiple
                                                 class="form-control" />
+                                            @foreach ($employee['GetEmployeeAgreement'] as $key => $picture)
+                                                <label for=""><b>{{ $key + 1 }}.</b>
+                                                    {{ $picture['agreement_document'] }}</label>
+                                                <a href="{{ asset('/storage/employee/agreement_document/' . $picture['agreement_document']) }}"
+                                                    download="{{ $picture['agreement_document'] }}" title="Download"> <i
+                                                        class="material-icons">move_to_inbox</i></a>
+                                                <a href="{{ url('admin/employee/agreement_document/delete/' . $picture['id']) }}"
+                                                    title="Delete"
+                                                    onclick="return confirm('Are you sure you want to delete this item?');"><i
+                                                        class="material-icons">delete</i></a>
+                                            @endforeach
                                         </div>
                                     </div>
 
                                     <div class="col-sm-12">
-                                        <button type="submit" class="btn btn-primary btn-round"> Add Employee</button>
+                                        <button type="submit" class="btn btn-primary btn-round"> Update Employee</button>
 
                                     </div>
                                     <div style="visibility: hidden;" id="nouislider_basic_example"></div>

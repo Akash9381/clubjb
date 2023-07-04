@@ -266,17 +266,17 @@
                                         <div class="col-lg-6 col-md-6">
 
                                             <div class="form-group mt-5">
-                                                <div class="radio inlineblock m-r-20">
-                                                    <input type="radio" name="shop_type" id="Paid"
-                                                        class="with-gap" value="gold"
-                                                        @if ($shop['shop_type'] == 'gold') checked @endif>
-                                                    <label for="Paid">Gold</label>
-                                                </div>
                                                 <div class="radio inlineblock">
                                                     <input type="radio" name="shop_type"
                                                         @if ($shop['shop_type'] == 'silver') checked @endif id="unPaid"
                                                         class="with-gap" value="silver">
                                                     <label for="unPaid">Silver</label>
+                                                </div>
+                                                <div class="radio inlineblock m-r-20">
+                                                    <input type="radio" name="shop_type" id="Paid"
+                                                        class="with-gap" value="gold"
+                                                        @if ($shop['shop_type'] == 'gold') checked @endif>
+                                                    <label for="Paid">Gold</label>
                                                 </div>
                                             </div>
                                         </div>

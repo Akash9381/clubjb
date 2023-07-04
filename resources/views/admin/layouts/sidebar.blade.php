@@ -18,7 +18,7 @@
                         </div>
                     </li>
                     <li class="{{ setActiveClass('admin/dashboard') }}">
-                        <a href="{{url('admin/dashboard')}}"><span>Dashboard</span></a>
+                        <a href="{{ url('admin/dashboard') }}"><span>Dashboard</span></a>
                     </li>
                     <li @if (strpos(Request::url(), 'admin/add-employee') !== false) class="active" @endif
                         @if (strpos(Request::url(), 'admin/inactive-employee') !== false) class="active" @endif
@@ -34,8 +34,10 @@
                                 </a></li>
                             <li class="{{ setActiveClass('admin/active-employee') }}"><a
                                     href="{{ url('admin/active-employees') }}">Active Table @if (ActiveEmployee() > 0)
-                                    <span class="circle">{{ ActiveEmployee() }}</span>
-                                @endif</a></li>
+                                        <span class="circle">{{ ActiveEmployee() }}</span>
+                                    @endif
+                                </a>
+                            </li>
 
                         </ul>
                     </li>
@@ -65,11 +67,13 @@
                             <li class="{{ setActiveClass('admin/local-shop-form') }}"><a
                                     href="{{ url('admin/local-shop-form') }}">Add Local Shop</a></li>
                             <li class="{{ setActiveClass('admin/active-local-shops') }}"><a
-                                    href="{{ url('admin/active-local-shops') }}">Active Local Shop @if (InactiveLocalShop() > 0)
-                                    <span class="circle">{{ InactiveLocalShop() }}</span>
-                                @endif</a></li>
+                                    href="{{ url('admin/active-local-shops') }}">Active Local Shop </a></li>
                             <li class="{{ setActiveClass('admin/inactive-local-shops') }}"><a
-                                    href="{{ url('admin/inactive-local-shops') }}">Inactive Local Shop</a></li>
+                                    href="{{ url('admin/inactive-local-shops') }}">Inactive Local Shop @if (InactiveLocalShop() > 0)
+                                        <span class="circle">{{ InactiveLocalShop() }}</span>
+                                    @endif
+                                </a>
+                            </li>
 
                             <li><b>Global</b></li>
 
@@ -78,8 +82,9 @@
                             <li><a href="#">Active Global Shop</a></li>
                             <li class="{{ setActiveClass('admin/inactive-global-shops') }}"><a
                                     href="{{ url('admin/inactive-global-shops') }}">Inactive Global Shop @if (InactiveGlobalShop() > 0)
-                                    <span class="circle">{{ InactiveGlobalShop() }}</span>
-                                @endif</a></li>
+                                        <span class="circle">{{ InactiveGlobalShop() }}</span>
+                                    @endif
+                                </a></li>
 
                         </ul>
                     </li>

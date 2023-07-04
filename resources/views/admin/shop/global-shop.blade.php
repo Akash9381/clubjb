@@ -199,7 +199,7 @@
                                         <div class="col-lg-6 col-md-6">
                                             <p> <b>Pincode</b> </p>
                                             <div class="form-group">
-                                                <input type="text" name="pincode" class="form-control"
+                                                <input type="number" id="pincode" name="pincode" class="form-control"
                                                     placeholder="Pincode" />
                                             </div>
                                         </div>
@@ -490,6 +490,17 @@
         jQuery("#contact_number").keypress(function(e) {
             var length = jQuery(this).val().length;
             if (length > 9) {
+                return false;
+            } else if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                return false;
+            } else if ((length == 0) && (e.which == 48)) {
+                return false;
+            }
+        });
+
+        jQuery("#pincode").keypress(function(e) {
+            var length = jQuery(this).val().length;
+            if (length > 5) {
                 return false;
             } else if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
                 return false;

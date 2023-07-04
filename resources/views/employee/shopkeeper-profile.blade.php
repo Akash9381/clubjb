@@ -2,8 +2,6 @@
 @section('title','ShopKeeper Profile')
 
     <!-- Chat-launcher -->
-
-
 @section('content')
     <section class="content">
         <div class="block-header">
@@ -29,11 +27,11 @@
 
                         <div class="body">
                             <div class="row clearfix">
-                                <div class="col-lg-6 col-md-6 col-6">
+                                <div class="col-lg-4 col-md-6 col-6">
                                     <h6 class="mt-2 m-b-0">State </h6>
                                     <span class="job_post">{{$shop['state']}}</span>
                                 </div>
-                                <div class="col-lg-6 col-md-6 col-6">
+                                <div class="col-lg-4 col-md-6 col-6">
                                     <h6 class="mt-2 m-b-0">City </h6>
                                     <span class="job_post">{{$shop['city'] ?? 'NA'}}</span>
                                 </div>
@@ -60,7 +58,14 @@
                                 </div>
                                 <div class="col-lg-4 col-md-6">
                                     <h6 class="mt-2 m-b-0">Active date </h6>
-                                    <span class="job_post">text</span>
+                                    @if ($shop->active_date)
+                                        {
+                                        <span
+                                            class="job_post">{{ \Carbon\Carbon::parse($shop->active_date)->format('d-m-Y') }}</span>
+                                        }
+                                    @else
+                                        Pending
+                                    @endif
                                 </div>
                                 <div class="col-lg-4 col-md-6">
                                     <h6 class="mt-2 m-b-0">Shop id </h6>

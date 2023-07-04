@@ -129,8 +129,9 @@
                                                     <button class="btn btn-icon btn-neutral btn-icon-mini"><a
                                                             href="{{ url('admin/employee-profile/' . $employee->employee_id) }}"><i
                                                                 class="zmdi zmdi-eye"></i></a></button>
-                                                    <button class="btn btn-icon btn-neutral btn-icon-mini"><i
-                                                            class="zmdi zmdi-edit"></i></button>
+                                                    <a href="{{ url('admin/edit-employee/' . $employee['employee_id']) }}"
+                                                        class="btn btn-icon btn-neutral btn-icon-mini"><i
+                                                            class="zmdi zmdi-edit"></i></a>
                                                     <button class="btn btn-icon btn-neutral btn-icon-mini"><i
                                                             class="zmdi zmdi-delete"></i></button>
                                                 </td>

@@ -10,7 +10,7 @@
                         <div class="user-info">
                             <div class="image">
 
-                                <a href="#"><img src="{{ asset('employee/light/assets/img/icon/Person.ico')}}" alt="admin"> &nbsp;
+                                <a href="{{url('employee/profile')}}"><img src="{{ asset('employee/light/assets/img/icon/Person.ico')}}" alt="admin"> &nbsp;
                                     <small class="admin">{{ Auth::user()->name }}</small></a>
                             </div>
 

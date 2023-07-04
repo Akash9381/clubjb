@@ -17,11 +17,13 @@ use App\Models\User;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use NunoMaduro\Collision\Adapters\Phpunit\State;
 
 class EmployeeController extends Controller
 {
-    public function Dashboard(){
+    public function Dashboard()
+    {
         return view('admin.dashboard');
     }
     public function Employee()
@@ -175,7 +177,7 @@ class EmployeeController extends Controller
                     }
                 };
 
-                return back()->with('success', 'Employee add Successfully');
+                return back()->with('success', 'Employee Added Successfully');
             } catch (\Exception $e) {
                 return back()->with('error', $e->getMessage());
             }
@@ -196,10 +198,16 @@ class EmployeeController extends Controller
 
     public function EmployeeProfile($employee_id = null)
     {
-        $employee = Employee::where('employee_id', $employee_id)->first();
-        // $documents = EmployeeDocument::where('employee_id', $employee_id)->get();
-        $documents = "";
-        return view('admin.employee.employee-profile', compact('employee', 'documents'));
+        $employee = Employee::with('GetEmployee')->with('GetEmployeeCV')->with('GetEmployeeAgreement')->with('GetEmployeeDriving')->with('GetEmployeePassPort')->with('GetEmployeeAadhar')->with('GetEmployeePicture')->where('employee_id', $employee_id)->first();
+        return view('admin.employee.employee-profile', compact('employee'));
+    }
+
+    public function Profile()
+    {
+        $user_id = Auth::user()->id;
+        $employee_id = Employee::where('user_id', $user_id)->first();
+        $employee = Employee::with('GetEmployee')->with('GetEmployeeCV')->with('GetEmployeeAgreement')->with('GetEmployeeDriving')->with('GetEmployeePassPort')->with('GetEmployeeAadhar')->with('GetEmployeePicture')->where('employee_id', $employee_id['employee_id'])->first();
+        return view('employee.profile', compact('employee'));
     }
 
     public function EmployeeStatus(Request $request)
@@ -221,19 +229,14 @@ class EmployeeController extends Controller
 
     public function CustomerSearch(Request $request)
     {
-        $search = $request['search'];
-        $data = [];
-        if ($search) {
-            $data = User::whereHas('roles', function ($query) {
-                $query->where('name', '<>', 'admin'); // role with no admin
-            })->where(function ($query) use ($search) {
-                if ($search) {
-                    $query->where('phone', 'like', '%' . $search . '%');
-                }
-            })->get();
-            return view('employee.search_customer', compact('data'));
+        $phone = $request['phone'];
+        if ($phone) {
+            $this->validate($request, [
+                'phone' => 'required|unique:users'
+            ]);
+            return view('employee.add-customer',compact('phone'));
         } else {
-            return view('employee.search_customer', compact('data'));
+            return view('employee.search_customer');
         }
     }
 
@@ -257,20 +260,30 @@ class EmployeeController extends Controller
 
     public function SearchShopKeeper(Request $request)
     {
-        $search = $request['search'];
-        $data = [];
-        if ($search) {
-            $data = User::whereHas('roles', function ($query) {
-                $query->where('name', '<>', 'admin'); // role with no admin
-            })->where(function ($query) use ($search) {
-                if ($search) {
-                    $query->where('phone', 'like', '%' . $search . '%');
-                }
-            })->get();
-            return view('employee.search_shopkeeper', compact('data'));
+        $phone = $request['phone'];
+        if ($phone) {
+            $this->validate($request, [
+                'phone' => 'required|unique:users'
+            ]);
+            return redirect('employee/add-shopkeeper?phone='.$phone);
         } else {
-            return view('employee.search_shopkeeper', compact('data'));
+            return view('employee.search_shopkeeper');
         }
+
+        // $search = $request['search'];
+        // $data = [];
+        // if ($search) {
+        //     $data = User::whereHas('roles', function ($query) {
+        //         $query->where('name', '<>', 'admin'); // role with no admin
+        //     })->where(function ($query) use ($search) {
+        //         if ($search) {
+        //             $query->where('phone', 'like', '%' . $search . '%');
+        //         }
+        //     })->get();
+        //     return view('employee.search_shopkeeper', compact('data'));
+        // } else {
+        //     return view('employee.search_shopkeeper', compact('data'));
+        // }
     }
 
     public function ShopkeeperSearch(Request $request)
@@ -436,7 +449,7 @@ class EmployeeController extends Controller
                     }
                 };
 
-                return back()->with('success', 'Employee add Successfully');
+                return back()->with('success', 'Employee Added Successfully');
             } catch (\Exception $e) {
                 return back()->with('error', $e->getMessage());
             }
@@ -453,5 +466,355 @@ class EmployeeController extends Controller
     public function EmployeeUpdateShopKeeper($shop_id = null)
     {
         return back()->with('success', 'Shop Keeper Not Update yet');
+    }
+
+    public function EditEmployee($id = null)
+    {
+        try {
+            $states = ModelsState::all();
+            $employee = Employee::with('GetEmployee')->with('GetEmployeeCV')->with('GetEmployeeAgreement')->with('GetEmployeeDriving')->with('GetEmployeePassPort')->with('GetEmployeeAadhar')->with('GetEmployeePicture')->where('employee_id', $id)->first();
+            return view('admin.employee.edit-employee', compact('states', 'employee'));
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function DeletePicture($id = null)
+    {
+        try {
+            EmployePictureDocument::where('id', $id)->delete();
+            return back()->with('success', 'Picture Deleted Successfully');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
+    public function DeleteAadhar($id = null)
+    {
+        try {
+            EmployeAadharDocument::where('id', $id)->delete();
+            return back()->with('success', 'Aadhar Deleted Successfully');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
+    public function DeleteDriving($id = null)
+    {
+        try {
+            EmployeDrivingDocument::where('id', $id)->delete();
+            return back()->with('success', 'Driving Licence Deleted Successfully');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
+    public function DeleteCv($id = null)
+    {
+        try {
+            EmployeCVDocument::where('id', $id)->delete();
+            return back()->with('success', 'CV Deleted Successfully');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
+    public function DeletePassport($id = null)
+    {
+        try {
+            EmployeePassportDocument::where('id', $id)->delete();
+            return back()->with('success', 'Passport Deleted Successfully');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
+    public function DeleteAgreement($id = null)
+    {
+        try {
+            EmployeeAgrementDocument::where('id', $id)->delete();
+            return back()->with('success', 'Agreement Deleted Successfully');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function UpdateEmployee(Request $request, $employee_id = null)
+    {
+        // return $request->all();
+        $employee = Employee::where('employee_id', $employee_id)->first();
+        if ($employee) {
+            $this->validate($request, [
+                'employee_name'      => 'required',
+                'employee_number'    => 'required|integer',
+                'login_pin'          => 'required|integer',
+            ]);
+            try {
+                $user = User::where('id', $employee->user_id)->first();
+                User::where('id', $employee->user_id)->update([
+                    'name' => $request['employee_name'],
+                    'login_pin' => $request['login_pin']
+                ]);
+
+                Employee::where('employee_id', $employee_id)->update([
+                    'employee_name' => $request['employee_name'],
+                    'state' => $request['state'],
+                    'city' => $request['city'],
+                    'employee_type' => $request['employee_type'],
+                    'employee_number' => $request['employee_number'],
+                    'ref_number' => $request['ref_number'],
+                ]);
+                if ($request->hasFile('picture_document')) {
+                    foreach ($request->file('picture_document') as $image) {
+                        $filenamewithextension = $image->getClientOriginalName();
+                        $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
+
+                        $extension = $image->getClientOriginalExtension();
+                        $filenametostore = $filename . '_' . time() . '.' . $extension;
+                        $image->storeAs('public/employee/picture_document', $filenametostore);
+
+                        $featureimagepath = public_path('storage/employee/picture_document/' . $filenametostore);
+                        $data = new EmployePictureDocument();
+                        $data->user_id = $user->id;
+                        $data->employee_id = $employee_id;
+                        $data->picture_document = $filenametostore;
+                        $data->save();
+                    }
+                };
+                if ($request->hasFile('aadhar_document')) {
+                    foreach ($request->file('aadhar_document') as $image) {
+                        $filenamewithextension = $image->getClientOriginalName();
+                        $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
+
+                        $extension = $image->getClientOriginalExtension();
+                        $filenametostore = $filename . '_' . time() . '.' . $extension;
+                        $image->storeAs('public/employee/aadhar_document', $filenametostore);
+
+                        $featureimagepath = public_path('storage/employee/aadhar_document/' . $filenametostore);
+                        $data = new EmployeAadharDocument();
+                        $data->user_id = $user->id;
+                        $data->employee_id = $employee_id;
+                        $data->aadhar_document = $filenametostore;
+                        $data->save();
+                    }
+                };
+                if ($request->hasFile('driving_document')) {
+                    foreach ($request->file('driving_document') as $image) {
+                        $filenamewithextension = $image->getClientOriginalName();
+                        $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
+
+                        $extension = $image->getClientOriginalExtension();
+                        $filenametostore = $filename . '_' . time() . '.' . $extension;
+                        $image->storeAs('public/employee/driving_document', $filenametostore);
+
+                        $featureimagepath = public_path('storage/employee/driving_document/' . $filenametostore);
+                        $data = new EmployeDrivingDocument();
+                        $data->user_id = $user->id;
+                        $data->employee_id = $employee_id;
+                        $data->driving_document = $filenametostore;
+                        $data->save();
+                    }
+                };
+                if ($request->hasFile('cv_document')) {
+                    foreach ($request->file('cv_document') as $image) {
+                        $filenamewithextension = $image->getClientOriginalName();
+                        $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
+
+                        $extension = $image->getClientOriginalExtension();
+                        $filenametostore = $filename . '_' . time() . '.' . $extension;
+                        $image->storeAs('public/employee/cv_document', $filenametostore);
+
+                        $featureimagepath = public_path('storage/employee/cv_document/' . $filenametostore);
+                        $data = new EmployeCVDocument();
+                        $data->user_id = $user->id;
+                        $data->employee_id = $employee_id;
+                        $data->cv_document = $filenametostore;
+                        $data->save();
+                    }
+                };
+                if ($request->hasFile('passport_document')) {
+                    foreach ($request->file('passport_document') as $image) {
+                        $filenamewithextension = $image->getClientOriginalName();
+                        $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
+
+                        $extension = $image->getClientOriginalExtension();
+                        $filenametostore = $filename . '_' . time() . '.' . $extension;
+                        $image->storeAs('public/employee/passport_document', $filenametostore);
+
+                        $featureimagepath = public_path('storage/employee/passport_document/' . $filenametostore);
+                        $data = new EmployeePassportDocument();
+                        $data->user_id = $user->id;
+                        $data->employee_id = $employee_id;
+                        $data->passport_document = $filenametostore;
+                        $data->save();
+                    }
+                };
+                if ($request->hasFile('agreement_document')) {
+                    foreach ($request->file('agreement_document') as $image) {
+                        $filenamewithextension = $image->getClientOriginalName();
+                        $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
+
+                        $extension = $image->getClientOriginalExtension();
+                        $filenametostore = $filename . '_' . time() . '.' . $extension;
+                        $image->storeAs('public/employee/agreement_document', $filenametostore);
+
+                        $featureimagepath = public_path('storage/employee/agreement_document/' . $filenametostore);
+                        $data = new EmployeeAgrementDocument();
+                        $data->user_id = $user->id;
+                        $data->employee_id = $employee_id;
+                        $data->agreement_document = $filenametostore;
+                        $data->save();
+                    }
+                };
+
+                return back()->with('success', 'Employee Updated Successfully');
+            } catch (\Exception $e) {
+                return back()->with('error', $e->getMessage());
+            }
+        } else {
+            return back()->with('error', 'Something went wrong');
+        }
+    }
+
+    public function UpdateProfile($id = null)
+    {
+        try {
+            $states = ModelsState::all();
+            $employee = Employee::with('GetEmployee')->with('GetEmployeeCV')->with('GetEmployeeAgreement')->with('GetEmployeeDriving')->with('GetEmployeePassPort')->with('GetEmployeeAadhar')->with('GetEmployeePicture')->where('employee_id', $id)->first();
+            return view('employee.update-profile', compact('states', 'employee'));
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function UpdateProfileData(Request $request, $employee_id = null)
+    {
+        $employee = Employee::where('employee_id', $employee_id)->first();
+        if ($employee) {
+            $this->validate($request, [
+                'employee_name'      => 'required',
+                'employee_number'    => 'required|integer',
+                'login_pin'          => 'required|integer',
+            ]);
+            try {
+                $user = User::where('id', $employee->user_id)->first();
+                User::where('id', $employee->user_id)->update([
+                    'name' => $request['employee_name'],
+                    'login_pin' => $request['login_pin']
+                ]);
+
+                Employee::where('employee_id', $employee_id)->update([
+                    'employee_name' => $request['employee_name'],
+                    'state' => $request['state'],
+                    'city' => $request['city'],
+                    'employee_type' => $request['employee_type'],
+                    'employee_number' => $request['employee_number'],
+                    'ref_number' => $request['ref_number'],
+                ]);
+                if ($request->hasFile('picture_document')) {
+                    foreach ($request->file('picture_document') as $image) {
+                        $filenamewithextension = $image->getClientOriginalName();
+                        $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
+
+                        $extension = $image->getClientOriginalExtension();
+                        $filenametostore = $filename . '_' . time() . '.' . $extension;
+                        $image->storeAs('public/employee/picture_document', $filenametostore);
+
+                        $featureimagepath = public_path('storage/employee/picture_document/' . $filenametostore);
+                        $data = new EmployePictureDocument();
+                        $data->user_id = $user->id;
+                        $data->employee_id = $employee_id;
+                        $data->picture_document = $filenametostore;
+                        $data->save();
+                    }
+                };
+                if ($request->hasFile('aadhar_document')) {
+                    foreach ($request->file('aadhar_document') as $image) {
+                        $filenamewithextension = $image->getClientOriginalName();
+                        $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
+
+                        $extension = $image->getClientOriginalExtension();
+                        $filenametostore = $filename . '_' . time() . '.' . $extension;
+                        $image->storeAs('public/employee/aadhar_document', $filenametostore);
+
+                        $featureimagepath = public_path('storage/employee/aadhar_document/' . $filenametostore);
+                        $data = new EmployeAadharDocument();
+                        $data->user_id = $user->id;
+                        $data->employee_id = $employee_id;
+                        $data->aadhar_document = $filenametostore;
+                        $data->save();
+                    }
+                };
+                if ($request->hasFile('driving_document')) {
+                    foreach ($request->file('driving_document') as $image) {
+                        $filenamewithextension = $image->getClientOriginalName();
+                        $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
+
+                        $extension = $image->getClientOriginalExtension();
+                        $filenametostore = $filename . '_' . time() . '.' . $extension;
+                        $image->storeAs('public/employee/driving_document', $filenametostore);
+
+                        $featureimagepath = public_path('storage/employee/driving_document/' . $filenametostore);
+                        $data = new EmployeDrivingDocument();
+                        $data->user_id = $user->id;
+                        $data->employee_id = $employee_id;
+                        $data->driving_document = $filenametostore;
+                        $data->save();
+                    }
+                };
+                if ($request->hasFile('cv_document')) {
+                    foreach ($request->file('cv_document') as $image) {
+                        $filenamewithextension = $image->getClientOriginalName();
+                        $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
+
+                        $extension = $image->getClientOriginalExtension();
+                        $filenametostore = $filename . '_' . time() . '.' . $extension;
+                        $image->storeAs('public/employee/cv_document', $filenametostore);
+
+                        $featureimagepath = public_path('storage/employee/cv_document/' . $filenametostore);
+                        $data = new EmployeCVDocument();
+                        $data->user_id = $user->id;
+                        $data->employee_id = $employee_id;
+                        $data->cv_document = $filenametostore;
+                        $data->save();
+                    }
+                };
+                if ($request->hasFile('passport_document')) {
+                    foreach ($request->file('passport_document') as $image) {
+                        $filenamewithextension = $image->getClientOriginalName();
+                        $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
+
+                        $extension = $image->getClientOriginalExtension();
+                        $filenametostore = $filename . '_' . time() . '.' . $extension;
+                        $image->storeAs('public/employee/passport_document', $filenametostore);
+
+                        $featureimagepath = public_path('storage/employee/passport_document/' . $filenametostore);
+                        $data = new EmployeePassportDocument();
+                        $data->user_id = $user->id;
+                        $data->employee_id = $employee_id;
+                        $data->passport_document = $filenametostore;
+                        $data->save();
+                    }
+                };
+                if ($request->hasFile('agreement_document')) {
+                    foreach ($request->file('agreement_document') as $image) {
+                        $filenamewithextension = $image->getClientOriginalName();
+                        $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
+
+                        $extension = $image->getClientOriginalExtension();
+                        $filenametostore = $filename . '_' . time() . '.' . $extension;
+                        $image->storeAs('public/employee/agreement_document', $filenametostore);
+
+                        $featureimagepath = public_path('storage/employee/agreement_document/' . $filenametostore);
+                        $data = new EmployeeAgrementDocument();
+                        $data->user_id = $user->id;
+                        $data->employee_id = $employee_id;
+                        $data->agreement_document = $filenametostore;
+                        $data->save();
+                    }
+                };
+
+                return back()->with('success', 'Employee Updated Successfully');
+            } catch (\Exception $e) {
+                return back()->with('error', $e->getMessage());
+            }
+        } else {
+            return back()->with('error', 'Something went wrong');
+        }
     }
 }

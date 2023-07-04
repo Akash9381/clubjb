@@ -55,19 +55,21 @@
                             <div class="row clearfix">
                                 <div class="col-lg-4 col-md-6">
                                     <h6 class="mt-2 m-b-0">Payment Status</h6>
-                                    <span class="job_post">{{$customer['payment_status']}}</span>
-                                </div>
-                                <div class="col-lg-4 col-md-6">
-                                    <h6 class="mt-2 m-b-0">S.no </h6>
-                                    <span class="job_post">text</span>
+                                    <span class="job_post">{{ $customer['payment_status'] }}</span>
                                 </div>
                                 <div class="col-lg-4 col-md-6">
                                     <h6 class="mt-2 m-b-0">Add date </h6>
-                                    <span class="job_post">text</span>
+                                    <span
+                                        class="job_post">{{ \Carbon\Carbon::parse($customer->created_at)->format('d-m-Y') }}</span>
                                 </div>
                                 <div class="col-lg-4 col-md-6">
                                     <h6 class="mt-2 m-b-0">Active date </h6>
-                                    <span class="job_post">text</span>
+                                    @if ($customer->active_date)
+                                        <span
+                                            class="job_post">{{ \Carbon\Carbon::parse($customer->active_date)->format('d-m-Y') }}</span>
+                                    @else
+                                        Inactive
+                                    @endif
                                 </div>
 
                             </div>
@@ -111,7 +113,8 @@
                         <div class="body">
                             <div class="row clearfix">
                                 <div class="col-sm-12">
-                                    <a href="{{url('admin/update-customer/'.$customer['customer_id'])}}" class="btn btn-primary btn-round"> Edit </a>
+                                    <a href="{{ url('admin/update-customer/' . $customer['customer_id']) }}"
+                                        class="btn btn-primary btn-round"> Edit </a>
                                     <button type="submit" class="btn btn-primary btn-round"> Delete</button>
                                 </div>
 

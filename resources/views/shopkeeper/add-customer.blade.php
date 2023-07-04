@@ -78,15 +78,15 @@
                                     <div class="col-lg-6 col-md-6">
 
                                         <div class="form-group mt-5">
-                                            <div class="radio inlineblock m-r-20">
-                                                <input type="radio" name="payment_status" id="Paid" class="with-gap"
-                                                    value="Gold" >
-                                                <label for="Paid">Gold</label>
-                                            </div>
                                             <div class="radio inlineblock">
                                                 <input type="radio" name="payment_status" id="unPaid" checked="" class="with-gap"
                                                     value="Silver">
                                                 <label for="unPaid">Silver</label>
+                                            </div>
+                                            <div class="radio inlineblock m-r-20">
+                                                <input type="radio" name="payment_status" id="Paid" class="with-gap"
+                                                    value="Gold" >
+                                                <label for="Paid">Gold</label>
                                             </div>
                                         </div>
                                     </div>
@@ -116,7 +116,7 @@
                                         <div class="form-group">
                                             <div class="checkbox">
                                                 <input id="checkbox" name="wp_msg" type="checkbox">
-                                                <label for="checkbox">Whatsapp Massage Sent My Gift </label>
+                                                <label for="checkbox">Whatsapp Message Sent (My Gift) </label>
                                             </div>
                                         </div>
 

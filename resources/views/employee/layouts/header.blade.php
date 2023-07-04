@@ -4,14 +4,12 @@
          <li>
              <div class="navbar-header">
                  <a href="javascript:void(0);" class="bars"></a>
-                 <a class="navbar-brand" href="index.html"><span class="m-l-10">
+                 <a class="navbar-brand" href="{{url('employee/dashboard')}}"><span class="m-l-10">
                          <img width="80px" src="{{ asset('employee/light/assets/img/logo.png')}}"> </span></a>
              </div>
          </li>
          <li><a href="javascript:void(0);" class="ls-toggle-btn" data-close="true"><i class="zmdi zmdi-swap"></i></a>
          </li>
-
-
 
 
          <li class="hidden-sm-down">

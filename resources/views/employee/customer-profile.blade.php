@@ -42,6 +42,17 @@
                                         class="job_post">{{ \Carbon\Carbon::parse($customer->created_at)->format('d-m-Y') }}</span>
                                 </div>
                                 <div class="col-lg-3 col-md-6">
+                                    <h6 class="mt-2 m-b-0">Active date </h6>
+                                    @if ($customer->active_date)
+                                        {
+                                        <span
+                                            class="job_post">{{ \Carbon\Carbon::parse($customer->active_date)->format('d-m-Y') }}</span>
+                                        }
+                                    @else
+                                        Pending
+                                    @endif
+                                </div>
+                                <div class="col-lg-3 col-md-6">
                                     <h6 class="mt-2 m-b-0">Customer Name </h6>
                                     <span class="job_post">{{ $customer['customer_name'] }}</span>
                                 </div>

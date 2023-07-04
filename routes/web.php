@@ -22,23 +22,27 @@ use Illuminate\Http\Request;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 Route::view('admin/sign-in', 'admin.sign-in')->name('admin.login')->middleware('guest');
 Route::get('logout', [AuthController::class, 'Logout'])->name('logout');
 Route::post('admin/authenticate', [AuthController::class, 'authenticate']);
 Route::get('admin/get-city', [EmployeeController::class, 'GetCity']);
 Route::get('employee/crnt_location', [ShopKeeperController::class, 'GetLocation']);
 
-Route::get('/home',[AuthController::class,'Home'])->name('home');
+Route::get('/home', [AuthController::class, 'Home'])->name('home');
 
 Route::group(['middleware' => ['role:admin', 'auth']], function () {
     Route::prefix('admin')->group(function () {
 
         // ********************** Admin Dashboard ********************************************
 
-        Route::get('/dashboard',[EmployeeController::class,'Dashboard'])->name('dashboard');
+        Route::get('/dashboard', [EmployeeController::class, 'Dashboard'])->name('dashboard');
 
         // ********************** Admin Employee ********************************************
+
         Route::get('/add-employee', [EmployeeController::class, 'Employee']);
+        Route::get('/edit-employee/{id}', [EmployeeController::class, 'EditEmployee']);
+        Route::post('/update-employee/{id}', [EmployeeController::class, 'UpdateEmployee']);
         Route::post('/employee-add', [EmployeeController::class, 'NewEmployee']);
         Route::get('/active-employees', [EmployeeController::class, 'ActiveEmployees']);
         Route::get('/inactive-employee', [EmployeeController::class, 'InactiveEmployees']);
@@ -76,9 +80,18 @@ Route::group(['middleware' => ['role:admin', 'auth']], function () {
         Route::get('/shop/shop_cv/delete/{id}', [ShopKeeperController::class, 'ShopCvDelete']);
         Route::get('/shop/shop_agreement/delete/{id}', [ShopKeeperController::class, 'ShopAgreementDelete']);
         Route::post('/update-shop/{shop_id}', [ShopKeeperController::class, 'UpdateShop']);
-        Route::get('/inactive-global-shops',[GlobalShopController::class,'InactiveGlobal']);
+        Route::get('/inactive-global-shops', [GlobalShopController::class, 'InactiveGlobal']);
     });
 });
+
+// ***************************** Delete Documents **************************************
+
+Route::get('admin/employee/employee_picture/delete/{id}', [EmployeeController::class, 'DeletePicture']);
+Route::get('admin/employee/aadhar_document/delete/{id}', [EmployeeController::class, 'DeleteAadhar']);
+Route::get('admin/employee/driving_document/delete/{id}', [EmployeeController::class, 'DeleteDriving']);
+Route::get('admin/employee/cv_document/delete/{id}', [EmployeeController::class, 'DeleteCv']);
+Route::get('admin/employee/passport_document/delete/{id}', [EmployeeController::class, 'DeletePassport']);
+Route::get('admin/employee/agreement_document/delete/{id}', [EmployeeController::class, 'DeleteAgreement']);
 
 // ***************************** Employee Dashboard data *******************************
 
@@ -89,7 +102,9 @@ Route::group(['middleware' => ['role:employee', 'auth']], function () {
     Route::get('employee/logout', [AuthController::class, 'EmployeeLogout']);
     Route::get('employee/customer-search', [EmployeeController::class, 'CustomerSearch']);
     Route::get('employee/employee-search', [EmployeeController::class, 'EmployeeSearch']);
-    Route::view('employee/profile', 'employee.profile');
+    Route::get('employee/profile', [EmployeeController::class, 'Profile']);
+    Route::get('employee/update-profile/{id}', [EmployeeController::class, 'UpdateProfile']);
+    Route::post('employee/edit-employee/{id}', [EmployeeController::class, 'UpdateProfileData']);
     Route::view('employee/add-customer', 'employee.add-customer');
     Route::get('employee/add-employee', [EmployeeController::class, 'EmployeeNewEmployee']);
     Route::post('employee/create-employee', [EmployeeController::class, 'EmployeeStoreEmployee']);
@@ -115,9 +130,9 @@ Route::get('/', function () {
     return view('users.login');
 })->name('login')->middleware('guest');
 Route::post('users/login', [AuthController::class, 'UserAuth']);
-Route::get('user/register',[UserController::class,'Register'])->name('register')->middleware('guest');
-Route::post('user/insert',[UserController::class,'Store'])->middleware('guest');
-Route::get('user/login-pin',[UserController::class,'LoginPin'])->name('loginpin')->middleware('guest');
+Route::get('user/register', [UserController::class, 'Register'])->name('register')->middleware('guest');
+Route::post('user/insert', [UserController::class, 'Store'])->middleware('guest');
+Route::get('user/login-pin', [UserController::class, 'LoginPin'])->name('loginpin')->middleware('guest');
 Route::post('users/authenticate', [AuthController::class, 'UserLogin']);
 Route::group(['middleware' => ['role:customer', 'auth']], function () {
     Route::get('users/home', [UserController::class, 'UserHome']);

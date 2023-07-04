@@ -47,19 +47,20 @@
                                         <p> <b>State </b> </p>
                                         <select class="form-control show-tick ms select2" data-placeholder="Select"
                                             name="state" id="state">
-                                            <option value="">Select State</option>
+                                            <option value="none">Select State</option>
                                             @foreach ($states as $state)
                                                 <option>{{ $state['name'] }}</option>
                                             @endforeach
-
                                         </select>
+                                        <div style="color:red;" id="msg_id"></div>
                                     </div>
                                     <div class="col-lg-6 col-md-6">
                                         <p> <b>City</b> </p>
                                         <select class="form-control show-tick ms select2" name="city" id="city"
                                             data-placeholder="Select">
-                                            <option value="">Select City</option>
+                                            <option value="none">Select City</option>
                                         </select>
+                                        <div style="color:red;" id="msg_city"></div>
                                     </div>
                                     <input hidden name="ref_number" value="{{ Auth::user()->phone }}">
                                 </div>
@@ -128,16 +129,14 @@
 
                             <div class="body">
                                 <div class="row clearfix">
-
-
-                                    <div class="col-lg-3 col-md-6">
+                                    <div class="col-lg-4 col-md-6">
                                         <p> <b> Ref Number</b> </p>
                                         <div class="form-group">
-                                            <input type="number" value="{{ Auth::user()->phone }}" required
+                                            <input type="number" id="ref_number" value="{{ Auth::user()->phone }}" required
                                                 name="ref_number" class="form-control" placeholder="Ref Number" />
                                         </div>
                                     </div>
-                                    <div class="col-lg-3 col-md-6">
+                                    <div class="col-lg-4 col-md-6">
                                         <p> <b> Shop Name</b> </p>
                                         <div class="form-group">
                                             <input type="text" required name="shop_name" class="form-control"
@@ -145,20 +144,14 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-lg-3 col-md-6">
+                                    <div class="col-lg-4 col-md-6">
                                         <p> <b> Shop Number</b> </p>
                                         <div class="form-group">
-                                            <input type="text" value="{{ old('shop_number') }}" required
+                                            <input type="text" id="shop_number" value="{{ request()->get('phone')}}" required
                                                 name="shop_number" class="form-control" placeholder="Shop Number" />
                                         </div>
                                     </div>
 
-
-                                    <div class="col-lg-3 col-md-2">
-                                        <p> <b>Login Pin</b> </p>
-                                        <input class="pin form-control" required name="login_pin" type="text"
-                                            maxlength="4" />
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -186,14 +179,10 @@
                                     <div class="col-lg-4 col-md-6">
                                         <p> <b> Contact Number</b> </p>
                                         <div class="form-group">
-                                            <input type="text" name="contact_number" class="form-control"
-                                                placeholder="Contact Number" />
+                                            <input type="number" id="contact_number" name="contact_number"
+                                                class="form-control" placeholder="Contact Number" />
                                         </div>
                                     </div>
-
-
-
-
                                     <div class="col-lg-4 col-md-6">
                                         <p> <b> Designation</b> </p>
                                         <div class="form-group">
@@ -232,7 +221,7 @@
                                         <div class="col-lg-6 col-md-6">
                                             <p> <b>Pincode</b> </p>
                                             <div class="form-group">
-                                                <input type="text" name="pincode" class="form-control"
+                                                <input type="number" id="pincode" name="pincode" class="form-control"
                                                     placeholder="Pincode" />
                                             </div>
                                         </div>
@@ -248,22 +237,19 @@
                                         <div class="col-lg-6 col-md-6">
 
                                             <div class="form-group mt-5">
-                                                <div class="radio inlineblock m-r-20">
-                                                    <input type="radio" name="shop_type" id="Paid"
-                                                        class="with-gap" value="Gold" >
-                                                    <label for="Paid">Gold</label>
-                                                </div>
                                                 <div class="radio inlineblock">
                                                     <input checked="" type="radio" name="shop_type" id="unPaid"
                                                         class="with-gap" value="Silver">
                                                     <label for="unPaid">Silver</label>
                                                 </div>
+                                                <div class="radio inlineblock m-r-20">
+                                                    <input type="radio" name="shop_type" id="Paid"
+                                                        class="with-gap" value="Gold">
+                                                    <label for="Paid">Gold</label>
+                                                </div>
                                             </div>
                                         </div>
-
                                     </div>
-
-
                                 </div>
                             </div>
                         </div>
@@ -346,29 +332,6 @@
 
                             <div class="body">
                                 <div class="row clearfix">
-
-                                    {{-- <div class="col-lg-7 col-md-6">
-                                        <p> <b>Deal 1</b> </p>
-                                        <div class="form-group">
-                                            <input type="text" class="form-control" placeholder="Deal 1" />
-                                        </div>
-                                    </div>
-
-
-                                    <div class="col-lg-3 col-md-6">
-                                        <p> <b>Saving Up to</b> </p>
-                                        <div class="form-group">
-                                            <input type="text" class="form-control" placeholder="Saving Up to" />
-                                        </div>
-                                    </div> --}}
-
-                                    {{-- <div class="col-lg-2 col-md-6 mt-5">
-
-                                        <div class="form-group">
-                                            <button type="button" class="btn btn-primary btn-round">
-                                                Add More Deal</button>
-                                        </div>
-                                    </div> --}}
                                     <br><br>
                                     <div class="form-group">
                                         <input type='button' class="btn btn-primary btn-round" value='Add Deal'
@@ -407,8 +370,6 @@
                                         </div>
                                     </div>
 
-
-
                                     <div class="col-lg-6 col-md-6">
                                         <p> <b>Upload Pic</b> </p>
                                         <div class="form-group">
@@ -428,80 +389,39 @@
 
                             <div class="body">
                                 <div class="row clearfix">
-
-                                    <div class="col-lg-6 col-md-6">
-                                        <div class="checkbox inlineblock m-r-20">
-                                            <input id="checkbox21" type="checkbox">
-                                            <label for="checkbox21">Aadhar card </label>
-
+                                    <div class="col-lg-6 col-md-6 rounded border form-group">
+                                        <p><b>Aadhar card </b></p>
+                                        <div class="form-group">
                                             <input class="upload" name="shop_aadhar_card" type="file">
-                                            <!--<i class="material-icons">file_upload</i>-->
-
-
                                         </div>
                                     </div>
 
-
-                                    <div class="col-lg-6 col-md-6">
-                                        <div class="checkbox inlineblock m-r-20">
-                                            <input id="checkbox22" type="checkbox">
-                                            <label for="checkbox22">Pan card </label>
-
+                                    <div class="col-lg-6 col-md-6 rounded border">
+                                        <p><b>Pan Card </b></p>
+                                        <div class="form-group">
                                             <input class="upload" name="shop_pan_card" type="file">
-                                            <!--<i class="material-icons">file_upload</i>-->
-
-
                                         </div>
                                     </div>
 
 
-                                    <div class="col-lg-6 col-md-6 ">
-                                        <div class="checkbox inlineblock m-r-20">
-                                            <input id="checkbox23" type="checkbox">
-                                            <label for="checkbox23">driving licence </label>
-
+                                    <div class="col-lg-6 col-md-6 rounded border">
+                                        <p><b>Driving Licence </b></p>
+                                        <div class="form-group">
                                             <input class="upload" name="shop_driving" type="file">
-                                            <!--<i class="material-icons">file_upload</i>-->
-
-
                                         </div>
                                     </div>
-
-
-                                    <div class="col-lg-6 col-md-6 ">
-                                        <div class="checkbox inlineblock m-r-20">
-                                            <input id="checkbox24" type="checkbox">
-                                            <label for="checkbox24">passport </label>
-
+                                    <div class="col-lg-6 col-md-6 rounded border">
+                                        <p><b>Passport </b></p>
+                                        <div class="form-group">
                                             <input class="upload" name="shop_passport" type="file">
-                                            <!--<i class="material-icons">file_upload</i>-->
-
-
                                         </div>
                                     </div>
-
-
-                                    <div class="col-lg-6 col-md-6 ">
-                                        <div class="checkbox inlineblock m-r-20">
-                                            <input id="checkbox26" type="checkbox">
-                                            <label for="checkbox26">CV </label>
-
+                                    <div class="col-lg-6 col-md-6 rounded border">
+                                        <p><b>CV </b></p>
+                                        <div class="form-group">
                                             <input class="upload" name="shop_cv" type="file">
-                                            <!--<i class="material-icons">file_upload</i>-->
-
-
                                         </div>
                                     </div>
-
-
-
-
-
-                                    <div style="visibility: hidden;" id="nouislider_basic_example"></div>
-
-                                    <div style="visibility: hidden;" id="nouislider_range_example"></div>
-
-
                                 </div>
                             </div>
                         </div>
@@ -538,7 +458,6 @@
                     </div>
                     <div class="col-sm-12">
                         <button type="submit" class="btn btn-primary btn-round"> Add Shopkeeper</button>
-
                     </div>
                 </div>
 
@@ -550,6 +469,82 @@
 @section('js')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
     <script>
+        jQuery("#shop_number").keypress(function(e) {
+            var length = jQuery(this).val().length;
+            if (length > 9) {
+                return false;
+            } else if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                return false;
+            } else if ((length == 0) && (e.which == 48)) {
+                return false;
+            }
+        });
+        jQuery("#contact_number").keypress(function(e) {
+            var length = jQuery(this).val().length;
+            if (length > 9) {
+                return false;
+            } else if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                return false;
+            } else if ((length == 0) && (e.which == 48)) {
+                return false;
+            }
+        });
+
+        jQuery("#ref_number").keypress(function(e) {
+            var length = jQuery(this).val().length;
+            if (length > 9) {
+                return false;
+            } else if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                return false;
+            } else if ((length == 0) && (e.which == 48)) {
+                return false;
+            }
+        });
+
+        jQuery("#pincode").keypress(function(e) {
+            var length = jQuery(this).val().length;
+            if (length > 5) {
+                return false;
+            } else if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                return false;
+            } else if ((length == 0) && (e.which == 48)) {
+                return false;
+            }
+        });
+
+        $('#user-form').submit(function(e) {
+            var state = $("#msg_id");
+            var msg = "Please select State";
+            var city = $("#msg_city");
+            var msg_city = "Please select city";
+            if ($('#state').val() == "none") {
+                state.append(msg);
+                e.preventDefault();
+                return false;
+            } else {
+                $("#msg_id").html('');
+            }
+            if ($('#city').val() == "none") {
+                city.append(msg_city);
+                e.preventDefault();
+                return false;
+            } else {
+                $("#msg_city").html('');
+            }
+        });
+
+        $("#state").on('change', function() {
+            if ($("#state").val() != "none") {
+                $("#msg_id").html('');
+            }
+        })
+
+        $("#city").on('change', function() {
+            if ($("#city").val() != "none") {
+                $("#msg_city").html('');
+            }
+        })
+
         $(document).ready(function() {
 
             jQuery.validator.addMethod("phoneUS", function(shop_number, element) {
@@ -601,7 +596,7 @@
                         state: state
                     },
                     success: function(result) {
-                        $('#city').html('<option value="">Select City</option>');
+                        $('#city').html('<option value="none">Select City</option>');
                         $.each(result.cities, function(key, value) {
                             $("#city").append('<option value="' + value.city +
                                 '">' + value.city + '</option>');

@@ -37,7 +37,7 @@ class CustomerController extends Controller
                 $customer->wp_msg           = $request['wp_msg'];
                 $customer->status           = '0';
                 $customer->save();
-                return back()->with('success', 'Customer Add Successfully');
+                return back()->with('success', 'Customer Added Successfully');
             } catch (\Exception $e) {
                 return back()->with('error', $e->getMessage());
             }
@@ -73,7 +73,7 @@ class CustomerController extends Controller
                 $customer->wp_msg           = $request['wp_msg'];
                 $customer->status           = '0';
                 $customer->save();
-                return back()->with('success', 'Customer Add Successfully');
+                return back()->with('success', 'Customer Added Successfully');
             } catch (\Exception $e) {
                 return back()->with('error', $e->getMessage());
             }
@@ -82,7 +82,7 @@ class CustomerController extends Controller
 
     public function  InActiveCustomers()
     {
-        $customers = Customer::with('GetCustomers')->where('status', '0')->get();
+        $customers = Customer::with('GetCustomers')->where('status', '0')->orderBy('id','desc')->get();
         return view('admin.customer.inactive-customers', compact('customers'));
     }
 
@@ -117,6 +117,7 @@ class CustomerController extends Controller
 
     public function EmployeeNewCustomer(Request $request)
     {
+        // return $request->all();
         $user = User::where('phone', $request['customer_number'])->first();
         if ($user) {
             return back()->with('error', 'User Already Exist');
@@ -139,10 +140,9 @@ class CustomerController extends Controller
                 $customer->wp_msg = $request['wp_msg'];
                 $customer->status = '0';
                 $customer->save();
-                return back()->with('success', 'Customer Add Successfully');
+                return redirect('employee/customer-search')->with('success', 'Customer Added Successfully');
             } catch (\Exception $e) {
-
-                return back()->with('error', $e->getMessage());
+                return redirect('employee/customer-search')->with('error', $e->getMessage());
             }
         }
     }
@@ -167,7 +167,7 @@ class CustomerController extends Controller
                 'wp_msg' => $request['wp_msg'],
                 'ref_number' => $request['ref_number'],
             ]);
-            return back()->with('success', 'Customer Update Successfully');
+            return back()->with('success', 'Customer Updated Successfully');
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }

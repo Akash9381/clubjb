@@ -47,19 +47,21 @@
                                         <p> <b>State </b> </p>
                                         <select class="form-control show-tick ms select2" data-placeholder="Select"
                                             name="state" id="state">
-                                            <option value="">Select State</option>
+                                            <option value="none">Select State</option>
                                             @foreach ($states as $state)
                                                 <option>{{ $state['name'] }}</option>
                                             @endforeach
 
                                         </select>
+                                        <div style="color:red;" id="msg_id"></div>
                                     </div>
                                     <div class="col-lg-6 col-md-6">
                                         <p> <b>City</b> </p>
                                         <select class="form-control show-tick ms select2" name="city" id="city"
                                             data-placeholder="Select">
-                                            <option value="">Select City</option>
+                                            <option value="none">Select City</option>
                                         </select>
+                                        <div style="color:red;" id="msg_city"></div>
                                     </div>
                                     <input hidden name="ref_number" value="{{ Auth::user()->phone }}">
                                 </div>
@@ -230,7 +232,7 @@
                                         <div class="col-lg-6 col-md-6">
                                             <p> <b>Pincode</b> </p>
                                             <div class="form-group">
-                                                <input type="number" name="pincode" class="form-control"
+                                                <input type="number" id="pincode" name="pincode" class="form-control"
                                                     placeholder="Pincode" />
                                             </div>
                                         </div>
@@ -245,22 +247,19 @@
                                         <div class="col-lg-6 col-md-6">
 
                                             <div class="form-group mt-5">
-                                                <div class="radio inlineblock m-r-20">
-                                                    <input type="radio" name="shop_type" id="Paid"
-                                                        class="with-gap" value="Gold" >
-                                                    <label for="Paid">Gold</label>
-                                                </div>
                                                 <div class="radio inlineblock">
                                                     <input type="radio" name="shop_type" id="unPaid"
                                                         class="with-gap" checked="" value="Silver">
                                                     <label for="unPaid">Silver</label>
                                                 </div>
+                                                <div class="radio inlineblock m-r-20">
+                                                    <input type="radio" name="shop_type" id="Paid"
+                                                        class="with-gap" value="Gold" >
+                                                    <label for="Paid">Gold</label>
+                                                </div>
                                             </div>
                                         </div>
-
                                     </div>
-
-
                                 </div>
                             </div>
                         </div>
@@ -539,6 +538,17 @@
             }
         });
 
+        jQuery("#pincode").keypress(function(e) {
+            var length = jQuery(this).val().length;
+            if (length > 5) {
+                return false;
+            } else if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                return false;
+            } else if ((length == 0) && (e.which == 48)) {
+                return false;
+            }
+        });
+
         jQuery("#contact_number").keypress(function(e) {
             var length = jQuery(this).val().length;
             if (length > 9) {
@@ -562,6 +572,38 @@
         });
     </script>
     <script>
+        $('#user-form').submit(function(e) {
+            var state = $("#msg_id");
+            var msg = "Please select State";
+            var city = $("#msg_city");
+            var msg_city = "Please select city";
+            if ($('#state').val() == "none") {
+                state.append(msg);
+                e.preventDefault();
+                return false;
+            } else {
+                $("#msg_id").html('');
+            }
+            if ($('#city').val() == "none") {
+                city.append(msg_city);
+                e.preventDefault();
+                return false;
+            } else {
+                $("#msg_city").html('');
+            }
+        });
+
+        $("#state").on('change', function() {
+            if ($("#state").val() != "none") {
+                $("#msg_id").html('');
+            }
+        })
+
+        $("#city").on('change', function() {
+            if ($("#city").val() != "none") {
+                $("#msg_city").html('');
+            }
+        })
         $(document).ready(function() {
 
             jQuery.validator.addMethod("phoneUS", function(shop_number, element) {
@@ -613,7 +655,7 @@
                         state: state
                     },
                     success: function(result) {
-                        $('#city').html('<option value="">Select City</option>');
+                        $('#city').html('<option value="none">Select City</option>');
                         $.each(result.cities, function(key, value) {
                             $("#city").append('<option value="' + value.city +
                                 '">' + value.city + '</option>');

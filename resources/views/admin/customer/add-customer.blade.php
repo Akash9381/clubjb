@@ -48,8 +48,8 @@
                                     <div class="col-lg-6 col-md-6">
                                         <p> <b>Customer Mobile</b></p>
                                         <div class="form-group">
-                                            <input type="number" id="customer_number" name="customer_number" class="form-control"
-                                                placeholder="Customer Number" />
+                                            <input type="number" id="customer_number" name="customer_number"
+                                                class="form-control" placeholder="Customer Number" />
                                         </div>
                                     </div>
 
@@ -70,15 +70,15 @@
                                     <div class="col-lg-6 col-md-6">
 
                                         <div class="form-group mt-5">
+                                            <div class="radio inlineblock">
+                                                <input type="radio" name="payment_status" id="unPaid" checked=""
+                                                    class="with-gap" value="Silver">
+                                                <label for="unPaid">Silver</label>
+                                            </div>
                                             <div class="radio inlineblock m-r-20">
                                                 <input type="radio" name="payment_status" id="Paid" class="with-gap"
-                                                    value="Gold" >
+                                                    value="Gold">
                                                 <label for="Paid">Gold</label>
-                                            </div>
-                                            <div class="radio inlineblock">
-                                                <input type="radio" name="payment_status" id="unPaid" checked="" class="with-gap"
-                                                    value="Silver">
-                                                <label for="unPaid">Silver</label>
                                             </div>
                                         </div>
                                     </div>
@@ -104,13 +104,14 @@
                                                 class="form-control" placeholder="Ref mobile number" />
                                         </div>
                                     </div>
-
+                                    <input type="number" hidden id="login_pin" name="login_pin" value="1111"
+                                    class="form-control" placeholder="Login Pin" />
                                     <div class="col-sm-12">
 
                                         <div class="form-group">
                                             <div class="checkbox">
                                                 <input id="checkbox" name="wp_msg" type="checkbox">
-                                                <label for="checkbox">Whatsapp Massage Sent My Gift </label>
+                                                <label for="checkbox">Whatsapp Message Sent (My Gift) </label>
                                             </div>
                                         </div>
 
@@ -188,12 +189,6 @@
                     },
                     customer_name: {
                         required: true
-                    },
-                    login_pin: {
-                        required: true,
-                        number: true,
-                        minlength: 4,
-                        maxlength: 4
                     }
                 }
             });

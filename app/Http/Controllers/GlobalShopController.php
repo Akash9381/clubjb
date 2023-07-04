@@ -206,7 +206,7 @@ class GlobalShopController extends Controller
                     }
                 };
 
-                return back()->with('success', 'Shop Create Successfully');
+                return back()->with('success', 'Shop Added Successfully');
             } catch (\Exception $e) {
                 return back()->with('error', $e->getMessage());
             }

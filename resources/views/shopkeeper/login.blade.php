@@ -78,7 +78,7 @@
                         </div>
                         <div class="content">
                             <div class="input-group">
-                                <input type="number" class="form-control" name="phone" placeholder="Enter Mobile No">
+                                <input type="number" class="form-control" id="phone" name="phone" placeholder="Enter Mobile No">
                                 <span class="input-group-addon">
                                 </span>
                             </div>
@@ -141,7 +141,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
     <script>
         $(document).ready(function() {
-
+            jQuery("#phone").keypress(function(e) {
+            var length = jQuery(this).val().length;
+            if (length > 9) {
+                return false;
+            } else if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                return false;
+            } else if ((length == 0) && (e.which == 48)) {
+                return false;
+            }
+        });
             jQuery.validator.addMethod("phoneUS", function(phone, element) {
                 phone = phone.replace(/\s+/g, "");
                 return this.optional(element) || phone.length > 9 && phone.match(

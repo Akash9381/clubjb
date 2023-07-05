@@ -56,6 +56,8 @@ class EmployeeController extends Controller
                 $user->name = $request['employee_name'];
                 $user->phone = $request['employee_number'];
                 $user->login_pin = $request['login_pin'];
+                $user->state = $request['state'];
+                $user->city = $request['city'];
 
                 $user->save();
                 $user->assignRole(['employee', 'customer']);
@@ -328,6 +330,8 @@ class EmployeeController extends Controller
                 $user->name = $request['employee_name'];
                 $user->phone = $request['employee_number'];
                 $user->login_pin = $request['login_pin'];
+                $user->state = $request['state'];
+                $user->city = $request['city'];
 
                 $user->save();
                 $user->assignRole(['employee', 'customer']);
@@ -548,7 +552,9 @@ class EmployeeController extends Controller
                 $user = User::where('id', $employee->user_id)->first();
                 User::where('id', $employee->user_id)->update([
                     'name' => $request['employee_name'],
-                    'login_pin' => $request['login_pin']
+                    'login_pin' => $request['login_pin'],
+                    'state' => $request['state'],
+                    'city' => $request['city']
                 ]);
 
                 Employee::where('employee_id', $employee_id)->update([
@@ -695,7 +701,9 @@ class EmployeeController extends Controller
                 $user = User::where('id', $employee->user_id)->first();
                 User::where('id', $employee->user_id)->update([
                     'name' => $request['employee_name'],
-                    'login_pin' => $request['login_pin']
+                    'login_pin' => $request['login_pin'],
+                    'state' => $request['state'],
+                    'city' => $request['city'],
                 ]);
 
                 Employee::where('employee_id', $employee_id)->update([

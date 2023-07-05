@@ -114,10 +114,10 @@
                                         {{ $message }}
                                     </label>
                                 @enderror
-                                <input type="hidden" type="number" name="phone_number"
-                                    value="{{ request()->get('phone_number') }}">
+                                <input type="hidden" type="number" name="phn"
+                                    value="{{ request()->get('phn') }}">
                                 @error('phone_number')
-                                    <label class="error" for="phone_number">
+                                    <label class="error" for="phn">
                                         {{ $message }}
                                     </label>
                                 @enderror
@@ -165,7 +165,7 @@
                     pin4: {
                         required: true,
                     },
-                    phone_number: {
+                    phn: {
                         required: true,
                     },
                 }

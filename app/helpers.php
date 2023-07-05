@@ -4,6 +4,7 @@ use App\Models\Customer;
 use App\Models\Employee;
 use App\Models\GlobalShop;
 use App\Models\Shop;
+use App\Models\city;
 use Request as RQ;
 
 if(!function_exists('setActiveClass')){
@@ -44,6 +45,12 @@ if(!function_exists('InactiveLocalShop')){
 if(!function_exists('InactiveGlobalShop')){
     function InactiveGlobalShop(){
        return GlobalShop::where('status','0')->count();
+    }
+}
+
+if(!function_exists('GetCity')){
+    function GetCity(){
+       return city::all();
     }
 }
 

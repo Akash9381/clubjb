@@ -14,6 +14,9 @@ class UserController extends Controller
     {
         return view('users.home');
     }
+    public function LoginPin(){
+        return view('users.login-pin');
+    }
 
     public function UserProfile()
     {
@@ -46,6 +49,8 @@ class UserController extends Controller
             $data->phone            = $request['phone'];
             $data->email            = $request['email'];
             $data->login_pin        = $request['login_pin'];
+            $data->state            = $request['state'];
+            $data->city             = $request['city'];
             $data->save();
             $data->assignRole(['customer']);
             $customer_id                = 'C-' . sprintf("%06d", mt_rand(1, 999999));

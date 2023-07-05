@@ -104,16 +104,16 @@ class AuthController extends Controller
 
     public function UserAuth(Request $request)
     {
+        // return $request->all();
         $this->Validate($request, [
             'phone_number' => 'required|numeric|digits:10',
         ]);
         $user = User::where('phone', $request['phone_number'])->first();
         $phone = $request['phone_number'];
         if ($user) {
-            return view('users.login-pin', compact('phone'));
+            return Redirect::route('loginpin',['phn'=>$phone]);
         } else {
             return Redirect::route('register',['phn'=>$phone]);
-            // return view('users.register', compact('phone'));
         }
     }
 
@@ -124,10 +124,10 @@ class AuthController extends Controller
             'pin2' => 'required|numeric|digits:1',
             'pin3' => 'required|numeric|digits:1',
             'pin4' => 'required|numeric|digits:1',
-            'phone_number' => 'required|numeric|digits:10',
+            'phn' => 'required|numeric|digits:10',
         ]);
         $login = $request['pin1'] . $request['pin2'] . $request['pin3'] . $request['pin4'];
-        $user = User::where('phone', $request['phone_number'])->where('login_pin', $login)->first();
+        $user = User::where('phone', $request['phn'])->where('login_pin', $login)->first();
         if ($user) {
             try {
                 if ($user->hasRole('customer')) {

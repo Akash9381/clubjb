@@ -129,7 +129,7 @@ Route::group(['middleware' => ['role:employee', 'auth']], function () {
 Route::get('/', function () {
     return view('users.login');
 })->name('login')->middleware('guest');
-Route::post('users/login', [AuthController::class, 'UserAuth']);
+Route::get('user/login', [AuthController::class, 'UserAuth']);
 Route::get('user/register', [UserController::class, 'Register'])->name('register')->middleware('guest');
 Route::post('user/insert', [UserController::class, 'Store'])->middleware('guest');
 Route::get('user/login-pin', [UserController::class, 'LoginPin'])->name('loginpin')->middleware('guest');

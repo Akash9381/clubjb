@@ -137,17 +137,19 @@
 
                             <div class="form-group text-start mb-4">
                                 <select class="form-select" aria-label="Default select example" id="state" name="state">
-                                    <option selected>Please select state</option>
+                                    <option value="none" selected>Please select state</option>
                                     @foreach ($states as $state)
                                         <option class="value" value="{{$state['name']}}">{{ $state['name'] }}</option>
                                     @endforeach
                                 </select>
+                                <div style="color:red;" id="msg_id"></div>
                             </div>
                             <div class="form-group text-start mb-4">
                                 <select class="form-select" aria-label="Default select example" name="city"
                                     id="city">
-                                    <option selected>Please select City</option>
+                                    <option value="none">Please select City</option>
                                 </select>
+                                <div style="color:red;" id="msg_city"></div>
                             </div>
 
 
@@ -209,6 +211,50 @@
             }
         });
 
+        jQuery("#pincode").keypress(function(e) {
+            var length = jQuery(this).val().length;
+            if (length > 5) {
+                return false;
+            } else if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                return false;
+            } else if ((length == 0) && (e.which == 48)) {
+                return false;
+            }
+        });
+
+        $('#user-form').submit(function(e) {
+            var state = $("#msg_id");
+            var msg = "Please select State";
+            var city = $("#msg_city");
+            var msg_city = "Please select city";
+            if ($('#state').val() == "none") {
+                state.append(msg);
+                e.preventDefault();
+                return false;
+            } else {
+                $("#msg_id").html('');
+            }
+            if ($('#city').val() == "none") {
+                city.append(msg_city);
+                e.preventDefault();
+                return false;
+            } else {
+                $("#msg_city").html('');
+            }
+        });
+
+        $("#state").on('change', function() {
+            if ($("#state").val() != "none") {
+                $("#msg_id").html('');
+            }
+        })
+
+        $("#city").on('change', function() {
+            if ($("#city").val() != "none") {
+                $("#msg_city").html('');
+            }
+        })
+
         $(document).ready(function() {
             $('#state').on('change', function() {
                 var state = this.value;
@@ -221,7 +267,7 @@
                         state: state
                     },
                     success: function(result) {
-                        $('#city').html('<option value="">Select City</option>');
+                        $('#city').html('<option value="none">Select City</option>');
                         $.each(result.cities, function(key, value) {
                             $("#city").append('<option value="' + value.city +
                                 '">' + value.city + '</option>');
@@ -258,6 +304,9 @@
                     },
                     ref_number: {
                         Ref: true
+                    },
+                    pincode:{
+                        required:true
                     }
                 }
             });
@@ -265,7 +314,4 @@
         });
     </script>
 </body>
-
-<!-- Mirrored from designing-world.com/suha-v3.0/register.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 19 May 2023 07:33:26 GMT -->
-
 </html>

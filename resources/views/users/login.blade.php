@@ -18,7 +18,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&amp;display=swap"
         rel="stylesheet">
     <!-- Favicon -->
-    <link rel="icon" href="{{ asset('users/img/icons/fav.jpg')}}">
+    <link rel="icon" href="{{ asset('users/img/icons/fav.jpg') }}">
     <!-- Apple Touch Icon -->
     <!-- <link rel="apple-touch-icon" href="img/icons/icon-96x96.png">
     <link rel="apple-touch-icon" sizes="152x152" href="img/icons/icon-152x152.png">
@@ -83,26 +83,28 @@
                                 {{ session()->get('success') }}
                             </div>
                         @endif
-                        <form id="user-form" action="{{ url('users/login') }}" method="post">
-                            @csrf
+                        <form id="user-form" action="{{ url('user/login') }}" method="get">
                             <div class="mb-4 d-flex rtl-flex-d-row-r">
                                 <select id="countryCodeSelect" aria-label="Default select example">
                                     <option value="">+91</option>
                                 </select>
-                                <input class="form-control ps-0" id="phone_number" name="phone_number" type="number"
-                                    placeholder="Enter phone number">
-                                    <label id="phone_number-error" class="error" for="phone_number">@error('phone_number')
-                                        {{$message}}
-                                    @enderror</label>
+                                <input class="form-control ps-0" id="phone_number" name="phone_number" type="number" placeholder="Enter phone number">
+                                <label id="phone_number-error" class="error" for="phone_number">
+                                    @error('phone_number')
+                                        {{ $message }}
+                                    @enderror
+                                </label>
                             </div>
                             <button class="btn btn-warning btn-lg w-100" type="submit">Submit</button>
                         </form>
                     </div>
                     <!-- Login Meta-->
                     <div class="login-meta-data">
-                        <a class="forgot-password d-block mt-3 mb-1" href="{{url('shopkeeper/login')}}">Shopkeeper Login</a>
-                        <a class="forgot-password d-block mt-3 mb-1" href="{{url('employee/login')}}">Employee Login</a>
-                        <a class="forgot-password d-block mt-3 mb-1" href="{{url('admin/sign-in')}}">Admin Login</a>
+                        <a class="forgot-password d-block mt-3 mb-1" href="{{ url('shopkeeper/login') }}">Shopkeeper
+                            Login</a>
+                        <a class="forgot-password d-block mt-3 mb-1" href="{{ url('employee/login') }}">Employee
+                            Login</a>
+                        <a class="forgot-password d-block mt-3 mb-1" href="{{ url('admin/sign-in') }}">Admin Login</a>
                         {{-- <p class="mb-0 mt-3">Didn't have an account?<a class="mx-1" href="register.html">Register Now</a></p> --}}
                     </div>
                     <!-- View As Guest-->

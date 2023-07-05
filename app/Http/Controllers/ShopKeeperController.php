@@ -45,6 +45,8 @@ class ShopKeeperController extends Controller
                 $user = new User();
                 $user->name = $request['shop_name'];
                 $user->phone = $request['shop_number'];
+                $user->state = $request['state'];
+                $user->city = $request['city'];
                 $user->login_pin = '1111';
 
                 $user->save();
@@ -240,6 +242,8 @@ class ShopKeeperController extends Controller
                 $user->name = $request['shop_name'];
                 $user->phone = $request['shop_number'];
                 $user->login_pin = $request['login_pin'];
+                $user->state = $request['state'];
+                $user->city = $request['city'];
 
                 $user->save();
                 $user->assignRole(['shopkeeper', 'customer']);
@@ -559,7 +563,9 @@ class ShopKeeperController extends Controller
             try {
                 User::where('id', $shop->user_id)->update([
                     'name' => $request['shop_name'],
-                    'login_pin' => $request['login_pin']
+                    'login_pin' => $request['login_pin'],
+                    'state'         => $request->state,
+                    'city'          => $request->city,
                 ]);
                 Shop::where('shop_id', $shop_id)->update([
                     'ref_number'    => $request->ref_number,
@@ -805,6 +811,8 @@ class ShopKeeperController extends Controller
                 $user->name = $request['shop_name'];
                 $user->phone = $request['shop_number'];
                 $user->login_pin = $request['login_pin'];
+                $user->state = $request['state'];
+                $user->city = $request['city'];
                 $user->save();
                 $user->assignRole(['shopkeeper', 'customer']);
                 $shop_id = 'LS-' . sprintf("%06d", mt_rand(1, 999999));

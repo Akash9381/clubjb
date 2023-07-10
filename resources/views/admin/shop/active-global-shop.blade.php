@@ -95,37 +95,39 @@
                                         <tr>
                                             <th>S.no</th>
                                             <th>Date</th>
-                                            <th>Emp Id</th>
+                                            <th>Shop Id</th>
                                             <th>Name</th>
                                             <th>Number</th>
-
                                             <th>Status</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
 
                                     <tbody>
-                                        @forelse ($customers as $customer)
+                                        @forelse ($active_shops as $customer)
                                             <tr>
                                                 <td>1</td>
                                                 <td>{{ \Carbon\Carbon::parse($customer->created_at)->format('d-m-Y') }}</td>
-                                                <td>{{ $customer['customer_id'] }}</td>
-                                                <td>{{ $customer['customer_name'] }}</td>
-                                                <td>{{ $customer['customer_number'] }}</td>
+                                                <td>{{ $customer['shop_id'] }}</td>
+                                                <td>{{ $customer['shop_name'] }}</td>
+                                                <td>{{ $customer['shop_number'] }}</td>
 
                                                 <td>
                                                     <label class="switch">
-                                                        <input type="checkbox" value="{{ $customer['customer_id'] }}">
+                                                        <input type="checkbox"
+                                                            @if ($customer['status'] == '1') checked @endif
+                                                            value="{{ $customer['shop_id'] }}">
                                                         <span class="slider round"></span>
                                                     </label>
                                                 </td>
 
                                                 <td>
                                                     <button class="btn btn-icon btn-neutral btn-icon-mini"><a
-                                                            href="{{ url('admin/customer-profile/' . $customer->customer_id) }}"><i
+                                                            href="{{ url('admin/global-shop-profile/' . $customer->shop_id) }}"><i
                                                                 class="zmdi zmdi-eye"></i></a></button>
-                                                    <a href="{{ url('admin/update-customer/' . $customer['customer_id']) }}" class="btn btn-icon btn-neutral btn-icon-mini"><i
-                                                            class="zmdi zmdi-edit"></i></a>
+                                                    <button class="btn btn-icon btn-neutral btn-icon-mini"><a
+                                                            href="{{ url('admin/global-shop/' . $customer['shop_id']) }}"><i
+                                                                class="zmdi zmdi-edit"></i></a></button>
                                                     <button class="btn btn-icon btn-neutral btn-icon-mini"><i
                                                             class="zmdi zmdi-delete"></i></button>
                                                 </td>
@@ -143,10 +145,6 @@
                     </div>
                 </div>
             </div>
-            <!-- #END# Basic Examples -->
-            <!-- Exportable Table -->
-
-            <!-- #END# Exportable Table -->
         </div>
     </section>
 @endsection
@@ -159,29 +157,26 @@
     <script src="{{ asset('admin/assets/plugins/jquery-datatable/buttons/buttons.colVis.min.js') }}"></script>
     <script src="{{ asset('admin/assets/plugins/jquery-datatable/buttons/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('admin/assets/plugins/jquery-datatable/buttons/buttons.print.min.js') }}"></script>
-
-    {{-- <script src="{{asset('admin/light/assets/bundles/mainscripts.bundle.js')}}"></script><!-- Custom Js -->
-<script src="{{asset('admin/light/assets/js/pages/tables/jquery-datatable.js')}}"></script> --}}
     <script>
         $(document).ready(function() {
             var status = "0";
-            var customer_id = "";
+            var shop_id = "";
             $("input[type='checkbox']").change(function() {
                 if ($(this).is(":checked")) {
-                    customer_id = $(this).val();
+                    shop_id = $(this).val();
                     status = "1";
 
                 } else {
-                    var customer_id = $(this).val();
+                    var shop_id = $(this).val();
                     status = "0";
                 }
                 $.ajax({
-                    url: "/admin/customer_status",
+                    url: "/admin/global_shop_status",
                     type: "get",
                     dataType: 'json',
                     data: {
                         status: status,
-                        customer_id: customer_id
+                        shop_id: shop_id
                     },
                     success: function(result) {
                         alert('Status Updated Successfully');

@@ -15,7 +15,7 @@
             </div>
             <!-- Sidenav Nav-->
             <ul class="sidenav-nav ps-0">
-                <li><a href="{{url('users/profile')}}">My Profile</a></li>
+                <li><a href="{{url('user/profile')}}">My Profile</a></li>
                 <li><a href="my-services.html">My Services</a></li>
                 <li><a href="#">Settings</a></li>
                 <li><a href="{{url('user/logout')}}">Sign Out</a></li>

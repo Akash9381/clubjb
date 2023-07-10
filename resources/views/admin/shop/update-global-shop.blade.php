@@ -22,7 +22,7 @@
                 </div>
             </div>
         </div>
-        <form id="user-form" action="{{ url('admin/update-shop/' . $shop['shop_id']) }}" method="POST" enctype="multipart/form-data">
+        <form id="user-form" action="{{ url('admin/update-global-shop/' . $shop['shop_id']) }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="container-fluid">
                 <!-- Color Pickers -->
@@ -36,48 +36,9 @@
                         {{ session()->get('success') }}
                     </div>
                 @endif
-                <!-- Advanced Select2 -->
                 <div class="row clearfix">
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <div class="card">
-                            <div class="body">
-                                <div class="row clearfix">
-                                    <div class="col-lg-6 col-md-6">
-                                        <p> <b>State </b> </p>
-                                        <select class="form-control show-tick ms select2" data-placeholder="Select"
-                                            name="state" id="state">
-                                            <option value="none">Select State</option>
-                                            @foreach ($states as $state)
-                                                <option @if ($state['name'] == $shop['state']) selected @endif>
-                                                    {{ $state['name'] }}</option>
-                                            @endforeach
-
-                                        </select>
-                                        <div style="color:red;" id="msg_id"></div>
-                                    </div>
-                                    <div class="col-lg-6 col-md-6">
-                                        <p> <b>City</b> </p>
-                                        <select class="form-control show-tick ms select2" name="city" id="city"
-                                            data-placeholder="Select">
-                                            <option value="none">Select City</option>
-                                            <option selected>{{ $shop['city'] }}</option>
-                                        </select>
-                                        <div style="color:red;" id="msg_city"></div>
-                                    </div>
-                                    <input hidden name="ref_number" value="{{ Auth::user()->phone }}">
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- #END# Select2 -->
-
-
-                <div class="row clearfix">
-                    <div class="col-lg-12 col-md-12 col-sm-12">
-                        <div class="card">
-
                             <div class="body">
                                 <div class="row clearfix">
 
@@ -265,34 +226,12 @@
                                                     class="form-control" placeholder="Landmark" />
                                             </div>
                                         </div>
-                                        <div class="col-lg-6 col-md-6">
-
-                                            <div class="form-group mt-5">
-                                                <div class="radio inlineblock">
-                                                    <input type="radio" name="shop_type"
-                                                        @if ($shop['shop_type'] == 'silver') checked @endif id="unPaid"
-                                                        class="with-gap" value="silver">
-                                                    <label for="unPaid">Silver</label>
-                                                </div>
-                                                <div class="radio inlineblock m-r-20">
-                                                    <input type="radio" name="shop_type" id="Paid"
-                                                        class="with-gap" value="gold"
-                                                        @if ($shop['shop_type'] == 'gold') checked @endif>
-                                                    <label for="Paid">Gold</label>
-                                                </div>
-                                            </div>
-                                        </div>
-
                                     </div>
-
-
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-
                 <div class="row clearfix">
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <div class="card">

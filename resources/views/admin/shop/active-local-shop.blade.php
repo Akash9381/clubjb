@@ -180,7 +180,7 @@
                         shop_id: shop_id
                     },
                     success: function(result) {
-                        alert('Status Update Successfully');
+                        alert('Status Updated Successfully');
                     }
                 })
 

@@ -24,7 +24,7 @@
                         <div class="single-profile-data d-flex align-items-center justify-content-between">
                             <div class="title d-flex align-items-center"><i class="fa-solid fa-at"></i><span>Username</span>
                             </div>
-                            <div class="data-content">@designing-world</div>
+                            <div class="data-content">{{$user['GetCustomer']['customer_id'] ?? 'NA'}}</div>
                         </div>
                         <div class="single-profile-data d-flex align-items-center justify-content-between">
                             <div class="title d-flex align-items-center"><i class="fa-solid fa-user"></i><span>Full
@@ -44,7 +44,7 @@
                         <div class="single-profile-data d-flex align-items-center justify-content-between">
                             <div class="title d-flex align-items-center"><i
                                     class="fa-solid fa-location-dot"></i><span>Shipping Address</span></div>
-                            <div class="data-content">28/C Green Road, BD</div>
+                            <div class="data-content">{{$user['GetCustomer']['address_1'] ?? 'NA'}}</div>
                         </div>
                         <div class="single-profile-data d-flex align-items-center justify-content-between">
                             <div class="title d-flex align-items-center"><i class="fa-solid fa-star"></i><span>My
@@ -53,7 +53,7 @@
                                     Status</a></div>
                         </div>
                         <!-- Edit Profile-->
-                        <div class="edit-profile-btn mt-3"><a class="btn btn-primary w-100" href="edit-profile.html"><i
+                        <div class="edit-profile-btn mt-3"><a class="btn btn-primary w-100" href="{{url('user/edit-profile')}}"><i
                                     class="fa-solid fa-pen me-2"></i>Edit Profile</a></div>
                     </div>
                 </div>

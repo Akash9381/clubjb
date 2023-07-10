@@ -18,7 +18,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&amp;display=swap"
         rel="stylesheet">
     <!-- Favicon -->
-    <link rel="icon" href="img/icons/fav.jpg">
+    <link rel="icon" href="{{ asset('users/img/icons/fav.jpg')}}">
     <!-- CSS Libraries -->
     <link rel="stylesheet" href="{{ asset('users/css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{ asset('users/css/animate.css')}}">

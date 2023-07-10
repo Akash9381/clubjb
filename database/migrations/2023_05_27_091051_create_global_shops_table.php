@@ -40,6 +40,7 @@ return new class extends Migration
             $table->string('shop_help')->nullable();
             $table->string('shop_terms')->nullable();
             $table->string('status')->nullable();
+            $table->string('active_date')->nullable();
             $table->timestamps();
         });
     }

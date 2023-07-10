@@ -28,8 +28,9 @@
                         <div class="body">
                             <div class="d-flex justify-content-between mb-3">
                                 <div>
-                                    <h5 class="mt-0"><a class="text-dark" href="{{url('shopkeeper/customer-search')}}">Add Customer <img
-                                                width="20px" src="{{ asset('employee/light/assets/img/add.png') }}"></a>
+                                    <h5 class="mt-0"><a class="text-dark"
+                                            href="{{ url('shopkeeper/customer-search') }}">Give Service <img width="20px"
+                                                src="{{ asset('employee/light/assets/img/add.png') }}"></a>
                                     </h5>
                                 </div>
                             </div>
@@ -37,7 +38,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-3 col-lg-6 col-md-6">
+                {{-- <div class="col-xl-3 col-lg-6 col-md-6">
                     <div class="card">
                         <div class="body">
                             <div class="d-flex justify-content-between mb-3">
@@ -50,7 +51,7 @@
 
                         </div>
                     </div>
-                </div>
+                </div> --}}
                 <div class="col-xl-3 col-lg-6 col-md-6">
                     <div class="card">
                         <div class="body">

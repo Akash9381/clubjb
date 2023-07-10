@@ -118,13 +118,13 @@
                                                         <span class="slider round"></span>
                                                     </label>
                                                 </td>
-
                                                 <td>
                                                     <button class="btn btn-icon btn-neutral btn-icon-mini"><a
-                                                            href="{{ url('admin/shop-profile/' . $customer->shop_id) }}"><i
+                                                            href="{{ url('admin/global-shop-profile/' . $customer->shop_id) }}"><i
                                                                 class="zmdi zmdi-eye"></i></a></button>
-                                                    <button class="btn btn-icon btn-neutral btn-icon-mini"><i
-                                                            class="zmdi zmdi-edit"></i></button>
+                                                    <button class="btn btn-icon btn-neutral btn-icon-mini"><a
+                                                            href="{{ url('admin/global-shop/' . $customer['shop_id']) }}"><i
+                                                                class="zmdi zmdi-edit"></i></a></button>
                                                     <button class="btn btn-icon btn-neutral btn-icon-mini"><i
                                                             class="zmdi zmdi-delete"></i></button>
                                                 </td>
@@ -168,7 +168,7 @@
                     status = "0";
                 }
                 $.ajax({
-                    url: "/admin/shop_status",
+                    url: "/admin/global_shop_status",
                     type: "get",
                     dataType: 'json',
                     data: {
@@ -176,7 +176,7 @@
                         shop_id: shop_id
                     },
                     success: function(result) {
-                        alert('Status Update Successfully');
+                        alert('Status Updated Successfully');
                     }
                 })
 

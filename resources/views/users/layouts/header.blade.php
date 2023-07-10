@@ -2,7 +2,7 @@
 <div class="header-area" id="headerArea">
     <div class="container h-100 d-flex align-items-center justify-content-between d-flex rtl-flex-d-row-r">
         <!-- Logo Wrapper -->
-        <div class="logo-wrapper"><a href="{{ url('users/home') }}"><img width="50px;"
+        <div class="logo-wrapper"><a href="{{ url('user/home') }}"><img width="50px;"
                     src="{{ asset('users/img/logo.png') }}" alt="logo"></a>
         </div>
         <div class="navbar-logo-container d-flex align-items-center">

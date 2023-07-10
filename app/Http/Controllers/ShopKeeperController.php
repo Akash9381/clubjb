@@ -681,7 +681,6 @@ class ShopKeeperController extends Controller
                     foreach ($request->file('shop_driving') as $image) {
                         $filenamewithextension = $image->getClientOriginalName();
                         $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
-
                         $extension = $image->getClientOriginalExtension();
                         $filenametostore = $filename . '_' . time() . '.' . $extension;
                         $image->storeAs('public/shop/shop_driving', $filenametostore);
@@ -749,7 +748,7 @@ class ShopKeeperController extends Controller
                     }
                 };
 
-                return back()->with('success', 'Shop Update Successfully');
+                return back()->with('success', 'Shop Updated Successfully');
             } catch (\Exception $e) {
                 return back()->with('error', $e->getMessage());
             }
@@ -778,19 +777,20 @@ class ShopKeeperController extends Controller
 
     public function SearchCustomer(Request $request)
     {
-        $search = $request['search'];
-        $data = [];
-        if ($search) {
-            $data = User::whereHas('roles', function ($query) {
-                $query->where('name', '<>', 'admin'); // role with no admin
-            })->where(function ($query) use ($search) {
-                if ($search) {
-                    $query->where('phone', 'like', '%' . $search . '%');
-                }
-            })->get();
-            return view('shopkeeper.search_customer', compact('data'));
+        $phone = $request['phone'];
+        if ($phone) {
+            $this->validate($request, [
+                'phone' => 'required'
+            ]);
+            $user = User::where('phone', $phone)->first();
+            if ($user) {
+                return redirect('shopkeeper/give-services?phone=' . $phone);
+            } else {
+                return redirect('shopkeeper/add-customer?phone=' . $phone);
+            }
+            return view('employee.add-customer', compact('phone'));
         } else {
-            return view('shopkeeper.search_customer', compact('data'));
+            return view('shopkeeper.search_customer');
         }
     }
 
@@ -1005,5 +1005,13 @@ class ShopKeeperController extends Controller
                 return back()->with('error', $e->getMessage());
             }
         }
+    }
+
+    public function GiveService()
+    {
+        $id = Auth::user()->id;
+        $deals = ShopDeal::where('user_id',$id)->get();
+        // return $shop;
+        return view('shopkeeper.give-services',compact('deals'));
     }
 }

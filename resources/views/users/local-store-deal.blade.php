@@ -23,7 +23,7 @@
                                         </div>
                                     </div>
                                     <div class="vendor-profile shadow">
-                                        <a class="btn btn-warning btn-sm mt-3" href="{{ url('user/deal/' . $deal['id']) }}"><i
+                                        <a class="btn btn-warning btn-sm mt-3" href="{{ url('user/dealdetail/' . $deal['id']) }}"><i
                                                 class="fa-solid fa-arrow-right-long ms-1"></i></a>
                                     </div>
                                 </div>
@@ -42,5 +42,6 @@
             </div>
         </div>
         <!-- lochal store-->
+
     </div>
 @endsection

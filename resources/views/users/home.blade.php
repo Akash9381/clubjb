@@ -1,8 +1,8 @@
 @extends('users.layouts.user_layouts')
 @section('title', 'Home | CLUB JS')
 @section('content')
-@include('users.layouts.header')
-@include('users.layouts.sidebar')
+    @include('users.layouts.header')
+    @include('users.layouts.sidebar')
     <div class="page-content-wrapper">
         <!-- Hero Wrapper -->
         <div class="hero-wrapper">
@@ -202,68 +202,36 @@
             </div>
             <div class="container">
                 <div class="row gy-3">
-                    <div class="col-12">
-                        <!-- Single Vendor -->
-                        <div class="single-vendor-wrap bg-img p-4 bg-overlay"
-                            style="background-image: url({{ asset('users/img/bg-img/store.jpg') }})">
-                            <h5 class="vendor-title text-white">Designing World</h5>
-                            <div class="vendor-info">
-                                <div class="ratings lh-1"><strong class="text-warning">Category :</strong> <span
-                                        class="text-white">Movie</span></div>
+                    @forelse ($globalstores as $globalstore)
+                        <div class="col-12">
+                            <!-- Single Vendor -->
+                            <div class="single-vendor-wrap bg-img p-4 bg-overlay"
+                                style="background-image: url({{ asset('users/img/bg-img/store.jpg') }})">
+                                <h5 class="vendor-title text-white">{{ $globalstore['shop_name'] }}</h5>
+                                <div class="vendor-info">
+                                    <div class="ratings lh-1"><strong class="text-warning">Category :</strong> <span
+                                            class="text-white">{{ $globalstore['category'] }}</span></div>
 
-                                <div class="ratings lh-1 mt-1"><strong class="text-warning">Deal :</strong> <span
-                                        class="text-white">4</span></div>
-                            </div>
-                            <!-- Vendor Profile-->
-                            <div class="vendor-profile shadow">
-                                <a class="btn btn-warning btn-sm mt-3" href="{{url('users/deal-list')}}"><i
-                                        class="fa-solid fa-arrow-right-long ms-1"></i></a>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="col-12">
-                        <!-- Single Vendor -->
-                        <div class="single-vendor-wrap bg-img p-4 bg-overlay"
-                            style="background-image: url({{ asset('users/img/bg-img/store.jpg') }})">
-                            <h5 class="vendor-title text-white">Designing World</h5>
-                            <div class="vendor-info">
-                                <div class="ratings lh-1"><strong class="text-warning">Category :</strong> <span
-                                        class="text-white">Movie</span></div>
-
-                                <div class="ratings lh-1 mt-1"><strong class="text-warning">Deal :</strong> <span
-                                        class="text-white">4</span></div>
-                            </div>
-                            <!-- Vendor Profile-->
-                            <div class="vendor-profile shadow">
-                                <a class="btn btn-warning btn-sm mt-3" href="{{url('users/deal-list')}}"><i
-                                        class="fa-solid fa-arrow-right-long ms-1"></i></a>
+                                    <div class="ratings lh-1 mt-1"><strong class="text-warning">Deal :</strong> <span
+                                            class="text-white">{{ count($globalstore['GetShopDeals']) }}</span></div>
+                                </div>
+                                <!-- Vendor Profile-->
+                                <div class="vendor-profile shadow">
+                                    <a class="btn btn-warning btn-sm mt-3"
+                                        href="{{ url('user/global-store/' . $globalstore['shop_id']) }}"><i
+                                            class="fa-solid fa-arrow-right-long ms-1"></i></a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="col-12">
-                        <!-- Single Vendor -->
-                        <div class="single-vendor-wrap bg-img p-4 bg-overlay"
-                            style="background-image: url({{ asset('users/img/bg-img/store.jpg') }})">
-                            <h5 class="vendor-title text-white">Designing World</h5>
-                            <div class="vendor-info">
-                                <div class="ratings lh-1"><strong class="text-warning">Category :</strong> <span
-                                        class="text-white">Movie</span></div>
-
-                                <div class="ratings lh-1 mt-1"><strong class="text-warning">Deal :</strong> <span
-                                        class="text-white">4</span></div>
-                            </div>
-                            <!-- Vendor Profile-->
-                            <div class="vendor-profile shadow">
-                                <a class="btn btn-warning btn-sm mt-3" href="{{url('users/deal-list')}}"><i
-                                        class="fa-solid fa-arrow-right-long ms-1"></i></a>
+                    @empty
+                        <div class="col-12">
+                            <!-- Single Vendor -->
+                            <div class="single-vendor-wrap bg-img p-4 bg-overlay"
+                                style="background-image: url({{ asset('users/img/bg-img/store.jpg') }})">
+                                <h5 class="vendor-title text-white">Not Available</h5>
                             </div>
                         </div>
-                    </div>
-
-
+                    @endforelse
                 </div>
             </div>
         </div>
@@ -283,86 +251,36 @@
             </div>
             <div class="container">
                 <div class="row gy-3">
-                    <div class="col-12">
-                        <!-- Single Vendor -->
-                        <div class="single-vendor-wrap bg-img p-4 bg-overlay"
-                            style="background-image: url({{ asset('users/img/bg-img/store.jpg') }})">
-                            <h5 class="vendor-title text-white">Designing World</h5>
-                            <div class="vendor-info">
-                                <div class="ratings lh-1"><strong class="text-warning">Category :</strong> <span
-                                        class="text-white">Movie</span></div>
+                    @forelse ($localstores as $localstore)
+                        <div class="col-12">
+                            <!-- Single Vendor -->
+                            <div class="single-vendor-wrap bg-img p-4 bg-overlay"
+                                style="background-image: url({{ asset('users/img/bg-img/store.jpg') }})">
+                                <h5 class="vendor-title text-white">{{ $localstore['shop_name'] }}</h5>
+                                <div class="vendor-info">
+                                    <div class="ratings lh-1"><strong class="text-warning">Category :</strong> <span
+                                            class="text-white">{{ $localstore['category'] }}</span></div>
 
-                                <div class="ratings lh-1 mt-1"><strong class="text-warning">Deal :</strong> <span
-                                        class="text-white">4</span></div>
-                            </div>
-                            <!-- Vendor Profile-->
-                            <div class="vendor-profile shadow">
-                                <a class="btn btn-warning btn-sm mt-3" href="{{url('users/deal-list')}}"><i
-                                        class="fa-solid fa-arrow-right-long ms-1"></i></a>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="col-12">
-                        <!-- Single Vendor -->
-                        <div class="single-vendor-wrap bg-img p-4 bg-overlay"
-                            style="background-image: url({{ asset('users/img/bg-img/store.jpg') }})">
-                            <h5 class="vendor-title text-white">Designing World</h5>
-                            <div class="vendor-info">
-                                <div class="ratings lh-1"><strong class="text-warning">Category :</strong> <span
-                                        class="text-white">Movie</span></div>
-
-                                <div class="ratings lh-1 mt-1"><strong class="text-warning">Deal :</strong> <span
-                                        class="text-white">4</span></div>
-                            </div>
-                            <!-- Vendor Profile-->
-                            <div class="vendor-profile shadow">
-                                <a class="btn btn-warning btn-sm mt-3" href="{{url('users/deal-list')}}"><i
-                                        class="fa-solid fa-arrow-right-long ms-1"></i></a>
+                                    <div class="ratings lh-1 mt-1"><strong class="text-warning">Deal :</strong> <span
+                                            class="text-white">{{ count($localstore['GetShopDeals']) }}</span></div>
+                                </div>
+                                <!-- Vendor Profile-->
+                                <div class="vendor-profile shadow">
+                                    <a class="btn btn-warning btn-sm mt-3"
+                                        href="{{ url('user/local-store/' . $localstore['shop_id']) }}"><i
+                                            class="fa-solid fa-arrow-right-long ms-1"></i></a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="col-12">
-                        <!-- Single Vendor -->
-                        <div class="single-vendor-wrap bg-img p-4 bg-overlay"
-                            style="background-image: url({{ asset('users/img/bg-img/store.jpg') }})">
-                            <h5 class="vendor-title text-white">Designing World</h5>
-                            <div class="vendor-info">
-                                <div class="ratings lh-1"><strong class="text-warning">Category :</strong> <span
-                                        class="text-white">Movie</span></div>
-
-                                <div class="ratings lh-1 mt-1"><strong class="text-warning">Deal :</strong> <span
-                                        class="text-white">4</span></div>
-                            </div>
-                            <!-- Vendor Profile-->
-                            <div class="vendor-profile shadow">
-                                <a class="btn btn-warning btn-sm mt-3" href="{{url('users/deal-list')}}"><i
-                                        class="fa-solid fa-arrow-right-long ms-1"></i></a>
+                    @empty
+                        <div class="col-12">
+                            <!-- Single Vendor -->
+                            <div class="single-vendor-wrap bg-img p-4 bg-overlay"
+                                style="background-image: url({{ asset('users/img/bg-img/store.jpg') }})">
+                                <h5 class="vendor-title text-white">Not Available</h5>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="col-12">
-                        <!-- Single Vendor -->
-                        <div class="single-vendor-wrap bg-img p-4 bg-overlay"
-                            style="background-image: url({{ asset('users/img/bg-img/store.jpg') }})">
-                            <h5 class="vendor-title text-white">Designing World</h5>
-                            <div class="vendor-info">
-                                <div class="ratings lh-1"><strong class="text-warning">Category :</strong> <span
-                                        class="text-white">Movie</span></div>
-
-                                <div class="ratings lh-1 mt-1"><strong class="text-warning">Deal :</strong> <span
-                                        class="text-white">4</span></div>
-                            </div>
-                            <!-- Vendor Profile-->
-                            <div class="vendor-profile shadow">
-                                <a class="btn btn-warning btn-sm mt-3" href="{{url('users/deal-list')}}"><i
-                                        class="fa-solid fa-arrow-right-long ms-1"></i></a>
-                            </div>
-                        </div>
-                    </div>
+                    @endforelse
                 </div>
             </div>
         </div>

@@ -60,8 +60,10 @@
                     <li @if (strpos(Request::url(), 'admin/local-shop-form') !== false) class="active" @endif
                         @if (strpos(Request::url(), 'admin/active-local-shops') !== false) class="active" @endif
                         @if (strpos(Request::url(), 'admin/inactive-local-shops') !== false) class="active" @endif
-                        @if (strpos(Request::url(), 'admin/inactive-global-shops') !== false) class="active" @endif><a href="javascript:void(0);"
-                            class="menu-toggle"><span>Shopkeeper</span></a>
+                        @if (strpos(Request::url(), 'admin/global-shop-form') !== false) class="active" @endif
+                        @if (strpos(Request::url(), 'admin/inactive-global-shops') !== false) class="active" @endif
+                        @if (strpos(Request::url(), 'admin/active-global-shops') !== false) class="active" @endif>
+                        <a href="javascript:void(0);" class="menu-toggle"><span>Shopkeeper</span></a>
                         <ul class="ml-menu">
                             <li><b>Local</b></li>
                             <li class="{{ setActiveClass('admin/local-shop-form') }}"><a
@@ -79,12 +81,24 @@
 
                             <li class="{{ setActiveClass('admin/global-shop-form') }}"><a
                                     href="{{ url('admin/global-shop-form') }}">Add Global Shop</a></li>
-                            <li><a href="#">Active Global Shop</a></li>
+                            <li class="{{ setActiveClass('admin/active-global-shops') }}"><a
+                                    href="{{ url('admin/active-global-shops') }}">Active Global Shop</a></li>
                             <li class="{{ setActiveClass('admin/inactive-global-shops') }}"><a
                                     href="{{ url('admin/inactive-global-shops') }}">Inactive Global Shop @if (InactiveGlobalShop() > 0)
                                         <span class="circle">{{ InactiveGlobalShop() }}</span>
                                     @endif
                                 </a></li>
+
+                        </ul>
+                    </li>
+                    <li @if (strpos(Request::url(), 'admin/add-banner') !== false) class="active" @endif
+                        @if (strpos(Request::url(), 'admin/banners-list') !== false) class="active" @endif><a href="javascript:void(0);"
+                            class="menu-toggle"><span>Banner</span></a>
+                        <ul class="ml-menu">
+                            <li class="{{ setActiveClass('admin/banners-list') }}"><a
+                                    href="{{ url('admin/banners-list') }}">Banners</a></li>
+                            <li class="{{ setActiveClass('admin/add-banner') }}"><a
+                                    href="{{ url('admin/add-banner') }}">Add New</a></li>
 
                         </ul>
                     </li>

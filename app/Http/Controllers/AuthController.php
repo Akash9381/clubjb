@@ -90,7 +90,7 @@ class AuthController extends Controller
                 if ($user->hasRole('shopkeeper')) {
                     Auth::login($user);
                     $request->session()->regenerate();
-                    return view('shopkeeper.dashboard');
+                    return Redirect::route('ShopDashboard');
                 } else {
                     return back()->with('error', 'Whoops! invalid number and login pin.');
                 }
@@ -124,7 +124,7 @@ class AuthController extends Controller
             'pin2' => 'required|numeric|digits:1',
             'pin3' => 'required|numeric|digits:1',
             'pin4' => 'required|numeric|digits:1',
-            'phn' => 'required|numeric|digits:10',
+            'phn'  => 'required|numeric|digits:10',
         ]);
         $login = $request['pin1'] . $request['pin2'] . $request['pin3'] . $request['pin4'];
         $user = User::where('phone', $request['phn'])->where('login_pin', $login)->first();
@@ -133,7 +133,7 @@ class AuthController extends Controller
                 if ($user->hasRole('customer')) {
                     Auth::login($user);
                     $request->session()->regenerate();
-                    return redirect('users/home');
+                    return redirect('user/home');
                 } else {
                     return back()->with('error', 'Whoops! invalid number and login pin.');
                 }

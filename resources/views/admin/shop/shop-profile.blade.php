@@ -21,26 +21,28 @@
         <div class="container-fluid">
             <!-- Color Pickers -->
             <!-- Advanced Select2 -->
-            <div class="row clearfix">
-                <div class="col-lg-12 col-md-12 col-sm-12">
-                    <div class="card">
+            @if (strpos($shop['shop_id'], 'LS') == true)
+                <div class="row clearfix">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="card">
 
-                        <div class="body">
-                            <div class="row clearfix">
-                                <div class="col-lg-6 col-md-6 col-6">
-                                    <h6 class="mt-2 m-b-0">State </h6>
-                                    <span class="job_post">{{ $shop['state'] ?? 'NA' }}</span>
+                            <div class="body">
+                                <div class="row clearfix">
+                                    <div class="col-lg-6 col-md-6 col-6">
+                                        <h6 class="mt-2 m-b-0">State </h6>
+                                        <span class="job_post">{{ $shop['state'] ?? 'NA' }}</span>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-6">
+                                        <h6 class="mt-2 m-b-0">City </h6>
+                                        <span class="job_post">{{ $shop['city'] ?? 'NA' }}</span>
+                                    </div>
                                 </div>
-                                <div class="col-lg-6 col-md-6 col-6">
-                                    <h6 class="mt-2 m-b-0">City </h6>
-                                    <span class="job_post">{{ $shop['city'] ?? 'NA' }}</span>
-                                </div>
+
                             </div>
-
                         </div>
                     </div>
                 </div>
-            </div>
+            @endif
             <!-- #END# Select2 -->
 
             <!-- Advanced Select -->
@@ -125,9 +127,7 @@
                                     <h6 class="mt-2 m-b-0">Terms & Conditions </h6>
                                     <span class="job_post">{{ $shop['shop_terms'] ?? 'NA' }}</span>
                                 </div>
-
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -240,14 +240,21 @@
                                         NA
                                     @endforelse
                                 </div>
+                                @if (strpos($shop['shop_id'], 'LS') == true)
+                                    <div class="col-sm-12">
+                                        <a href="{{ url('admin/local-shop/' . $shop['shop_id']) }}"
+                                            class="btn btn-primary btn-round"> Edit </a>
+                                        <button type="submit" class="btn btn-primary btn-round"> Delete</button>
 
+                                    </div>
+                                @else
                                 <div class="col-sm-12">
-                                    <a href="{{ url('admin/local-shop/' . $shop['shop_id']) }}"
+                                    <a href="{{ url('admin/global-shop/' . $shop['shop_id']) }}"
                                         class="btn btn-primary btn-round"> Edit </a>
                                     <button type="submit" class="btn btn-primary btn-round"> Delete</button>
 
                                 </div>
-
+                                @endif
                                 <div style="visibility: hidden;" id="nouislider_basic_example"></div>
 
                                 <div style="visibility: hidden;" id="nouislider_range_example"></div>

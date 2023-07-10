@@ -182,7 +182,7 @@
                         customer_id: customer_id
                     },
                     success: function(result) {
-                        alert('Status Update Successfully');
+                        alert('Status Updated Successfully');
                     }
                 })
 

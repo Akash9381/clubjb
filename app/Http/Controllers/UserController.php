@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\GlobalShop;
+use App\Models\Shop;
+use App\Models\ShopDeal;
 use App\Models\state;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -12,9 +15,12 @@ class UserController extends Controller
 {
     public function UserHome()
     {
-        return view('users.home');
+        $localstores    = Shop::with('GetShopDeals')->orderBy('id', 'desc')->where('status', '1')->get();
+        $globalstores   = GlobalShop::with('GetShopDeals')->orderBy('id', 'desc')->where('status', '1')->get();
+        return view('users.home', compact('localstores', 'globalstores'));
     }
-    public function LoginPin(){
+    public function LoginPin()
+    {
         return view('users.login-pin');
     }
 
@@ -43,6 +49,9 @@ class UserController extends Controller
             'login_pin'         => 'required'
         ]);
         // return $request->all();
+        if ($request['ref_number'] == null) {
+            $request['ref_number'] = '9999999999';
+        }
         try {
             $data                   = new User();
             $data->name             = $request['name'];
@@ -70,6 +79,25 @@ class UserController extends Controller
             $customer->status           = '0';
             $customer->save();
             return redirect('/')->with('success', 'Your Account has been created Successfully! Please login');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function UpdateUser()
+    {
+        $user = User::with('GetCustomer')->where('id', Auth::user()->id)->first();
+        return view('users.edit-profile', compact('user'));
+    }
+
+    public function UpdateProfile(Request $request)
+    {
+        try {
+            User::where('id', Auth::user()->id)->update([
+                'name' => $request['name'],
+                'email' => $request['email']
+            ]);
+            return back()->with('success', 'Profile Updated Successfully');
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }

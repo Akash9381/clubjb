@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BannerController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DealController;
 use App\Http\Controllers\EmployeeController;
@@ -70,7 +71,9 @@ Route::group(['middleware' => ['role:admin', 'auth']], function () {
         Route::get('/active-local-shops', [ShopKeeperController::class, 'ActiveLocalShop']);
         Route::get('/shop_status', [ShopKeeperController::class, 'ShopStatus']);
         Route::get('/shop-profile/{shop_id}', [ShopKeeperController::class, 'ShopProfile']);
+        Route::get('/global-shop-profile/{shop_id}', [GlobalShopController::class, 'ShopProfile']);
         Route::get('/local-shop/{shop_id}', [ShopKeeperController::class, 'ShopUpdate']);
+        Route::get('/global-shop/{shop_id}', [GlobalShopController::class, 'ShopUpdate']);
         Route::get('/shop/shop_menu/delete/{id}', [ShopKeeperController::class, 'ShopMenuDelete']);
         Route::get('/shop/shop_pic/delete/{id}', [ShopKeeperController::class, 'ShopPicDelete']);
         Route::get('/shop/shop_aadhar_card/delete/{id}', [ShopKeeperController::class, 'ShopAdharDelete']);
@@ -80,7 +83,18 @@ Route::group(['middleware' => ['role:admin', 'auth']], function () {
         Route::get('/shop/shop_cv/delete/{id}', [ShopKeeperController::class, 'ShopCvDelete']);
         Route::get('/shop/shop_agreement/delete/{id}', [ShopKeeperController::class, 'ShopAgreementDelete']);
         Route::post('/update-shop/{shop_id}', [ShopKeeperController::class, 'UpdateShop']);
+        Route::post('/update-global-shop/{shop_id}', [GlobalShopController::class, 'UpdateShop']);
+        Route::get('/global_shop_status', [GlobalShopController::class, 'GlobalShopStatus']);
         Route::get('/inactive-global-shops', [GlobalShopController::class, 'InactiveGlobal']);
+        Route::get('/active-global-shops', [GlobalShopController::class, 'ActiveGlobal']);
+
+        //*********************** Banner *******************************
+        Route::get('/add-banner', [BannerController::class, 'Banner']);
+        Route::post('/banner-add', [BannerController::class, 'CreateBanner']);
+        Route::get('/banners-list', [BannerController::class, 'BannerList']);
+        Route::get('/banner-view/{id}', [BannerController::class, 'BannerView']);
+        Route::get('/update-banner/{id}', [BannerController::class, 'BannerUpdate']);
+        Route::post('/banner-update/{id}', [BannerController::class, 'UpdateBanner']);
     });
 });
 
@@ -93,7 +107,7 @@ Route::get('admin/employee/cv_document/delete/{id}', [EmployeeController::class,
 Route::get('admin/employee/passport_document/delete/{id}', [EmployeeController::class, 'DeletePassport']);
 Route::get('admin/employee/agreement_document/delete/{id}', [EmployeeController::class, 'DeleteAgreement']);
 
-// ***************************** Employee Dashboard data *******************************
+// ***************************** Employee Dashboard Data *******************************
 
 Route::view('/employee/login', 'employee.sign-in')->name('employee.login')->middleware('guest');
 Route::post('employee/authenticate', [AuthController::class, 'EmployeeAuthenticate']);
@@ -135,10 +149,14 @@ Route::post('user/insert', [UserController::class, 'Store'])->middleware('guest'
 Route::get('user/login-pin', [UserController::class, 'LoginPin'])->name('loginpin')->middleware('guest');
 Route::post('users/authenticate', [AuthController::class, 'UserLogin']);
 Route::group(['middleware' => ['role:customer', 'auth']], function () {
-    Route::get('users/home', [UserController::class, 'UserHome']);
-    Route::get('users/profile', [UserController::class, 'UserProfile']);
-    Route::get('users/deal-list', [DealController::class, 'UserDealList']);
-    Route::get('users/deal', [DealController::class, 'UserDeal']);
+    Route::get('user/home', [UserController::class, 'UserHome']);
+    Route::get('user/profile', [UserController::class, 'UserProfile']);
+    Route::get('user/global-store/{id}', [DealController::class, 'UserDealList']);
+    Route::get('user/local-store/{id}', [DealController::class, 'LocalDealList']);
+    Route::get('user/deal/{id}', [DealController::class, 'UserDeal']);
+    Route::get('user/dealdetail/{id}', [DealController::class, 'StoreDeal']);
+    Route::get('user/edit-profile', [UserController::class, 'UpdateUser']);
+    Route::post('user/update-profile', [UserController::class, 'UpdateProfile']);
     Route::get('user/logout', [AuthController::class, 'UserLogout']);
 });
 
@@ -154,11 +172,12 @@ Route::group(['middleware' => ['role:shopkeeper', 'auth']], function () {
         Route::get('/shopkeeper-search', [EmployeeController::class, 'ShopkeeperSearch']);
         Route::view('/add-customer', 'shopkeeper.add-customer');
         Route::post('/new-customer', [CustomerController::class, 'ShopKeeperNewCustomer']);
-        Route::view('/dashboard', 'shopkeeper.dashboard');
+        Route::view('/dashboard', 'shopkeeper.dashboard')->name('ShopDashboard');
         Route::get('/logout', [AuthController::class, 'ShopLogout']);
         Route::get('/add-shopkeeper', [ShopKeeperController::class, 'CreateNewShopKeeper']);
         Route::post('/create-shop', [ShopKeeperController::class, 'StoreShopKeeper']);
         Route::get('/customer-report', [CustomerController::class, 'ShopkeeperCustomerReport']);
         Route::get('/shopkeeper-reports', [ShopKeeperController::class, 'ShopkeeperCustomerReport']);
+        Route::get('/give-services', [ShopKeeperController::class, 'GiveService']);
     });
 });

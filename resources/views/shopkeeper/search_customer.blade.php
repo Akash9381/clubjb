@@ -33,10 +33,13 @@
                                 <div class="col-lg-12 col-md-6">
                                     <form id="customer-form" action="{{url()->current()}}">
                                         <div class="input-group">
-                                            <input type="number" value="{{ request()->get('search') }}" required name="search" class="form-control" placeholder="Enter Mobile Number...">
+                                            <input type="number" value="{{ request()->get('search') }}" required id="phone" name="phone" class="form-control" placeholder="Enter Mobile Number...">
                                             <button class="input-group-addon"><i class="zmdi zmdi-search"></i></button>
                                         </div>
-                                        <label id="search-error" class="error" for="search"></label>
+                                        <label id="phone-error" class="error" for="phone"></label>
+                                        @error('phone')
+                                            <label id="phone-error" class="error" for="phone">{{ $message }}</label>
+                                        @enderror
                                     </form>
                                 </div>
                             </div>
@@ -45,33 +48,6 @@
                 </div>
             </div>
 
-            <div class="row clearfix">
-
-                <div class="col-lg-12 col-md-12 col-sm-12">
-
-                    <div class="card">
-                        <div class="body">
-                            @forelse ($data as $customer)
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <strong for="customer_edit">{{$customer['name']}}</strong>
-                                </div>
-                                <hr>
-                                <div class="col-md-6">
-                                    <a><i class="zmdi zmdi-edit"></i></a>
-
-                                </div>
-                            </div>
-                            @empty
-                            <div class="text-center">
-                                <strong>No Customer Found</strong><br>
-                                <a href="{{url('shopkeeper/add-customer?search='.request()->get('search'))}}" class="btn btn-primary">Create New Customer</a>
-                            </div>
-                            @endforelse
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </section>
 
@@ -92,19 +68,29 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
     <script>
         $(document).ready(function() {
+            jQuery("#phone").keypress(function(e) {
+                var length = jQuery(this).val().length;
+                if (length > 9) {
+                    return false;
+                } else if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                    return false;
+                } else if ((length == 0) && (e.which == 48)) {
+                    return false;
+                }
+            });
 
-            jQuery.validator.addMethod("phoneUS", function(search, element) {
-                search = search.replace(/\s+/g, "");
-                return this.optional(element) || search.length > 9 && search.match(
+            jQuery.validator.addMethod("phoneUS", function(phone, element) {
+                phone = phone.replace(/\s+/g, "");
+                return this.optional(element) || phone.length > 9 && phone.match(
                     /^(\+?1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/);
             }, "Please specify a valid phone number");
 
             $('#customer-form').validate({ // initialize the plugin
                 rules: {
-                    search: {
+                    phone: {
                         required: true,
                         phoneUS: true
-                    }
+                    },
                 }
             });
         });

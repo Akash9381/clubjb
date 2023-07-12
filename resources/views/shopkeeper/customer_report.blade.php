@@ -56,8 +56,11 @@
                                                 </td>
                                                 <td>
                                                     <button class="btn btn-icon btn-neutral btn-icon-mini"><a
-                                                            href="{{ url('employee/customer-profile/' . $customer->customer_id) }}"><i
+                                                            href="#"><i
                                                                 class="zmdi zmdi-eye"></i></a></button>
+                                                    {{-- <button class="btn btn-icon btn-neutral btn-icon-mini"><a
+                                                            href="{{ url('employee/customer-profile/' . $customer->customer_id) }}"><i
+                                                                class="zmdi zmdi-eye"></i></a></button> --}}
                                                 </td>
                                             </tr>
                                         @empty

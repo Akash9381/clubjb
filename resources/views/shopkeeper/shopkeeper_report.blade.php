@@ -55,8 +55,11 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    <button class="btn btn-icon btn-neutral btn-icon-mini"><a
+                                                    {{-- <button class="btn btn-icon btn-neutral btn-icon-mini"><a
                                                             href="{{ url('employee/shop-profile/' . $shop->shop_id) }}"><i
+                                                                class="zmdi zmdi-eye"></i></a></button> --}}
+                                                    <button class="btn btn-icon btn-neutral btn-icon-mini"><a
+                                                            href="#"><i
                                                                 class="zmdi zmdi-eye"></i></a></button>
                                                 </td>
                                             </tr>

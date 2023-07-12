@@ -49,7 +49,6 @@ class CustomerController extends Controller
         $request->validate([
             'customer_name'     => 'required',
             'phone'             => 'required|unique:users',
-            'login_pin'         => 'required'
         ]);
         $user = User::where('phone', $request['phone'])->first();
         if ($user) {
@@ -59,7 +58,7 @@ class CustomerController extends Controller
                 $data = new User();
                 $data->name         = $request['customer_name'];
                 $data->phone        = $request['phone'];
-                $data->login_pin    = $request['login_pin'];
+                $data->login_pin    = '1111';
                 $data->save();
                 $data->assignRole(['customer']);
                 $customer_id                = 'C-' . sprintf("%06d", mt_rand(1, 999999));

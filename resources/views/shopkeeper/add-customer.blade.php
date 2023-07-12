@@ -50,7 +50,7 @@
                                     <div class="col-lg-6 col-md-6">
                                         <p> <b>Customer Mobile</b></p>
                                         <div class="form-group">
-                                            <input type="number" value="{{ request()->get('search') }}"
+                                            <input type="number" value="{{ request()->get('phone') }}"
                                                 name="phone" required class="form-control"
                                                 placeholder="Customer Number" />
                                             @error('phone')
@@ -167,12 +167,6 @@
                     },
                     customer_name: {
                         required: true
-                    },
-                    login_pin: {
-                        required: true,
-                        number: true,
-                        minlength: 4,
-                        maxlength: 4
                     }
                 }
             });

@@ -98,27 +98,6 @@
                                 </div>
 
 
-                                {{-- <div class="col-lg-3 col-md-6">
-                                    <h6 class="mt-2 m-b-0"> Documents </h6>
-                                    <img src="../assets/images/documents.jpg" alt=""
-                                        class="img-fluid img-thumbnail m-t-30" width="150">
-                                    <a href="#" title="Download"> <i class="material-icons">move_to_inbox</i></a>
-                                </div>
-
-                                <div class="col-lg-3 col-md-6">
-                                    <h6 class="mt-2 m-b-0"> Agreement </h6>
-                                    <img src="../assets/images/documents.jpg" alt=""
-                                        class="img-fluid img-thumbnail m-t-30" width="150">
-                                    <a href="#" title="Download"> <i class="material-icons">move_to_inbox</i></a>
-                                </div>
-
-                                <div class="col-sm-12">
-                                    <button type="submit" class="btn btn-primary btn-round"> Edit </button>
-                                    <button type="submit" class="btn btn-primary btn-round"> Delete</button>
-
-                                </div> --}}
-
-
 
 
                                 <div style="visibility: hidden;" id="nouislider_basic_example"></div>

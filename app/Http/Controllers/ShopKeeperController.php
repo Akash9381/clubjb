@@ -14,6 +14,7 @@ use App\Models\ShopPassport;
 use App\Models\ShopPicture;
 use App\Models\state as ModelsState;
 use App\Models\User;
+use App\Models\Deal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Stevebauman\Location\Facades\Location;
@@ -1010,8 +1011,32 @@ class ShopKeeperController extends Controller
     public function GiveService()
     {
         $id = Auth::user()->id;
-        $deals = ShopDeal::where('user_id',$id)->get();
+        $deals = ShopDeal::where('user_id', $id)->get();
         // return $shop;
-        return view('shopkeeper.give-services',compact('deals'));
+        return view('shopkeeper.give-services', compact('deals'));
+    }
+
+    public function TakeService(Request $request)
+    {
+        $id = Auth::user()->id;
+        $shop = Shop::where('user_id', $id)->first();
+        $user = User::where('phone', $request['phone'])->first();
+        // return $request->all();
+        try {
+            foreach ($request['deal'] as $del) {
+                $deal = new Deal();
+                $deal->user_id          = $id;
+                $deal->shop_id          = $shop['shop_id'];
+                $deal->deal_id          = $del;
+                $deal->get_deal_user_id = $user['id'];
+                $deal->user_number      = $user['phone'];
+                $deal->bill_number      = $request['bill_number'];
+                $deal->amount           = $request['amount'];
+                $deal->save();
+                return back()->with('success','Deal Successfully');
+            }
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
     }
 }

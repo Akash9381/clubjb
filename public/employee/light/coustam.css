@@ -85,13 +85,13 @@ p {
 .theme-purple .sidebar .menu .list li.active > :first-child i, .theme-purple .sidebar .menu .list li.active > :first-child span {
   color: #e55825 !important;
 }
-
-/* form {
+/*
+form {
   display: flex;
   justify-content: center;
-} */
-
-/* .pin {
+}
+*/
+.pin {
   margin: 10px 0.2rem;
   padding: 0.5rem;
   border: 1px solid #E3E3E3;
@@ -99,12 +99,12 @@ p {
   height:30px;
   text-align: center;
   font-size: 1rem;
-} */
+}
 
-/* .pin-title{
+.pin-title{
 
 	margin: 13px;
-} */
+}
 
 
 
@@ -217,11 +217,11 @@ h2 {
   margin: 5px 0 2em;
   color: #1ABC9C;
 }
-/* form {
+/*form {
   width: 225px;
   margin: 0 auto;
   text-align:center;
-} */
+}*/
 h2 + P {
   text-align: center;
 }
@@ -249,6 +249,19 @@ h2 + P {
 
 
 
+.modal{
+
+	margin-top: 50px!important;
+}
+
+
+
+.modal-backdrop {
+
+  z-index: 1 !important;
+  display: none;
+
+}
 
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
@@ -263,9 +276,13 @@ input[type=number] {
 }
 
 
-.error {
-    color: red;
-}
+
+
+
+
+
+
+
 
 
 

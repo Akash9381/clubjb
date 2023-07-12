@@ -343,29 +343,6 @@
 
                             <div class="body">
                                 <div class="row clearfix">
-
-                                    {{-- <div class="col-lg-7 col-md-6">
-                                        <p> <b>Deal 1</b> </p>
-                                        <div class="form-group">
-                                            <input type="text" class="form-control" placeholder="Deal 1" />
-                                        </div>
-                                    </div>
-
-
-                                    <div class="col-lg-3 col-md-6">
-                                        <p> <b>Saving Up to</b> </p>
-                                        <div class="form-group">
-                                            <input type="text" class="form-control" placeholder="Saving Up to" />
-                                        </div>
-                                    </div> --}}
-
-                                    {{-- <div class="col-lg-2 col-md-6 mt-5">
-
-                                        <div class="form-group">
-                                            <button type="button" class="btn btn-primary btn-round">
-                                                Add More Deal</button>
-                                        </div>
-                                    </div> --}}
                                     <br><br>
                                     <div class="form-group">
                                         <input type='button' class="btn btn-primary btn-round" value='Add Deal'
@@ -430,15 +407,6 @@
                                             <input type="file" name="shop_aadhar_card" class="form-control"
                                                 placeholder="Upload Pic">
                                         </div>
-                                        {{-- <div class="checkbox inlineblock m-r-20">
-                                            <input id="checkbox21" type="checkbox">
-                                            <label for="checkbox21">Aadhar card </label>
-
-                                            <input class="upload" name="shop_aadhar_card" type="file">
-                                            <!--<i class="material-icons">file_upload</i>-->
-
-
-                                        </div> --}}
                                     </div>
 
 
@@ -448,15 +416,6 @@
                                             <input type="file" name="shop_pan_card" class="form-control"
                                                 placeholder="Upload Pic">
                                         </div>
-                                        {{-- <div class="checkbox inlineblock m-r-20">
-                                            <input id="checkbox22" type="checkbox">
-                                            <label for="checkbox22">Pan card </label>
-
-                                            <input class="upload" name="shop_pan_card" type="file">
-                                            <!--<i class="material-icons">file_upload</i>-->
-
-
-                                        </div> --}}
                                     </div>
 
 

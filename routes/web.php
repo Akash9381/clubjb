@@ -179,5 +179,6 @@ Route::group(['middleware' => ['role:shopkeeper', 'auth']], function () {
         Route::get('/customer-report', [CustomerController::class, 'ShopkeeperCustomerReport']);
         Route::get('/shopkeeper-reports', [ShopKeeperController::class, 'ShopkeeperCustomerReport']);
         Route::get('/give-services', [ShopKeeperController::class, 'GiveService']);
+        Route::post('/take-service', [ShopKeeperController::class, 'TakeService']);
     });
 });

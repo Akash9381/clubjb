@@ -9,19 +9,19 @@
         <div class="block-header">
             <div class="row">
                 <div class="col-lg-7 col-md-6 col-sm-12">
-                    <h2>Update Banner
+                    <h2>Update Global Banner
                         <small>Welcome to Club Jb</small>
                     </h2>
                 </div>
                 <div class="col-lg-5 col-md-6 col-sm-12">
                     <ul class="breadcrumb float-md-right">
-                        <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="{{url('admin/dashboard')}}"><i class="zmdi zmdi-home"></i></a></li>
                         <li class="breadcrumb-item"><a href="javascript:void(0);">Upload Banner </a></li>
                     </ul>
                 </div>
             </div>
         </div>
-        <form id="user-form" action="{{ url('admin/banner-update/'.$banner['id']) }}" method="POST" enctype="multipart/form-data">
+        <form id="user-form" action="{{ url('admin/global-banner-update/'.$banner['id']) }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="container-fluid">
                 <!-- Advanced Select2 -->
@@ -35,42 +35,10 @@
                         {{ session()->get('success') }}
                     </div>
                 @endif
-                <div class="row clearfix">
-                    <div class="col-lg-12 col-md-12 col-sm-12">
-                        <div class="card">
-                            <div class="body">
-                                <div class="row clearfix">
-                                    <div class="col-lg-6 col-md-6">
-                                        <p> <b>State </b> </p>
-                                        <select class="form-control show-tick ms select2" data-placeholder="Select"
-                                            name="state" id="state">
-                                            <option value="none">Select State</option>
-                                            @foreach ($states as $state)
-                                                <option @if ($state['name'] == $banner['state']) selected @endif>
-                                                    {{ $state['name'] }}</option>
-                                            @endforeach
-                                        </select>
-                                        <div style="color:red;" id="msg_id"></div>
-                                    </div>
-                                    <div class="col-lg-6 col-md-6">
-                                        <p> <b>City</b> </p>
-                                        <select class="form-control show-tick ms select2" name="city" id="city"
-                                            data-placeholder="Select">
-                                            <option value="{{ $banner['city'] }}">{{ $banner['city'] }}</option>
-                                        </select>
-                                        <div style="color:red;" id="msg_city"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- #END# Select2 -->
 
                 <div class="row clearfix">
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <div class="card">
-
                             <div class="body">
                                 <div class="row clearfix">
                                     <div class="col-lg-6 col-md-6">
@@ -153,10 +121,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
     <script>
         $('#user-form').submit(function(e) {
-            var state = $("#msg_id");
-            var msg = "Please select State";
-            var city = $("#msg_city");
-            var msg_city = "Please select city";
             var shop = $("#msg_shop");
             var msg_shop = "Please select shop name";
             var brand = $("#msg_brand");
@@ -175,33 +139,7 @@
             } else {
                 $("#msg_brand").html('');
             }
-            if ($('#state').val() == "none") {
-                state.append(msg);
-                e.preventDefault();
-                return false;
-            } else {
-                $("#msg_id").html('');
-            }
-            if ($('#city').val() == "none") {
-                city.append(msg_city);
-                e.preventDefault();
-                return false;
-            } else {
-                $("#msg_city").html('');
-            }
         });
-
-        $("#state").on('change', function() {
-            if ($("#state").val() != "none") {
-                $("#msg_id").html('');
-            }
-        })
-
-        $("#city").on('change', function() {
-            if ($("#city").val() != "none") {
-                $("#msg_city").html('');
-            }
-        })
 
         $("#shop_id").on('change', function() {
             if ($("#shop_id").val() != "none") {
@@ -223,29 +161,6 @@
                 }
             });
 
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-            $('#state').on('change', function() {
-                var state = this.value;
-                $("#city").html('');
-                $.ajax({
-                    url: "/admin/get-city",
-                    type: "get",
-                    dataType: 'json',
-                    data: {
-                        state: state
-                    },
-                    success: function(result) {
-                        $('#city').html('<option value="none">Select City</option>');
-                        $.each(result.cities, function(key, value) {
-                            $("#city").append('<option value="' + value.city +
-                                '">' + value.city + '</option>');
-                        });
-                    }
-                })
-            })
         });
     </script>
 @endsection

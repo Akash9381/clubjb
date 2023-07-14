@@ -1,12 +1,12 @@
 @extends('admin.layouts.admin_layouts')
-@section('title', 'Local Bannner List')
+@section('title', 'Global Bannner List')
 
 @section('content')
     <section class="content">
         <div class="block-header">
             <div class="row">
                 <div class="col-lg-7 col-md-6 col-sm-12">
-                    <h2>Banners Table
+                    <h2>Global Banners Table
                         <small>Welcome to Club Jb</small>
                     </h2>
                 </div>
@@ -58,14 +58,15 @@
                                                 <td>{{ $banner['GetSHop']['shop_name'] }}</td>
                                                 <td>{{ $banner['banner_name'] }}</td>
                                                 <td>
-                                                    <button class="btn btn-icon btn-neutral btn-icon-mini"><a
-                                                            href="{{ url('admin/banner-view/' . $banner->id) }}"><i
+                                                    <button class="btn btn-icon btn-neutral btn-icon-mini">
+                                                        <a href="{{ url('admin/global-banner-view/' . $banner->id) }}"><i
                                                                 class="zmdi zmdi-eye"></i></a></button>
                                                     <button class="btn btn-icon btn-neutral btn-icon-mini">
-                                                        <a href="{{ url('admin/update-banner/' . $banner['id']) }}"><i
-                                                                class="zmdi zmdi-edit"></i></a></button>
+                                                        <a href="{{ url('admin/update-global-banner/' . $banner['id']) }}"><i
+                                                                class="zmdi zmdi-edit"></i></a>
+                                                    </button>
                                                     <button class="btn btn-icon btn-neutral btn-icon-mini"><a
-                                                            href="{{ url('admin/banner/delete/' . $banner->id) }}"
+                                                            href="{{ url('admin/global-banner/delete/' . $banner->id) }}"
                                                             onclick="return confirm('Are you sure you want to delete this banner?');"
                                                             title="delete banner"><i
                                                                 class="zmdi zmdi-delete"></i></a></button>

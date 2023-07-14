@@ -123,8 +123,9 @@
                                                     <button class="btn btn-icon btn-neutral btn-icon-mini"><a
                                                             href="{{ url('admin/shop-profile/' . $customer->shop_id) }}"><i
                                                                 class="zmdi zmdi-eye"></i></a></button>
-                                                    <button class="btn btn-icon btn-neutral btn-icon-mini"><i
-                                                            class="zmdi zmdi-edit"></i></button>
+                                                    <button class="btn btn-icon btn-neutral btn-icon-mini"><a
+                                                            href="{{ url('admin/local-shop/' . $customer->shop_id) }}"><i
+                                                                class="zmdi zmdi-edit"></i></a></button>
                                                     <button class="btn btn-icon btn-neutral btn-icon-mini"><i
                                                             class="zmdi zmdi-delete"></i></button>
                                                 </td>

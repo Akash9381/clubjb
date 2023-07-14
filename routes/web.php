@@ -90,11 +90,19 @@ Route::group(['middleware' => ['role:admin', 'auth']], function () {
 
         //*********************** Banner *******************************
         Route::get('/add-banner', [BannerController::class, 'Banner']);
+        Route::get('/add-global-banner', [BannerController::class, 'GlobalBanner']);
         Route::post('/banner-add', [BannerController::class, 'CreateBanner']);
+        Route::post('/global-banner-add', [BannerController::class, 'CreateGlobalBanner']);
         Route::get('/banners-list', [BannerController::class, 'BannerList']);
+        Route::get('/global-banners-list', [BannerController::class, 'GlobalBannerList']);
         Route::get('/banner-view/{id}', [BannerController::class, 'BannerView']);
+        Route::get('/global-banner-view/{id}', [BannerController::class, 'GlobalBannerView']);
         Route::get('/update-banner/{id}', [BannerController::class, 'BannerUpdate']);
+        Route::get('/update-global-banner/{id}', [BannerController::class, 'GlobalBannerUpdate']);
+        Route::get('/global-banner/delete/{id}', [BannerController::class, 'GlobalBannerDelete']);
+        Route::get('/banner/delete/{id}', [BannerController::class, 'BannerDelete']);
         Route::post('/banner-update/{id}', [BannerController::class, 'UpdateBanner']);
+        Route::post('/global-banner-update/{id}', [BannerController::class, 'GlobalUpdateBanner']);
     });
 });
 

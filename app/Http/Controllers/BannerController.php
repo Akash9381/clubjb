@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Banner;
+use App\Models\GlobalBanner;
+use App\Models\GlobalShop;
 use App\Models\Shop;
 use App\Models\state;
 use Illuminate\Http\Request;
@@ -17,10 +19,15 @@ class BannerController extends Controller
         return view('admin.banner.add-banner', compact('states', 'shops'));
     }
 
+    public function GlobalBanner()
+    {
+        $shops = GlobalShop::orderBy('id', 'desc')->where('status', '1')->get();
+        return view('admin.banner.add-global-banner', compact('shops'));
+    }
+
     public function CreateBanner(Request $request)
     {
         $array = $request->all();
-        // return $array;
         $this->Validate($request, [
             'state'         => 'required',
             'city'          => 'required',
@@ -55,10 +62,49 @@ class BannerController extends Controller
         }
     }
 
+    public function CreateGlobalBanner(Request $request)
+    {
+        $array = $request->all();
+        $this->Validate($request, [
+            'shop_id'       => 'required',
+            'brand_name'    => 'required',
+            'banner_name'   => 'required',
+        ]);
+        try {
+            $banner = new GlobalBanner();
+            $banner['shop_id']  = $request['shop_id'];
+            $banner['brand_name']   = $request['brand_name'];
+            $banner['banner_name']  = $request['banner_name'];
+            if ($request->hasFile('banner_image')) {
+                $filenamewithextension = $request->file('banner_image')->getClientOriginalName();
+                $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
+                $extension = $request->file('banner_image')->getClientOriginalExtension();
+                $filenametostore = $filename . '_' . time() . '.' . $extension;
+
+                $request->file('banner_image')->storeAs('public/shopbanner', $filenametostore);
+                $featureimagepath = public_path('storage/shopbanner/' . $filenametostore);
+                Image::make($featureimagepath)->resize(1960, 600)->save($featureimagepath);
+                $array['banner_image'] = $filenametostore;
+            }
+            $banner['banner_image'] = $array['banner_image'];
+
+            $banner->save();
+            return back()->with('success', 'Banner Added Successfully');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
     public function BannerList()
     {
         $banners = Banner::with('GetShop')->get();
         return view('admin.banner.banners-list', compact('banners'));
+    }
+
+    public function GlobalBannerList()
+    {
+        $banners = GlobalBanner::with('GetShop')->get();
+        return view('admin.banner.global-banners-list', compact('banners'));
     }
 
     public function BannerView($id = null)
@@ -71,12 +117,29 @@ class BannerController extends Controller
         }
     }
 
+    public function GlobalBannerView($id = null)
+    {
+        $banner = GlobalBanner::with('GetShop')->where('id', $id)->first();
+        if ($banner) {
+            return view('admin.banner.global-banner-view', compact('banner'));
+        } else {
+            return back()->with('error', 'Banner Not Defined');
+        }
+    }
+
     public function BannerUpdate($id = null)
     {
         $states = state::all();
         $shops  = Shop::orderBy('id', 'desc')->where('status', '1')->get();
         $banner = Banner::with('GetShop')->where('id', $id)->first();
         return view('admin.banner.update-banner', compact('states', 'shops', 'banner'));
+    }
+
+    public function GlobalBannerUpdate($id = null)
+    {
+        $shops  = GlobalShop::orderBy('id', 'desc')->where('status', '1')->get();
+        $banner = GlobalBanner::with('GetShop')->where('id', $id)->first();
+        return view('admin.banner.update-global-banner', compact('shops', 'banner'));
     }
 
     public function UpdateBanner(Request $request, $id = null)
@@ -91,12 +154,6 @@ class BannerController extends Controller
         ]);
 
         try {
-            // $banner = new Banner();
-            // $banner['shop_id']  = $request['shop_id'];
-            // $banner['state']    = $request['state'];
-            // $banner['city']     = $request['city'];
-            // $banner['brand_name']   = $request['brand_name'];
-            // $banner['banner_name']  = $request['banner_name'];
             if ($request->hasFile('banner_image')) {
                 $filenamewithextension = $request->file('banner_image')->getClientOriginalName();
                 $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
@@ -121,6 +178,62 @@ class BannerController extends Controller
                 'banner_image'  => $array['banner_image']
             ]);
             return back()->with('success', 'Banner Updated Successfully');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function GlobalUpdateBanner(Request $request, $id = null)
+    {
+        $array = $request->all();
+        $this->Validate($request, [
+            'shop_id'       => 'required',
+            'brand_name'    => 'required',
+            'banner_name'   => 'required',
+        ]);
+
+        try {
+            if ($request->hasFile('banner_image')) {
+                $filenamewithextension = $request->file('banner_image')->getClientOriginalName();
+                $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
+                $extension = $request->file('banner_image')->getClientOriginalExtension();
+                $filenametostore = $filename . '_' . time() . '.' . $extension;
+
+                $request->file('banner_image')->storeAs('public/shopbanner', $filenametostore);
+                $featureimagepath = public_path('storage/shopbanner/' . $filenametostore);
+                Image::make($featureimagepath)->resize(1960, 600)->save($featureimagepath);
+                $array['banner_image'] = $filenametostore;
+            } else {
+                $banner = GlobalBanner::where('id', $id)->first();
+                $array['banner_image'] = $banner['banner_image'];
+            }
+            GlobalBanner::where('id', $id)->update([
+                'shop_id'       => $request['shop_id'],
+                'banner_name'   => $request['banner_name'],
+                'brand_name'    => $request['brand_name'],
+                'banner_image'  => $array['banner_image']
+            ]);
+            return back()->with('success', 'Banner Updated Successfully');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function GlobalBannerDelete($id = null)
+    {
+        try {
+            GlobalBanner::where('id', $id)->delete();
+            return back()->with('success', 'Banner Deleted Successfully');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function BannerDelete($id = null)
+    {
+        try {
+            Banner::where('id', $id)->delete();
+            return back()->with('success', 'Banner Deleted Successfully');
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }

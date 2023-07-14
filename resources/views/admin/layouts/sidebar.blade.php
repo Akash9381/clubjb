@@ -92,13 +92,21 @@
                         </ul>
                     </li>
                     <li @if (strpos(Request::url(), 'admin/add-banner') !== false) class="active" @endif
-                        @if (strpos(Request::url(), 'admin/banners-list') !== false) class="active" @endif><a href="javascript:void(0);"
+                        @if (strpos(Request::url(), 'admin/banners-list') !== false) class="active" @endif
+                        @if (strpos(Request::url(), 'admin/add-global-banner') !== false) class="active" @endif
+                        @if (strpos(Request::url(), 'admin/global-banners-list') !== false) class="active" @endif><a href="javascript:void(0);"
                             class="menu-toggle"><span>Banner</span></a>
                         <ul class="ml-menu">
-                            <li class="{{ setActiveClass('admin/banners-list') }}"><a
-                                    href="{{ url('admin/banners-list') }}">Banners</a></li>
+                            <li><b>Global</b></li>
+                            <li class="{{ setActiveClass('admin/add-global-banner') }}"><a
+                                    href="{{ url('admin/add-global-banner') }}">Add New</a></li>
+                            <li class="{{ setActiveClass('admin/global-banners-list') }}"><a
+                                    href="{{ url('admin/global-banners-list') }}">Banner List</a></li>
+                            <li><b>Local</b></li>
                             <li class="{{ setActiveClass('admin/add-banner') }}"><a
                                     href="{{ url('admin/add-banner') }}">Add New</a></li>
+                            <li class="{{ setActiveClass('admin/banners-list') }}"><a
+                                    href="{{ url('admin/banners-list') }}">Banner List</a></li>
 
                         </ul>
                     </li>

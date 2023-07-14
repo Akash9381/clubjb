@@ -1,5 +1,5 @@
 @extends('admin.layouts.admin_layouts')
-@section('title', 'Add Banner')
+@section('title', 'Add Global Banner')
 
 <!-- Chat-launcher -->
 
@@ -9,7 +9,7 @@
         <div class="block-header">
             <div class="row">
                 <div class="col-lg-7 col-md-6 col-sm-12">
-                    <h2>Update Banner
+                    <h2>Upload Global Banner
                         <small>Welcome to Club Jb</small>
                     </h2>
                 </div>
@@ -21,7 +21,7 @@
                 </div>
             </div>
         </div>
-        <form id="user-form" action="{{ url('admin/banner-update/'.$banner['id']) }}" method="POST" enctype="multipart/form-data">
+        <form id="user-form" action="{{ url('admin/global-banner-add') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="container-fluid">
                 <!-- Advanced Select2 -->
@@ -35,37 +35,6 @@
                         {{ session()->get('success') }}
                     </div>
                 @endif
-                <div class="row clearfix">
-                    <div class="col-lg-12 col-md-12 col-sm-12">
-                        <div class="card">
-                            <div class="body">
-                                <div class="row clearfix">
-                                    <div class="col-lg-6 col-md-6">
-                                        <p> <b>State </b> </p>
-                                        <select class="form-control show-tick ms select2" data-placeholder="Select"
-                                            name="state" id="state">
-                                            <option value="none">Select State</option>
-                                            @foreach ($states as $state)
-                                                <option @if ($state['name'] == $banner['state']) selected @endif>
-                                                    {{ $state['name'] }}</option>
-                                            @endforeach
-                                        </select>
-                                        <div style="color:red;" id="msg_id"></div>
-                                    </div>
-                                    <div class="col-lg-6 col-md-6">
-                                        <p> <b>City</b> </p>
-                                        <select class="form-control show-tick ms select2" name="city" id="city"
-                                            data-placeholder="Select">
-                                            <option value="{{ $banner['city'] }}">{{ $banner['city'] }}</option>
-                                        </select>
-                                        <div style="color:red;" id="msg_city"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- #END# Select2 -->
 
                 <div class="row clearfix">
                     <div class="col-lg-12 col-md-12 col-sm-12">
@@ -77,10 +46,9 @@
                                         <p> <b>Shop Name </b> </p>
                                         <select name="shop_id" id="shop_id" class="form-control show-tick ms select2"
                                             data-placeholder="Select">
+                                            <option value="none">Select Shop</option>
                                             @forelse ($shops as $shop)
-                                                <option value="{{ $shop['user_id'] }}" @if ($shop['user_id']==$banner['shop_id'])
-                                        selected
-                                                @endif>{{ $shop['shop_name'] }}</option>
+                                                <option value="{{ $shop['user_id'] }}">{{ $shop['shop_name'] }}</option>
                                             @empty
                                                 <option value="none">No Shop Available</option>
                                             @endforelse
@@ -91,8 +59,7 @@
                                         <p> <b>Brand Name</b> </p>
                                         <select name="brand_name" id="brand_name" class="form-control show-tick ms select2"
                                             data-placeholder="Select">
-
-                                            <option value="{{$banner['brand_name']}}" selected>{{$banner['brand_name']}}</option>
+                                            <option value="none">Select Brand</option>
                                             <option>text</option>
                                             <option>text</option>
                                         </select>
@@ -111,7 +78,7 @@
                                     <div class="col-lg-12 col-md-12">
                                         <p> <b>Banner Name</b> </p>
                                         <div class="form-group">
-                                            <input type="text" value="{{$banner['banner_name']}}" name="banner_name" id="banner_name" class="form-control"
+                                            <input type="text" name="banner_name" id="banner_name" class="form-control"
                                                 placeholder="Banner Name" />
                                         </div>
                                     </div>
@@ -131,15 +98,13 @@
                                             <input type="file" name="banner_image" class="form-control"
                                                 placeholder="Banner Name" />
                                         </div>
-                                        <img src="{{ asset('/storage/shopbanner/' . $banner['banner_image']) }}"
-                                        alt="{{ $banner['banner_image'] }}">
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-sm-12">
-                        <button type="submit" class="btn btn-primary btn-round"> Update Banner</button>
+                        <button type="submit" class="btn btn-primary btn-round"> Add Banner</button>
                     </div>
                 </div>
                 <div style="visibility: hidden;" id="nouislider_basic_example"></div>
@@ -223,29 +188,6 @@
                 }
             });
 
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-            $('#state').on('change', function() {
-                var state = this.value;
-                $("#city").html('');
-                $.ajax({
-                    url: "/admin/get-city",
-                    type: "get",
-                    dataType: 'json',
-                    data: {
-                        state: state
-                    },
-                    success: function(result) {
-                        $('#city').html('<option value="none">Select City</option>');
-                        $.each(result.cities, function(key, value) {
-                            $("#city").append('<option value="' + value.city +
-                                '">' + value.city + '</option>');
-                        });
-                    }
-                })
-            })
         });
     </script>
 @endsection

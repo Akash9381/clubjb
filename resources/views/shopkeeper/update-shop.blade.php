@@ -1,5 +1,5 @@
-@extends('admin.layouts.admin_layouts')
-@section('title', 'Update Local Shop')
+@extends('shopkeeper.layouts.shopkeeper_layouts')
+@section('title', 'Update Profile')
 
 <!-- Chat-launcher -->
 
@@ -9,20 +9,21 @@
         <div class="block-header">
             <div class="row">
                 <div class="col-lg-7 col-md-6 col-sm-12">
-                    <h2>Update Shopkeeper
+                    <h2>Update Profile
                         <small>Welcome to Club Jb</small>
                     </h2>
                 </div>
                 <div class="col-lg-5 col-md-6 col-sm-12">
                     <ul class="breadcrumb float-md-right">
-                        <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i> Home</a></li>
+                        <li class="breadcrumb-item"><a href="{{url('shopkeeper/dashboard')}}"><i class="zmdi zmdi-home"></i> Home</a></li>
                         <li class="breadcrumb-item"><a href="javascript:void(0);">Shopkeeper </a></li>
 
                     </ul>
                 </div>
             </div>
         </div>
-        <form id="user-form" action="{{ url('admin/update-shop/' . $shop['shop_id']) }}" method="POST" enctype="multipart/form-data">
+        <form id="user-form" action="{{ url('shopkeeper/update-shop/' . $shop['shop_id']) }}" method="POST"
+            enctype="multipart/form-data">
             @csrf
             <div class="container-fluid">
                 <!-- Color Pickers -->
@@ -64,7 +65,6 @@
                                         </select>
                                         <div style="color:red;" id="msg_city"></div>
                                     </div>
-                                    <input hidden name="ref_number" value="{{ Auth::user()->phone }}">
                                 </div>
 
                             </div>
@@ -152,8 +152,10 @@
                                     <div class="col-lg-3 col-md-6">
                                         <p> <b> Ref Number</b> </p>
                                         <div class="form-group">
-                                            <input type="number" required value="{{ $shop['ref_number'] }}"
-                                                name="ref_number" id="ref_number" class="form-control" placeholder="Ref Number" />
+                                            <input type="password" required value="{{ $shop['ref_number'] }}"
+                                            <input type="password" required value="{{ $shop['ref_number'] }}"
+                                                name="ref_number" id="ref_number" class="form-control"
+                                                placeholder="Ref Number" />
                                         </div>
                                     </div>
                                     <div class="col-lg-3 col-md-6">
@@ -168,13 +170,14 @@
                                         <p> <b> Shop Number</b> </p>
                                         <div class="form-group">
                                             <input type="number" readonly value="{{ $shop['shop_number'] }}" required
-                                                name="shop_number" id="shop_number" class="form-control" placeholder="Shop Number" />
+                                                name="shop_number" id="shop_number" class="form-control"
+                                                placeholder="Shop Number" />
                                         </div>
                                     </div>
                                     <div class="col-lg-3 col-md-6">
                                         <p> <b>Login Pin</b> </p>
                                         <input class="form-control" value="{{ $shop['GetLocalShop']['login_pin'] }}"
-                                            required name="login_pin" type="text" maxlength="4" />
+                                            required name="login_pin" type="password" maxlength="4" />
                                     </div>
                                 </div>
                             </div>
@@ -204,14 +207,11 @@
                                     <div class="col-lg-4 col-md-6">
                                         <p> <b> Contact Number</b> </p>
                                         <div class="form-group">
-                                            <input type="number" id="contact_number" value="{{ $shop['contact_number'] }}"
-                                                name="contact_number" class="form-control"
-                                                placeholder="Contact Number" />
+                                            <input type="number" id="contact_number"
+                                                value="{{ $shop['contact_number'] }}" name="contact_number"
+                                                class="form-control" placeholder="Contact Number" />
                                         </div>
                                     </div>
-
-
-
 
                                     <div class="col-lg-4 col-md-6">
                                         <p> <b> Designation</b> </p>
@@ -397,10 +397,10 @@
                                                     <td> <input type="text" required class="form-control"
                                                             placeholder="Saving Up to"
                                                             value="{{ $deal['saving_up_to'] }}"> </td>
-                                                    <td><button type="button" class="btn btn-danger "><i
-                                                                class="zmdi zmdi-edit"></i></button>
-                                                        <button type="button" class="btn btn-danger "><i
-                                                                class="zmdi zmdi-delete"></i></button>
+                                                    <td><button type="button" class="btn btn-danger "><a href="#" class="text-light"><i
+                                                                class="zmdi zmdi-edit"></i></a></button>
+                                                        <button type="button" class="btn btn-danger "><a href="{{url('deal/delete/'.$deal['id'])}}" onclick="return confirm('Are you sure to delete this deal?');" class="text-light"><i
+                                                                class="zmdi zmdi-delete"></i></a></button>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -431,7 +431,7 @@
                                             <a href="{{ asset('/storage/shop/shop_menu/' . $picture['shop_menu']) }}"
                                                 download="{{ $picture['shop_menu'] }}" title="Download"> <i
                                                     class="material-icons">move_to_inbox</i></a>
-                                            <a href="{{ url('admin/shop/shop_menu/delete/' . $picture['id']) }}"
+                                            <a href="{{ url('shop/shop_menu/delete/' . $picture['id']) }}"
                                                 title="Delete"
                                                 onclick="return confirm('Are you sure you want to delete this item?');"><i
                                                     class="material-icons">delete</i></a>
@@ -450,7 +450,7 @@
                                             <a href="{{ asset('/storage/shop/shop_pic/' . $picture['shop_picture']) }}"
                                                 download="{{ $picture['shop_picture'] }}" title="Download"> <i
                                                     class="material-icons">move_to_inbox</i></a>
-                                            <a href="{{ url('admin/shop/shop_pic/delete/' . $picture['id']) }}"
+                                            <a href="{{ url('shop/shop_pic/delete/' . $picture['id']) }}"
                                                 title="Delete"
                                                 onclick="return confirm('Are you sure you want to delete this item?');"><i
                                                     class="material-icons">delete</i></a>
@@ -469,7 +469,7 @@
                                             <a href="{{ asset('/storage/shop/shop_aadhar_card/' . $picture['shop_adahar']) }}"
                                                 download="{{ $picture['shop_adahar'] }}" title="Download"> <i
                                                     class="material-icons">move_to_inbox</i></a>
-                                            <a href="{{ url('admin/shop/shop_aadhar_card/delete/' . $picture['id']) }}"
+                                            <a href="{{ url('shop/shop_aadhar_card/delete/' . $picture['id']) }}"
                                                 title="Delete"
                                                 onclick="return confirm('Are you sure you want to delete this item?');"><i
                                                     class="material-icons">delete</i></a>
@@ -488,7 +488,7 @@
                                             <a href="{{ asset('/storage/shop/shop_pan_card/' . $picture['shop_pancard']) }}"
                                                 download="{{ $picture['shop_pancard'] }}" title="Download"> <i
                                                     class="material-icons">move_to_inbox</i></a>
-                                            <a href="{{ url('admin/shop/shop_pancard/delete/' . $picture['id']) }}"
+                                            <a href="{{ url('shop/shop_pancard/delete/' . $picture['id']) }}"
                                                 title="Delete"
                                                 onclick="return confirm('Are you sure you want to delete this item?');"><i
                                                     class="material-icons">delete</i></a>
@@ -507,7 +507,7 @@
                                             <a href="{{ asset('/storage/shop/shop_driving/' . $picture['shop_driving']) }}"
                                                 download="{{ $picture['shop_driving'] }}" title="Download"> <i
                                                     class="material-icons">move_to_inbox</i></a>
-                                            <a href="{{ url('admin/shop/shop_driving/delete/' . $picture['id']) }}"
+                                            <a href="{{ url('shop/shop_driving/delete/' . $picture['id']) }}"
                                                 title="Delete"
                                                 onclick="return confirm('Are you sure you want to delete this item?');"><i
                                                     class="material-icons">delete</i></a>
@@ -526,7 +526,7 @@
                                             <a href="{{ asset('/storage/shop/shop_passport/' . $picture['shop_passport']) }}"
                                                 download="{{ $picture['shop_passport'] }}" title="Download"> <i
                                                     class="material-icons">move_to_inbox</i></a>
-                                            <a href="{{ url('admin/shop/shop_passport/delete/' . $picture['id']) }}"
+                                            <a href="{{ url('shop/shop_passport/delete/' . $picture['id']) }}"
                                                 title="Delete"
                                                 onclick="return confirm('Are you sure you want to delete this item?');"><i
                                                     class="material-icons">delete</i></a>
@@ -545,7 +545,7 @@
                                             <a href="{{ asset('/storage/shop/shop_cv/' . $picture['shop_cv']) }}"
                                                 download="{{ $picture['shop_cv'] }}" title="Download"> <i
                                                     class="material-icons">move_to_inbox</i></a>
-                                            <a href="{{ url('admin/shop/shop_cv/delete/' . $picture['id']) }}"
+                                            <a href="{{ url('shop/shop_cv/delete/' . $picture['id']) }}"
                                                 title="Delete"
                                                 onclick="return confirm('Are you sure you want to delete this item?');"><i
                                                     class="material-icons">delete</i></a>
@@ -564,7 +564,7 @@
                                             <a href="{{ asset('/storage/shop/shop_agreement/' . $picture['shop_agreement']) }}"
                                                 download="{{ $picture['shop_agreement'] }}" title="Download"> <i
                                                     class="material-icons">move_to_inbox</i></a>
-                                            <a href="{{ url('admin/shop/shop_agreement/delete/' . $picture['id']) }}"
+                                            <a href="{{ url('shop/shop_agreement/delete/' . $picture['id']) }}"
                                                 title="Delete"
                                                 onclick="return confirm('Are you sure you want to delete this item?');"><i
                                                     class="material-icons">delete</i></a>
@@ -604,7 +604,7 @@
                         </div>
                     </div>
                     <div class="col-sm-12">
-                        <button type="submit" class="btn btn-primary btn-round"> Update Shopkeeper</button>
+                        <button type="submit" class="btn btn-primary btn-round"> Update Profile</button>
 
                     </div>
                 </div>

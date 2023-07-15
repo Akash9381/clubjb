@@ -72,7 +72,7 @@ class CustomerController extends Controller
                 $customer->wp_msg           = $request['wp_msg'];
                 $customer->status           = '0';
                 $customer->save();
-                return back()->with('success', 'Customer Added Successfully');
+                return redirect('shopkeeper/give-services?phone='.$request['phone']);
             } catch (\Exception $e) {
                 return back()->with('error', $e->getMessage());
             }
@@ -81,12 +81,16 @@ class CustomerController extends Controller
 
     public function  InActiveCustomers()
     {
+        // $customers = User::with('InActiveEmployee')->with('InActiveShopKeeper')->with('InActiveCustomer')->orderBy('id','desc')->get();
+        // return $customers;
         $customers = Customer::with('GetCustomers')->where('status', '0')->orderBy('id','desc')->get();
         return view('admin.customer.inactive-customers', compact('customers'));
     }
 
     public function  ActiveCustomers()
     {
+        // $customers = User::with('ActiveEmployee')->with('ActiveShopKeeper')->with('ActiveCustomer')->orderBy('id','desc')->get();
+        // return $customers;
         $customers = Customer::with('GetCustomers')->where('status', '1')->get();
         return view('admin.customer.active-customers', compact('customers'));
     }

@@ -115,9 +115,9 @@
 
                                                 <td>
                                                     <label class="switch">
-                                                        <input type="checkbox" @if ($customer['status'] == '1')
-                                                        checked
-                                                        @endif  value="{{ $customer['customer_id'] }}">
+                                                        <input type="checkbox"
+                                                            @if ($customer['status'] == '1') checked @endif
+                                                            value="{{ $customer['customer_id'] }}">
                                                         <span class="slider round"></span>
                                                     </label>
                                                 </td>
@@ -126,8 +126,9 @@
                                                     <button class="btn btn-icon btn-neutral btn-icon-mini"><a
                                                             href="{{ url('admin/customer-profile/' . $customer->customer_id) }}"><i
                                                                 class="zmdi zmdi-eye"></i></a></button>
-                                                    <a href="{{ url('admin/update-customer/' . $customer['customer_id']) }}" class="btn btn-icon btn-neutral btn-icon-mini"><i
-                                                            class="zmdi zmdi-edit"></i></a>
+                                                    <button class="btn btn-icon btn-neutral btn-icon-mini">
+                                                        <a href="{{ url('admin/update-customer/' . $customer['customer_id']) }}"><i
+                                                                class="zmdi zmdi-edit"></i></a></button>
                                                     <button class="btn btn-icon btn-neutral btn-icon-mini"><i
                                                             class="zmdi zmdi-delete"></i></button>
                                                 </td>

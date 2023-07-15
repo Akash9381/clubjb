@@ -43,13 +43,32 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function InActiveEmployee(){
-        return $this->hasOne(Employee::class,'user_id','id')->where('status','=',0);
+    public function InActiveEmployee()
+    {
+        return $this->hasOne(Employee::class, 'user_id', 'id')->where('status', '=', 0);
     }
-    public function ActiveEmployee(){
-        return $this->hasOne(Employee::class,'user_id','id')->where('status','=',1);
+    public function ActiveEmployee()
+    {
+        return $this->hasOne(Employee::class, 'user_id', 'id')->where('status', '=', 1);
     }
-    public function GetCustomer(){
-        return $this->hasOne(Customer::class,'user_id','id');
+    public function GetCustomer()
+    {
+        return $this->hasOne(Customer::class, 'user_id', 'id');
+    }
+    public function ActiveCustomer()
+    {
+        return $this->hasOne(Customer::class, 'user_id', 'id')->where('status', '=', 1);
+    }
+    public function InActiveCustomer()
+    {
+        return $this->hasOne(Customer::class, 'user_id', 'id')->where('status', '=', 0);
+    }
+    public function ActiveShopKeeper()
+    {
+        return $this->hasOne(Shop::class, 'user_id', 'id')->where('status', '=', 0);
+    }
+    public function InActiveShopKeeper()
+    {
+        return $this->hasOne(Shop::class, 'user_id', 'id')->where('status', '=', 1);
     }
 }

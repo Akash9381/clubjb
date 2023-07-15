@@ -482,6 +482,13 @@ class ShopKeeperController extends Controller
         return view('admin.shop.update-shop', compact('states', 'shop'));
     }
 
+    public function EditShop($shop_id = null)
+    {
+        $states = ModelsState::all();
+        $shop = Shop::with('GetLocalShop')->with('GetShopPicture')->with('GetShopMenu')->with('GetShopAdhar')->with('GetShopPanCard')->with('GetShopDriving')->with('GetShopPassport')->with('GetShopCv')->with('GetShopDeals')->with('GetShopAgreement')->where('shop_id', $shop_id)->first();
+        return view('shopkeeper.update-shop', compact('states', 'shop'));
+    }
+
     public function ShopMenuDelete($id = null)
     {
         try {
@@ -1033,10 +1040,227 @@ class ShopKeeperController extends Controller
                 $deal->bill_number      = $request['bill_number'];
                 $deal->amount           = $request['amount'];
                 $deal->save();
-                return back()->with('success','Deal Successfully');
+                return back()->with('success', 'Deal Successfully');
             }
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }
+    }
+
+    public function Profile()
+    {
+        $shop = Shop::with('GetLocalShop')->with('GetShopPicture')->with('GetShopMenu')->with('GetShopAdhar')->with('GetShopPanCard')->with('GetShopDriving')->with('GetShopPassport')->with('GetShopCv')->with('GetShopDeals')->with('GetShopAgreement')->where('user_id', Auth::user()->id)->first();
+        return view('shopkeeper.profile', compact('shop'));
+    }
+
+    public function UpdateShopkeeper(Request $request, $shop_id = null)
+    {
+        $shop = Shop::where('shop_id', $shop_id)->first();
+        if ($shop) {
+            try {
+                User::where('id', $shop->user_id)->update([
+                    'name' => $request['shop_name'],
+                    'login_pin' => $request['login_pin'],
+                    'state'         => $request->state,
+                    'city'          => $request->city,
+                ]);
+                Shop::where('shop_id', $shop_id)->update([
+                    'ref_number'    => $request->ref_number,
+                    'state'         => $request->state,
+                    'city'          => $request->city,
+                    'category'      => $request->category,
+                    'sub_category'  => $request->sub_category,
+                    'hot_store'     => $request->hot_store,
+                    'shop_name'     => $request->shop_name,
+                    'shop_number'   => $request->shop_number,
+                    'contact_person' => $request->contact_person,
+                    'contact_number' => $request->contact_number,
+                    'designation'  => $request->designation,
+                    'address_1'    => $request->address_1,
+                    'address_2'    => $request->address_2,
+                    'pincode'      => $request->pincode,
+                    'shop_type'    => $request->shop_type,
+                    'landmark'     => $request->landmark,
+                    'ip_address'   => $request->ip_address,
+                    'country_name' => $request->country_name,
+                    'country_code' => $request->country_code,
+                    'region_code'  => $request->region_code,
+                    'region_name'  => $request->region_name,
+                    'city_name'    => $request->city_name,
+                    'zip_code'     => $request->zip_code,
+                    'shop_help'    => $request->shop_help,
+                    'shop_terms'   => $request->shop_terms,
+
+                ]);
+                if (!empty($request['deal'])) {
+                    foreach ($request['deal'] as $key => $deal) {
+                        $dl = new ShopDeal();
+                        $dl->user_id = $shop['user_id'];
+                        $dl->shop_id = $shop_id;
+                        $dl->shop_deal = $request['deal'][$key];
+                        $dl->saving_up_to = $request['saving_up_to'][$key];
+                        $dl->save();
+                    }
+                }
+                if ($request->hasFile('shop_menu')) {
+                    foreach ($request->file('shop_menu') as $image) {
+                        $filenamewithextension = $image->getClientOriginalName();
+                        $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
+
+                        $extension = $image->getClientOriginalExtension();
+                        $filenametostore = $filename . '_' . time() . '.' . $extension;
+                        $image->storeAs('public/shop/shop_menu', $filenametostore);
+
+                        $featureimagepath = public_path('storage/shop/shop_menu/' . $filenametostore);
+                        $data = new ShopMenu();
+                        $data->user_id = $shop['user_id'];
+                        $data->shop_id = $shop_id;
+                        $data->shop_menu = $filenametostore;
+                        $data->save();
+                    }
+                };
+
+                if ($request->hasFile('shop_pic')) {
+                    foreach ($request->file('shop_pic') as $image) {
+                        $filenamewithextension = $image->getClientOriginalName();
+                        $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
+
+                        $extension = $image->getClientOriginalExtension();
+                        $filenametostore = $filename . '_' . time() . '.' . $extension;
+                        $image->storeAs('public/shop/shop_pic', $filenametostore);
+
+                        $featureimagepath = public_path('storage/shop/shop_pic/' . $filenametostore);
+                        $data = new ShopPicture();
+                        $data->user_id = $shop['user_id'];
+                        $data->shop_id = $shop_id;
+                        $data->shop_picture = $filenametostore;
+                        $data->save();
+                    }
+                };
+
+                if ($request->hasFile('shop_aadhar_card')) {
+                    foreach ($request->file('shop_aadhar_card') as $image) {
+                        $filenamewithextension = $image->getClientOriginalName();
+                        $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
+
+                        $extension = $image->getClientOriginalExtension();
+                        $filenametostore = $filename . '_' . time() . '.' . $extension;
+                        $image->storeAs('public/shop/shop_aadhar_card', $filenametostore);
+
+                        $featureimagepath = public_path('storage/shop/shop_aadhar_card/' . $filenametostore);
+                        $data = new ShopAadhar();
+                        $data->user_id = $shop['user_id'];
+                        $data->shop_id = $shop_id;
+                        $data->shop_adahar = $filenametostore;
+                        $data->save();
+                    }
+                };
+
+                if ($request->hasFile('shop_pan_card')) {
+                    foreach ($request->file('shop_pan_card') as $image) {
+                        $filenamewithextension = $image->getClientOriginalName();
+                        $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
+
+                        $extension = $image->getClientOriginalExtension();
+                        $filenametostore = $filename . '_' . time() . '.' . $extension;
+                        $image->storeAs('public/shop/shop_pan_card', $filenametostore);
+
+                        $featureimagepath = public_path('storage/shop/shop_pan_card/' . $filenametostore);
+                        $data = new ShopPanCard();
+                        $data->user_id = $shop['user_id'];
+                        $data->shop_id = $shop_id;
+                        $data->shop_pancard = $filenametostore;
+                        $data->save();
+                    }
+                };
+
+                if ($request->hasFile('shop_driving')) {
+                    foreach ($request->file('shop_driving') as $image) {
+                        $filenamewithextension = $image->getClientOriginalName();
+                        $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
+                        $extension = $image->getClientOriginalExtension();
+                        $filenametostore = $filename . '_' . time() . '.' . $extension;
+                        $image->storeAs('public/shop/shop_driving', $filenametostore);
+
+                        $featureimagepath = public_path('storage/shop/shop_driving/' . $filenametostore);
+                        $data = new ShopDriving();
+                        $data->user_id = $shop['user_id'];
+                        $data->shop_id = $shop_id;
+                        $data->shop_driving = $filenametostore;
+                        $data->save();
+                    }
+                };
+
+                if ($request->hasFile('shop_passport')) {
+                    foreach ($request->file('shop_passport') as $image) {
+                        $filenamewithextension = $image->getClientOriginalName();
+                        $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
+
+                        $extension = $image->getClientOriginalExtension();
+                        $filenametostore = $filename . '_' . time() . '.' . $extension;
+                        $image->storeAs('public/shop/shop_passport', $filenametostore);
+
+                        $featureimagepath = public_path('storage/shop/shop_passport/' . $filenametostore);
+                        $data = new ShopPassport();
+                        $data->user_id = $shop['user_id'];
+                        $data->shop_id = $shop_id;
+                        $data->shop_passport = $filenametostore;
+                        $data->save();
+                    }
+                };
+
+                if ($request->hasFile('shop_cv')) {
+                    foreach ($request->file('shop_cv') as $image) {
+                        $filenamewithextension = $image->getClientOriginalName();
+                        $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
+
+                        $extension = $image->getClientOriginalExtension();
+                        $filenametostore = $filename . '_' . time() . '.' . $extension;
+                        $image->storeAs('public/shop/shop_cv', $filenametostore);
+
+                        $featureimagepath = public_path('storage/shop/shop_cv/' . $filenametostore);
+                        $data = new ShopCv();
+                        $data->user_id = $shop['user_id'];
+                        $data->shop_id = $shop_id;
+                        $data->shop_cv = $filenametostore;
+                        $data->save();
+                    }
+                };
+
+                if ($request->hasFile('shop_agreement')) {
+                    foreach ($request->file('shop_agreement') as $image) {
+                        $filenamewithextension = $image->getClientOriginalName();
+                        $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
+
+                        $extension = $image->getClientOriginalExtension();
+                        $filenametostore = $filename . '_' . time() . '.' . $extension;
+                        $image->storeAs('public/shop/shop_agreement', $filenametostore);
+
+                        $featureimagepath = public_path('storage/shop/shop_agreement/' . $filenametostore);
+                        $data = new ShopAgreement();
+                        $data->user_id = $shop['user_id'];
+                        $data->shop_id = $shop_id;
+                        $data->shop_agreement = $filenametostore;
+                        $data->save();
+                    }
+                };
+
+                return back()->with('success', 'Profile Updated Successfully');
+            } catch (\Exception $e) {
+                return back()->with('error', $e->getMessage());
+            }
+        } else {
+            return back()->with('error', 'Not a Valid Shop');
+        }
+    }
+
+    public function GivenDeals(){
+        $deals = Deal::with('GetUser')->with('GetDeal')->where('user_id',Auth::user()->id)->orderBy('id','desc')->get();
+        return view('shopkeeper.given-deals',compact('deals'));
+    }
+
+    public function Deals(){
+        $deals = Shopdeal::where('user_id',Auth::user()->id)->get();
+        return view('shopkeeper.deals',compact('deals'));
     }
 }

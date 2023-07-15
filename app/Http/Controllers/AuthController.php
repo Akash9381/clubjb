@@ -9,6 +9,18 @@ use Illuminate\Support\Facades\Redirect;
 
 class AuthController extends Controller
 {
+    public function AdminLogin()
+    {
+        return redirect(route('admin.login'));
+    }
+    public function EmployeeLogin()
+    {
+        return redirect(route('employee.login'));
+    }
+    public function ShopKeeperLogin()
+    {
+        return redirect(route('shop.login'));
+    }
     public function Home()
     {
         Auth::logout();
@@ -111,9 +123,9 @@ class AuthController extends Controller
         $user = User::where('phone', $request['phone_number'])->first();
         $phone = $request['phone_number'];
         if ($user) {
-            return Redirect::route('loginpin',['phn'=>$phone]);
+            return Redirect::route('loginpin', ['phn' => $phone]);
         } else {
-            return Redirect::route('register',['phn'=>$phone]);
+            return Redirect::route('register', ['phn' => $phone]);
         }
     }
 

@@ -9,18 +9,6 @@ use Illuminate\Support\Facades\Redirect;
 
 class AuthController extends Controller
 {
-    public function AdminLogin()
-    {
-        return redirect(route('admin.login'));
-    }
-    public function EmployeeLogin()
-    {
-        return redirect(route('employee.login'));
-    }
-    public function ShopKeeperLogin()
-    {
-        return redirect(route('shop.login'));
-    }
     public function Home()
     {
         Auth::logout();

@@ -5,14 +5,15 @@
         <div class="block-header">
             <div class="row">
                 <div class="col-lg-7 col-md-6 col-sm-12">
-                    <h2>Add employee
+                    <h2>Employee Update
                         <small>Welcome to Club Jb</small>
                     </h2>
                 </div>
                 <div class="col-lg-5 col-md-6 col-sm-12">
                     <ul class="breadcrumb float-md-right">
-                        <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item"><a href="javascript:void(0);">Employee </a></li>
+                        <li class="breadcrumb-item"><a href="{{ url('admin/dashboard') }}"><i class="zmdi zmdi-home"></i></a>
+                        </li>
+                        <li class="breadcrumb-item"><a href="javascript:void(0);">Employee Update</a></li>
 
                     </ul>
                 </div>
@@ -28,7 +29,7 @@
                 {{ session()->get('success') }}
             </div>
         @endif
-        <form id="user-form" method="POST" action="{{ url('admin/update-employee/' . $employee['employee_id']) }}"
+        <form id="user-form" method="POST" action="{{ url('admin/update-employee/' . $employee['id']) }}"
             enctype="multipart/form-data">
             @csrf
             <div class="container-fluid">
@@ -82,33 +83,40 @@
                                         <p> <b>Employee type</b> </p>
                                         <select class="form-control show-tick ms select2" name="employee_type"
                                             data-placeholder="Select">
-                                            <option @if ($employee['employee_type'] == 'Full Time') selected @endif>Full Time</option>
-                                            <option @if ($employee['employee_type'] == 'Part Time') selected @endif>Part Time</option>
-                                            <option @if ($employee['employee_type'] == 'Student') selected @endif>Student</option>
+                                            <option @if ($employee['Employee']['employee_type'] == 'Full Time') selected @endif>Full Time</option>
+                                            <option @if ($employee['Employee']['employee_type'] == 'Part Time') selected @endif>Part Time</option>
+                                            <option @if ($employee['Employee']['employee_type'] == 'Student') selected @endif>Student</option>
 
                                         </select>
                                     </div>
                                     <div class="col-lg-3 col-md-6">
                                         <p> <b>Employee Name</b> </p>
                                         <div class="form-group">
-                                            <input type="text" class="form-control"
-                                                value="{{ $employee['employee_name'] }}" name="employee_name"
-                                                placeholder="employee Name" />
+                                            <input type="text" class="form-control" value="{{ $employee['name'] }}"
+                                                name="employee_name" placeholder="employee Name" />
+                                            @error('employee_name')
+                                                <div style="color:red;">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="col-lg-3 col-md-6">
                                         <p> <b>Empl Number</b> (<small>Login Number</small> )</p>
                                         <div class="form-group">
-                                            <input type="number" value="{{ $employee['employee_number'] }}"
-                                                id="employee_number" readonly class="form-control" maxlength="10"
-                                                name="employee_number" placeholder="employee Number" />
+                                            <input type="number" value="{{ $employee['phone'] }}" id="employee_number"
+                                                readonly class="form-control" maxlength="10" name="employee_number"
+                                                placeholder="employee Number" />
+                                            @error('employee_number')
+                                                <div style="color:red;">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="col-lg-3 col-md-6">
                                         <p> <b>Login Pin</b> </p>
-                                        <input type="number" value="{{ $employee['GetEmployee']['login_pin'] }}"
-                                            name="login_pin" maxlength="4" minlength="4" class="form-control"
-                                            placeholder="Login pin" />
+                                        <input type="number" value="{{ $employee['login_pin'] }}" id="login_pin"
+                                            name="login_pin" class="form-control" placeholder="Login pin" />
+                                        @error('login_pin')
+                                            <div style="color:red;">{{ $message }}</div>
+                                        @enderror
                                     </div>
 
                                 </div>
@@ -129,18 +137,21 @@
                                     <div class="col-lg-12 col-md-6">
                                         <p> <b>Ref mobile number</b> </p>
                                         <div class="form-group">
-                                            <input type="number" id="ref_number" class="form-control" name="ref_number"
+                                            <input type="text" class="form-control" name="ref_number"
                                                 value="{{ $employee['ref_number'] }}" placeholder="Ref mobile number" />
+                                            @error('ref_number')
+                                                <div style="color:red;">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
 
                                     <div class="col-lg-6 col-md-6 rounded border">
                                         <p> <b>Upload Pictures</b> </p>
                                         <div class="form-group">
-                                            <input type="file" name="picture_document[]" multiple class="form-control" />
+                                            <input type="file" name="picture_document[]" accept=".png, .jpg, .jpeg" class="form-control" />
                                             @foreach ($employee['GetEmployeePicture'] as $key => $picture)
-                                                <label for=""><b>{{ $key + 1 }}.</b>
-                                                    {{ $picture['picture_document'] }}</label>
+
+                                                    <img src="{{ asset('/storage/employee/picture_document/' . $picture['picture_document']) }}" alt="{{ $picture['picture_document'] }}" width="100" height="100">
                                                 <a href="{{ asset('/storage/employee/picture_document/' . $picture['picture_document']) }}"
                                                     download="{{ $picture['picture_document'] }}" title="Download"> <i
                                                         class="material-icons">move_to_inbox</i></a>
@@ -279,9 +290,9 @@
             }
         });
 
-        jQuery("#ref_number").keypress(function(e) {
+        jQuery("#login_pin").keypress(function(e) {
             var length = jQuery(this).val().length;
-            if (length > 9) {
+            if (length > 3) {
                 return false;
             } else if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
                 return false;
@@ -333,11 +344,6 @@
                     /^(\+?1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/);
             }, "Please specify a valid phone number");
 
-            jQuery.validator.addMethod("Ref", function(ref_number, element) {
-                ref_number = ref_number.replace(/\s+/g, "");
-                return this.optional(element) || ref_number.length > 9 && ref_number.match(
-                    /^(\+?1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/);
-            }, "Please specify a valid phone number");
 
             $('#user-form').validate({ // initialize the plugin
                 rules: {
@@ -347,7 +353,6 @@
                     },
                     ref_number: {
                         required: true,
-                        Ref: true
                     },
                     employee_name: {
                         required: true,

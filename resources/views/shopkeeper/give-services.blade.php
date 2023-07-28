@@ -56,11 +56,25 @@
                                 <div class="body ">
                                     <div class="row clearfix">
                                         <div class="col-lg-12 col-md-12">
-                                            <div class="checkbox">
-                                                <input name="deal[]" class="ak" value="{{ $deal['id'] }}"
-                                                    id="{{ $deal['id'] }}" type="checkbox">
+                                            <div>
+                                                <input name="deal" class="ak" value="{{ $deal['id'] }}"
+                                                    id="{{ $deal['id'] }}" type="radio">
                                                 <label for="{{ $deal['id'] }}">
                                                     <b>{{ $deal['shop_deal'] }}</b>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2 col-md-2">
+                                            <div class="">
+                                                <label>
+                                                    <p>Saving Upto</p>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-10 col-md-10">
+                                            <div class="">
+                                                <label>
+                                                    <b>{{ $deal['saving_up_to'] }}</b>
                                                 </label>
                                             </div>
                                         </div>

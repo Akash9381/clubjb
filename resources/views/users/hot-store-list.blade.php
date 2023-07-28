@@ -58,19 +58,10 @@
                             </li>
                         </ul>
                     </nav>
-
-
                 </div>
             </div>
         </div>
-
-
         <!-- lochal store-->
-
-
-
-
-
     </div>
     <!-- Internet Connection Status-->
     <div class="internet-connection-status" id="internetStatus"></div>

@@ -5,14 +5,14 @@
         <div class="block-header">
             <div class="row">
                 <div class="col-lg-7 col-md-6 col-sm-12">
-                    <h2>profile
+                    <h2>{{ $customer['name'] }} Profile
                         <small>Welcome to Club Jb</small>
                     </h2>
                 </div>
                 <div class="col-lg-5 col-md-6 col-sm-12">
                     <ul class="breadcrumb float-md-right">
-                        <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item"><a href="javascript:void(0);">profile</a></li>
+                        <li class="breadcrumb-item"><a href="{{url('admin/dashboard')}}"><i class="zmdi zmdi-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="javascript:void(0);">Profile</a></li>
 
                     </ul>
                 </div>
@@ -29,15 +29,15 @@
                             <div class="row clearfix">
                                 <div class="col-lg-4 col-md-4 col-4">
                                     <h6 class="mt-2 m-b-0">Customer Name </h6>
-                                    <span class="job_post">{{ $customer['customer_name'] ?? 'NA' }}</span>
+                                    <span class="job_post">{{ $customer['name'] }}</span>
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-4">
                                     <h6 class="mt-2 m-b-0">Customer Number </h6>
-                                    <span class="job_post">{{ $customer['customer_number'] ?? 'NA' }}</span>
+                                    <span class="job_post">{{ $customer['phone'] }}</span>
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-4">
                                     <h6 class="mt-2 m-b-0">Customer Id </h6>
-                                    <span class="job_post">{{ $customer['customer_id'] ?? 'NA' }}</span>
+                                    <span class="job_post">{{ $customer['customer_id'] }}</span>
                                 </div>
                             </div>
 
@@ -55,7 +55,7 @@
                             <div class="row clearfix">
                                 <div class="col-lg-4 col-md-6">
                                     <h6 class="mt-2 m-b-0">Payment Status</h6>
-                                    <span class="job_post">{{ $customer['payment_status'] }}</span>
+                                    <span class="job_post">{{ $customer['Customer']['payment_status'] }}</span>
                                 </div>
                                 <div class="col-lg-4 col-md-6">
                                     <h6 class="mt-2 m-b-0">Add date </h6>
@@ -89,12 +89,12 @@
                             <div class="row clearfix">
                                 <div class="col-lg-4 col-md-6">
                                     <h6 class="mt-2 m-b-0">Login Pin </h6>
-                                    <span class="job_post">{{ $customer['GetCustomers']['login_pin'] ?? 'NA' }}</span>
+                                    <span class="job_post">{{ $customer ['login_pin'] }}</span>
 
                                 </div>
                                 <div class="col-lg-4 col-md-6">
                                     <h6 class="mt-2 m-b-0">Ref mobile number </h6>
-                                    <span class="job_post">{{ $customer['ref_number'] ?? 'NA' }}</span>
+                                    <span class="job_post">{{ $customer['ref_number'] }}</span>
 
                                 </div>
 
@@ -113,9 +113,8 @@
                         <div class="body">
                             <div class="row clearfix">
                                 <div class="col-sm-12">
-                                    <a href="{{ url('admin/update-customer/' . $customer['customer_id']) }}"
+                                    <a href="{{ url('admin/update-customer/' . $customer['id']) }}"
                                         class="btn btn-primary btn-round"> Edit </a>
-                                    <button type="submit" class="btn btn-primary btn-round"> Delete</button>
                                 </div>
 
                                 <div style="visibility: hidden;" id="nouislider_basic_example"></div>

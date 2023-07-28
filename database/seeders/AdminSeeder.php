@@ -20,7 +20,8 @@ class AdminSeeder extends Seeder
         $user = User::create([
             'name'=>'Admin',
             'email'=>'clubjb@gmail.com',
-            'phone' => '9876316522',
+            'phone' => '9999999999',
+            'customer_id' => 'A-123456',
             'password'=>Hash::make('Admin@123'),
             'email_verified_at'=>Carbon::now()
         ]);

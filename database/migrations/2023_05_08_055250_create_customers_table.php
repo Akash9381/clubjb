@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('city')->nullable();
             $table->string('bussiness_profile')->nullable();
             $table->string('ref_number')->nullable();
+            $table->string('ref_number_2')->nullable();
             $table->string('wp_msg')->nullable();
             $table->string('status')->nullable();
             $table->string('active_date')->nullable();

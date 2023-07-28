@@ -11,6 +11,6 @@ class GlobalBanner extends Model
     protected $guard = ['id'];
     public function GetShop()
     {
-        return $this->hasOne(GlobalShop::class, 'user_id', 'shop_id');
+        return $this->hasOne(User::class, 'id', 'shop_id');
     }
 }

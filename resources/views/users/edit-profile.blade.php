@@ -8,39 +8,45 @@
         <div class="container">
             <!-- Profile Wrapper-->
             <div class="profile-wrapper-area py-3">
-                <!-- User Information-->
-                <div class="card user-info-card">
-                    <div class="card-body p-4 d-flex align-items-center">
-                        <div class="user-profile me-3"><img src="img/bg-img/9.jpg" alt="">
-                            <div class="change-user-thumb">
-                                <form>
-                                    <input class="form-control-file" type="file">
-                                    <button><i class="fa-solid fa-pen"></i></button>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="user-info">
-                            <p class="mb-0 text-dark">{{ $user['GetCustomer']['customer_id'] }}</p>
-                            <h5 class="mb-0">{{ Auth::user()->name }}</h5>
-                        </div>
 
+                <form action="{{ url('user/update-profile') }}" method="Post" enctype="multipart/form-data">
+                    @csrf
+                    <!-- User Information-->
+                    <div class="card user-info-card">
+                        <div class="card-body p-4 d-flex align-items-center">
+                            <div class="user-profile me-3">
+                                <div id="preview">
+                                    @if(ProfileImage())
+                                    <img src="{{ asset('/storage/employee/picture_document/' . ProfileImage()) }}" alt="profile_image">
+                                    @else
+                                    <img src="{{ asset('users/img/bg-img/9.jpg') }}" alt="profile_image">
+                                    @endif
+                                </div>
+                                <div class="change-user-thumb">
+                                    <input class="form-control-file" id="image" name="image[]" type="file">
+                                    <button><i class="fa-solid fa-pen"></i></button>
+                                </div>
+                            </div>
+                            <div class="user-info">
+                                <p class="mb-0 text-dark">{{ $user['GetCustomer']['customer_id'] }}</p>
+                                <h5 class="mb-0">{{ Auth::user()->name }}</h5>
+                            </div>
+
+                        </div>
                     </div>
-                </div>
-                <!-- User Meta Data-->
-                <div class="card user-data-card">
-                    <div class="card-body">
-                        @if (session()->has('error'))
-                            <div class="alert alert-danger">
-                                {{ session()->get('error') }}
-                            </div>
-                        @endif
-                        @if (session()->has('success'))
-                            <div class="alert alert-success">
-                                {{ session()->get('success') }}
-                            </div>
-                        @endif
-                        <form action="{{ url('user/update-profile') }}" method="Post">
-                            @csrf
+                    <!-- User Meta Data-->
+                    <div class="card user-data-card">
+                        <div class="card-body">
+                            @if (session()->has('error'))
+                                <div class="alert alert-danger">
+                                    {{ session()->get('error') }}
+                                </div>
+                            @endif
+                            @if (session()->has('success'))
+                                <div class="alert alert-success">
+                                    {{ session()->get('success') }}
+                                </div>
+                            @endif
                             <div class="mb-3">
                                 <div class="title mb-2"><i class="fa-solid fa-at"></i><span>Username</span></div>
                                 <input class="form-control" disabled type="text"
@@ -68,10 +74,27 @@
                                     value="{{ $user['GetCustomer']['address_1'] ?? 'NA' }}">
                             </div>
                             <button class="btn btn-success w-100" type="submit">Save All Changes</button>
-                        </form>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>
+@endsection
+@section('js')
+    <script>
+        function imagePreview(fileInput) {
+            if (fileInput.files && fileInput.files[0]) {
+                var fileReader = new FileReader();
+                fileReader.onload = function(event) {
+                    $('#preview').html('<img src="' + event.target.result + '" />');
+                };
+                fileReader.readAsDataURL(fileInput.files[0]);
+            }
+        }
+
+        $("#image").change(function() {
+            imagePreview(this);
+        });
+    </script>
 @endsection

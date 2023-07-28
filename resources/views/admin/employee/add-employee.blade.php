@@ -1,6 +1,6 @@
 @extends('admin.layouts.admin_layouts')
 
-
+@section('title', 'Employee Add')
 
 <!-- Right Sidebar -->
 
@@ -18,7 +18,8 @@
                 </div>
                 <div class="col-lg-5 col-md-6 col-sm-12">
                     <ul class="breadcrumb float-md-right">
-                        <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="{{ url('admin/dashboard') }}"><i class="zmdi zmdi-home"></i></a>
+                        </li>
                         <li class="breadcrumb-item"><a href="javascript:void(0);">Employee </a></li>
 
                     </ul>
@@ -90,26 +91,31 @@
                                             <option>Full Time</option>
                                             <option>Part Time</option>
                                             <option>Student</option>
-
                                         </select>
                                     </div>
                                     <div class="col-lg-3 col-md-6">
                                         <p> <b>Employee Name</b> </p>
                                         <div class="form-group">
-                                            <input type="text" class="form-control" name="employee_name"
-                                                placeholder="employee Name" />
+                                            <input type="text" value="{{ old('employee_name') }}" class="form-control"
+                                                name="employee_name" placeholder="employee Name" />
+                                            @error('employee_name')
+                                                <div style="color:red;">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="col-lg-3 col-md-6">
                                         <p> <b>Empl Number</b> (<small>Login Number</small> )</p>
                                         <div class="form-group">
-                                            <input type="number" id="employee_number" class="form-control" maxlength="10"
+                                            <input type="number" value="{{ old('employee_number') }}" id="employee_number" class="form-control"
                                                 name="employee_number" placeholder="employee Number" />
+                                                @error('employee_number')
+                                                <div style="color:red;">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="col-lg-3 col-md-6">
                                         <p> <b>Login Pin</b> </p>
-                                        <input type="number" value="1111" name="login_pin" maxlength="4" minlength="4"
+                                        <input type="number" value="{{ old('login_pin') }}" id="login_pin" name="login_pin"
                                             class="form-control" placeholder="Login pin" />
                                     </div>
 
@@ -128,44 +134,42 @@
 
                             <div class="body">
                                 <div class="row clearfix">
-
-
                                     <div class="col-lg-12 col-md-6">
                                         <p> <b>Ref mobile number</b> </p>
                                         <div class="form-group">
-                                            <input type="number" id="ref_number" class="form-control" name="ref_number"
-                                                value="9999999999" placeholder="Ref mobile number" />
+                                            <input type="text" value="{{ old('ref_number') }}" class="form-control" name="ref_number"
+                                                placeholder="Ref mobile number" />
                                         </div>
                                     </div>
 
                                     <div class="col-lg-6 col-md-6 rounded border">
                                         <p> <b>Upload Pictures</b> </p>
                                         <div class="form-group">
-                                            <input type="file" name="picture_document[]" multiple class="form-control" />
+                                            <input type="file" name="picture_document[]" accept=".png, .jpg, .jpeg" class="form-control" />
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-6 rounded border">
                                         <p> <b>Upload Aadharcard</b> </p>
                                         <div class="form-group">
-                                            <input type="file" name="aadhar_document[]" multiple class="form-control" />
+                                            <input type="file" name="aadhar_document[]" accept=".png, .jpg, .jpeg, .pdf" multiple class="form-control" />
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-6 rounded border">
                                         <p> <b>Upload Driving Licence</b> </p>
                                         <div class="form-group">
-                                            <input type="file" name="driving_document[]" multiple class="form-control" />
+                                            <input type="file" accept=".png, .jpg, .jpeg, .pdf" name="driving_document[]" multiple class="form-control" />
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-6 rounded border">
                                         <p> <b>Upload CV</b> </p>
                                         <div class="form-group">
-                                            <input type="file" name="cv_document[]" multiple class="form-control" />
+                                            <input type="file" accept=".png, .jpg, .jpeg, .pdf" name="cv_document[]" multiple class="form-control" />
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-6 rounded border">
                                         <p> <b>Upload Passport</b> </p>
                                         <div class="form-group">
-                                            <input type="file" name="passport_document[]" multiple
+                                            <input type="file" accept=".png, .jpg, .jpeg, .pdf" name="passport_document[]" multiple
                                                 class="form-control" />
                                         </div>
                                     </div>
@@ -215,10 +219,9 @@
                 return false;
             }
         });
-
-        jQuery("#ref_number").keypress(function(e) {
+        jQuery("#login_pin").keypress(function(e) {
             var length = jQuery(this).val().length;
-            if (length > 9) {
+            if (length > 3) {
                 return false;
             } else if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
                 return false;
@@ -270,27 +273,16 @@
                     /^(\+?1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/);
             }, "Please specify a valid phone number");
 
-            jQuery.validator.addMethod("Ref", function(ref_number, element) {
-                ref_number = ref_number.replace(/\s+/g, "");
-                return this.optional(element) || ref_number.length > 9 && ref_number.match(
-                    /^(\+?1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/);
-            }, "Please specify a valid phone number");
-
-            $('#user-form').validate({ // initialize the plugin
+            $('#user-form').validate({
                 rules: {
                     employee_number: {
                         required: true,
                         phoneUS: true
                     },
-                    ref_number: {
-                        required: true,
-                        Ref: true
-                    },
                     employee_name: {
                         required: true,
                     },
                     login_pin: {
-                        required: true,
                         number: true,
                         minlength: 4,
                         maxlength: 4

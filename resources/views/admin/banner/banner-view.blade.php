@@ -30,11 +30,11 @@
                             <div class="row clearfix">
                                 <div class="col-lg-4 col-md-4 col-4">
                                     <h6 class="mt-2 m-b-0">Shop Id </h6>
-                                    <span class="job_post">{{ $banner['GetShop']['shop_id'] ?? 'NA' }}</span>
+                                    <span class="job_post">{{ $banner['GetShop']['customer_id'] ?? 'NA' }}</span>
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-4">
                                     <h6 class="mt-2 m-b-0">Shop Name </h6>
-                                    <span class="job_post">{{ $banner['GetShop']['shop_name'] ?? 'NA' }}</span>
+                                    <span class="job_post">{{ $banner['GetShop']['name'] ?? 'NA' }}</span>
                                 </div>
                                 <div class="col-lg-4 col-md-6">
                                     <h6 class="mt-2 m-b-0">Add date </h6>
@@ -100,7 +100,6 @@
                                 <div class="col-sm-12">
                                     <a href="{{ url('admin/update-banner/' . $banner['id']) }}"
                                         class="btn btn-primary btn-round"> Edit </a>
-                                    <button type="submit" class="btn btn-primary btn-round"> Delete</button>
                                 </div>
 
                                 <div style="visibility: hidden;" id="nouislider_basic_example"></div>

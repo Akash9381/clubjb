@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('user_id')->nullable();
             $table->string('shop_id')->nullable();
             $table->string('ref_number')->nullable();
+            $table->string('ref_number_2')->nullable();
             $table->string('category')->nullable();
             $table->string('sub_category')->nullable();
             $table->string('hot_store')->nullable();
@@ -37,8 +38,8 @@ return new class extends Migration
             $table->string('region_name')->nullable();
             $table->string('city_name')->nullable();
             $table->string('zip_code')->nullable();
-            $table->string('shop_help')->nullable();
-            $table->string('shop_terms')->nullable();
+            $table->text('shop_help')->nullable();
+            $table->text('shop_terms')->nullable();
             $table->string('status')->nullable();
             $table->string('active_date')->nullable();
             $table->timestamps();

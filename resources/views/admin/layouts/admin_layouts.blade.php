@@ -32,6 +32,7 @@
     <link rel="stylesheet" href="{{asset('admin/light/assets/css/main.css')}}">
     <link rel="stylesheet" href="{{asset('admin/light/assets/css/coustam.css')}}">
     <link rel="stylesheet" href="{{asset('admin/light/assets/css/color_skins.css')}}">
+    <link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css" />
     @yield('css')
 </head>
 
@@ -61,6 +62,9 @@
 
  <script src="{{asset('admin/light/assets/bundles/mainscripts.bundle.js')}}"></script><!-- Custom Js -->
  <script src="{{asset('admin/light/assets/js/pages/forms/advanced-form-elements.js')}}"></script>
+
+ {{-- <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js"></script> --}}
+ <script src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"></script>
 
 @yield('js')
 </body>

@@ -33,6 +33,7 @@
     <link rel="stylesheet" href="{{ asset('employee/light/assets/css/main.css')}}">
     <link rel="stylesheet" href="{{asset('employee/light/coustam.css')}}">
     <link rel="stylesheet" href="{{ asset('employee/light/assets/css/color_skins.css')}}">
+    <link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css" />
     @yield('css')
 </head>
 
@@ -57,6 +58,8 @@
 
     <script src="{{ asset('employee/light/assets/bundles/mainscripts.bundle.js')}}"></script>
     <script src="{{ asset('employee/light/assets/js/pages/index.js')}}"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"></script>
     @yield('js')
 </body>
 

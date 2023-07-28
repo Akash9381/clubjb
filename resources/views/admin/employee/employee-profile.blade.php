@@ -5,14 +5,14 @@
         <div class="block-header">
             <div class="row">
                 <div class="col-lg-7 col-md-6 col-sm-12">
-                    <h2>profile
+                    <h2>Employee Profile
                         <small>Welcome to Club Jb</small>
                     </h2>
                 </div>
                 <div class="col-lg-5 col-md-6 col-sm-12">
                     <ul class="breadcrumb float-md-right">
-                        <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item"><a href="javascript:void(0);">profile</a></li>
+                        <li class="breadcrumb-item"><a href="{{url('admin/dashboard')}}"><i class="zmdi zmdi-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="javascript:void(0);">Profile</a></li>
 
                     </ul>
                 </div>
@@ -65,7 +65,7 @@
                             <div class="row clearfix">
                                 <div class="col-lg-4 col-md-6">
                                     <h6 class="mt-2 m-b-0">Emp id </h6>
-                                    <span class="job_post">{{ $employee['employee_id'] ?? 'NA' }}</span>
+                                    <span class="job_post">{{ $employee['customer_id'] }}</span>
                                 </div>
                                 <div class="col-lg-4 col-md-6">
                                     <h6 class="mt-2 m-b-0">Add date </h6>
@@ -100,15 +100,15 @@
                             <div class="row clearfix">
                                 <div class="col-lg-4 col-md-6">
                                     <h6 class="mt-2 m-b-0">Employee type </h6>
-                                    <span class="job_post">{{ $employee['employee_type'] ?? 'NA' }}</span>
+                                    <span class="job_post">{{ $employee['Employee']['employee_type'] ?? 'NA' }}</span>
                                 </div>
                                 <div class="col-lg-4 col-md-6">
                                     <h6 class="mt-2 m-b-0">Employee Name </h6>
-                                    <span class="job_post">{{ $employee['employee_name'] ?? 'NA' }}</span>
+                                    <span class="job_post">{{ $employee['name'] }}</span>
                                 </div>
                                 <div class="col-lg-4 col-md-6">
                                     <h6 class="mt-2 m-b-0">Employee Number </h6>
-                                    <span class="job_post">{{ $employee['employee_number'] ?? 'NA' }}</span>
+                                    <span class="job_post">{{ $employee['phone'] }}</span>
                                 </div>
 
                             </div>
@@ -129,7 +129,7 @@
 
                                 <div class="col-lg-4 col-md-6">
                                     <h6 class="mt-2 m-b-0">Login Pin </h6>
-                                    <span class="job_post">{{ $employee['GetEmployee']['login_pin'] ?? 'NA' }}</span>
+                                    <span class="job_post">{{ $employee['login_pin'] ?? 'NA' }}</span>
 
                                 </div>
 
@@ -177,8 +177,7 @@
                                     <p> <b>Uploaded Pictures</b> </p>
                                     <div class="form-group">
                                         @forelse ($employee['GetEmployeePicture'] as $key => $picture)
-                                            <label for=""><b>{{ $key + 1 }}.</b>
-                                                {{ $picture['picture_document'] }}</label>
+                                        <img src="{{ asset('/storage/employee/picture_document/' . $picture['picture_document']) }}" alt="{{ $picture['picture_document'] }}" width="100" height="100">
                                             <a href="{{ asset('/storage/employee/picture_document/' . $picture['picture_document']) }}"
                                                 download="{{ $picture['picture_document'] }}" title="Download"> <i
                                                     class="material-icons">move_to_inbox</i></a>
@@ -244,8 +243,7 @@
                                 </div>
                                 <div class="col-sm-12">
                                     <a class="btn btn-primary btn-round"
-                                        href="{{ url('admin/edit-employee/' . $employee['employee_id']) }}"> Edit </a>
-                                    <a class="btn btn-primary btn-round"> Delete</a>
+                                        href="{{ url('admin/edit-employee/' . $employee['id']) }}"> Edit </a>
 
                                 </div>
 

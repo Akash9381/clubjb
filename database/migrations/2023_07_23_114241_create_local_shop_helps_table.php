@@ -13,11 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('shop_cvs', function (Blueprint $table) {
+        Schema::create('local_shop_helps', function (Blueprint $table) {
             $table->id();
-            $table->string('user_id')->nullable();
-            $table->string('shop_id')->nullable();
-            $table->string('shop_cv')->nullable();
+            $table->text('help');
             $table->timestamps();
         });
     }
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('shop_cvs');
+        Schema::dropIfExists('local_shop_helps');
     }
 };

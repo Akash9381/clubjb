@@ -13,11 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('shop_drivings', function (Blueprint $table) {
+        Schema::create('global_shop_helps', function (Blueprint $table) {
             $table->id();
-            $table->string('user_id')->nullable();
-            $table->string('shop_id')->nullable();
-            $table->string('shop_driving')->nullable();
+            $table->text('help');
             $table->timestamps();
         });
     }
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('shop_drivings');
+        Schema::dropIfExists('global_shop_helps');
     }
 };

@@ -7,6 +7,7 @@ use App\Models\GlobalBanner;
 use App\Models\GlobalShop;
 use App\Models\Shop;
 use App\Models\state;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Image;
 
@@ -15,13 +16,23 @@ class BannerController extends Controller
     public function Banner()
     {
         $states = state::all();
-        $shops  = Shop::orderBy('id', 'desc')->where('status', '1')->get();
+        $shops  = User::whereHas(
+            'roles',
+            function ($q) {
+                $q->where('name', 'shopkeeper');
+            }
+        )->where('status', 1)->orderBy('id', 'desc')->get();
         return view('admin.banner.add-banner', compact('states', 'shops'));
     }
 
     public function GlobalBanner()
     {
-        $shops = GlobalShop::orderBy('id', 'desc')->where('status', '1')->get();
+        $shops = User::whereHas(
+            'roles',
+            function ($q) {
+                $q->where('name', 'shopkeeper');
+            }
+        )->where('status', 1)->orderBy('id', 'desc')->get();
         return view('admin.banner.add-global-banner', compact('shops'));
     }
 
@@ -130,14 +141,24 @@ class BannerController extends Controller
     public function BannerUpdate($id = null)
     {
         $states = state::all();
-        $shops  = Shop::orderBy('id', 'desc')->where('status', '1')->get();
+        $shops  = User::whereHas(
+            'roles',
+            function ($q) {
+                $q->where('name', 'shopkeeper');
+            }
+        )->where('status', 1)->orderBy('id', 'desc')->get();
         $banner = Banner::with('GetShop')->where('id', $id)->first();
         return view('admin.banner.update-banner', compact('states', 'shops', 'banner'));
     }
 
     public function GlobalBannerUpdate($id = null)
     {
-        $shops  = GlobalShop::orderBy('id', 'desc')->where('status', '1')->get();
+        $shops  = User::whereHas(
+            'roles',
+            function ($q) {
+                $q->where('name', 'shopkeeper');
+            }
+        )->where('status', 1)->orderBy('id', 'desc')->get();
         $banner = GlobalBanner::with('GetShop')->where('id', $id)->first();
         return view('admin.banner.update-global-banner', compact('shops', 'banner'));
     }

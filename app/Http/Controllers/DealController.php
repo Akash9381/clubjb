@@ -45,6 +45,37 @@ class DealController extends Controller
         }
     }
 
+    public function AdminEditDeal($id = null)
+    {
+        $deal = ShopDeal::where('id', $id)->first();
+        if ($deal) {
+            return view('admin.shop.update-deal', compact('deal'));
+        } else {
+            return back()->with('error', 'Something Went Wrong');
+        }
+    }
+
+    public function AdminUpdateDeal(Request $request, $id = null)
+    {
+        $this->validate($request, [
+            'shop_deal'    => 'required',
+            'saving_up_to' => 'required',
+        ]);
+        try {
+            ShopDeal::where('id', $id)->update([
+                'shop_deal'    => $request['shop_deal'],
+                'saving_up_to' => $request['saving_up_to']
+            ]);
+            return back()->with('success', 'Deal Updated Successfully');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
+    public function AdminDealDelete($user_id = null,$id=null){
+        return $user_id;
+        ShopDeal::where('id',$id)->delete();
+        return back()->with('error','Deal Deleted Successfully');
+    }
     public function EditDeal($id = null)
     {
         $deal = ShopDeal::where('id', $id)->first();

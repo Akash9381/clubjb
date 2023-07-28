@@ -104,12 +104,12 @@ class AuthController extends Controller
 
     public function UserAuth(Request $request)
     {
-        // return $request->all();
         $this->Validate($request, [
             'phone_number' => 'required|numeric|digits:10',
         ]);
-        $user = User::where('phone', $request['phone_number'])->first();
-        $phone = $request['phone_number'];
+        $user   = User::with('GetCustomer')->where('phone', $request['phone_number'])->first();
+        $phone  = $request['phone_number'];
+        // return $user['GetCustomer']['status'];
         if ($user) {
             return Redirect::route('loginpin', ['phn' => $phone]);
         } else {

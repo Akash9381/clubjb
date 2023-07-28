@@ -104,7 +104,7 @@
                             Login</a>
                         <a class="forgot-password d-block mt-3 mb-1" href="{{ url('employee/login') }}">Employee
                             Login</a>
-                        <a class="forgot-password d-block mt-3 mb-1" href="{{ url('admin/sign-in') }}">Admin Login</a>
+                        <a class="forgot-password d-block mt-3 mb-1" href="{{ url('admin/login') }}">Admin Login</a>
                         {{-- <p class="mb-0 mt-3">Didn't have an account?<a class="mx-1" href="register.html">Register Now</a></p> --}}
                     </div>
                     <!-- View As Guest-->

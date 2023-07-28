@@ -5,6 +5,8 @@ use App\Models\Employee;
 use App\Models\GlobalShop;
 use App\Models\Shop;
 use App\Models\city;
+use App\Models\EmployePictureDocument;
+use Illuminate\Support\Facades\Auth;
 use Request as RQ;
 
 if(!function_exists('setActiveClass')){
@@ -53,5 +55,14 @@ if(!function_exists('GetCity')){
        return city::all();
     }
 }
+
+if(!function_exists('ProfileImage')){
+    function ProfileImage(){
+       $picture_image =  EmployePictureDocument::where('user_id',Auth::user()->id)->first('picture_document');
+       return $picture_image['picture_document'];
+    }
+}
+
+
 
 

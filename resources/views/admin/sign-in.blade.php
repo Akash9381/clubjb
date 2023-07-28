@@ -58,7 +58,6 @@
                         </div>
                         <div class="footer text-center">
                             <button class="btn btn-primary btn-round btn-lg btn-block ">LOG IN</button>
-                            <!--<h5><a href="forgot-password.html" class="link">Forgot Password?</a></h5>-->
                         </div>
                     </form>
                 </div>

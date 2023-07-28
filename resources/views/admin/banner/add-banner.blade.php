@@ -79,7 +79,9 @@
                                             data-placeholder="Select">
                                             <option value="none">Select Shop</option>
                                             @forelse ($shops as $shop)
-                                                <option value="{{ $shop['user_id'] }}">{{ $shop['shop_name'] }}</option>
+                                            @if (str_contains($shop['customer_id'], 'LS')==true)
+                                                <option value="{{ $shop['id'] }}">{{ $shop['name'] }}</option>
+                                                @endif
                                             @empty
                                                 <option value="none">No Shop Available</option>
                                             @endforelse
@@ -88,13 +90,8 @@
                                     </div>
                                     <div class="col-lg-6 col-md-6">
                                         <p> <b>Brand Name</b> </p>
-                                        <select name="brand_name" id="brand_name" class="form-control show-tick ms select2"
-                                            data-placeholder="Select">
-                                            <option value="none">Select Brand</option>
-                                            <option>text</option>
-                                            <option>text</option>
-                                        </select>
-                                        <div style="color:red;" id="msg_brand"></div>
+                                        <input type="text" required name="brand_name" id="brand_name" class="form-control"
+                                                placeholder="Brand Name" />
                                     </div>
                                 </div>
                             </div>
@@ -126,7 +123,7 @@
                                     <div class="col-lg-12 col-md-12">
                                         <p> <b>Banner Upload</b> <small>(upload banner in 1960*600px)</small> </p>
                                         <div class="form-group">
-                                            <input type="file" name="banner_image" class="form-control" placeholder="Banner Name" />
+                                            <input required type="file" accept=".png, .jpg, .jpeg, .webp" name="banner_image" class="form-control" placeholder="Banner Name" />
                                         </div>
                                     </div>
                                 </div>
@@ -154,8 +151,6 @@
             var msg_city = "Please select city";
             var shop = $("#msg_shop");
             var msg_shop = "Please select shop name";
-            var brand = $("#msg_brand");
-            var msg_brand = "Please select Brand";
             if ($('#shop_id').val() == "none") {
                 shop.append(msg_shop);
                 e.preventDefault();
@@ -201,11 +196,6 @@
         $("#shop_id").on('change', function() {
             if ($("#shop_id").val() != "none") {
                 $("#msg_shop").html('');
-            }
-        })
-        $("#brand_name").on('change', function() {
-            if ($("#brand_name").val() != "none") {
-                $("#msg_brand").html('');
             }
         })
         $(document).ready(function() {

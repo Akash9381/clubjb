@@ -15,27 +15,47 @@ class CustomerController extends Controller
 {
     public function NewCustomer(Request $request)
     {
-        $user = User::where('phone', $request['customer_number'])->first();
+        $this->validate($request, [
+            'name'      => 'required',
+            'phone'     => 'required|integer|digits:10',
+        ]);
+        $user               = User::where('phone', $request['phone'])->first();
+        $ref_id             = User::where('customer_id', $request['ref_number'])->first();
+        $ref_num            = User::where('phone', $request['ref_number'])->first();
         if ($user) {
-            return back()->with('error', 'User Already Exist');
+            return back()->with('error', 'Already Exist');
         } else {
             try {
+                if (empty($request['ref_number'])) {
+                    $request['ref_number'] = 'A-123456';
+                } else {
+                    if (empty($ref_id)) {
+                        if (empty($ref_num)) {
+                            return back()->with('error', 'Refer Id/Ref Number Invalid');
+                        }
+                    }
+                }
+                if (empty($request['login_pin'])) {
+                    $request['login_pin'] = '1111';
+                }
+                $customer_id            = 'C-' . sprintf("%06d", mt_rand(1, 999999));
+
                 $data                   = new User();
-                $data->name             = $request['customer_name'];
-                $data->phone            = $request['customer_number'];
+                $data->name             = $request['name'];
+                $data->phone            = $request['phone'];
+                $data->customer_id      = $customer_id;
                 $data->login_pin        = $request['login_pin'];
+                $data->ref_number       = $request['ref_number'];
+                $data->status           = 0;
                 $data->save();
+
                 $data->assignRole(['customer']);
-                $customer_id                = 'C-' . sprintf("%06d", mt_rand(1, 999999));
+
                 $customer                   = new Customer();
                 $customer->user_id          = $data->id;
                 $customer->customer_id      = $customer_id;
-                $customer->customer_name    = $request['customer_name'];
-                $customer->customer_number  = $request['customer_number'];
                 $customer->payment_status   = $request['payment_status'];
-                $customer->ref_number       = $request['ref_number'];
                 $customer->wp_msg           = $request['wp_msg'];
-                $customer->status           = '0';
                 $customer->save();
                 return back()->with('success', 'Customer Added Successfully');
             } catch (\Exception $e) {
@@ -72,7 +92,7 @@ class CustomerController extends Controller
                 $customer->wp_msg           = $request['wp_msg'];
                 $customer->status           = '0';
                 $customer->save();
-                return redirect('shopkeeper/give-services?phone='.$request['phone']);
+                return redirect('shopkeeper/give-services?phone=' . $request['phone']);
             } catch (\Exception $e) {
                 return back()->with('error', $e->getMessage());
             }
@@ -81,40 +101,46 @@ class CustomerController extends Controller
 
     public function  InActiveCustomers()
     {
-        // $customers = User::with('InActiveEmployee')->with('InActiveShopKeeper')->with('InActiveCustomer')->orderBy('id','desc')->get();
-        // return $customers;
-        $customers = Customer::with('GetCustomers')->where('status', '0')->orderBy('id','desc')->get();
+        $customers = User::whereHas(
+            'roles',
+            function ($q) {
+                $q->where('name', 'customer');
+            }
+        )->where('status', 0)->orderBy('id', 'desc')->get();
         return view('admin.customer.inactive-customers', compact('customers'));
     }
 
     public function  ActiveCustomers()
     {
-        // $customers = User::with('ActiveEmployee')->with('ActiveShopKeeper')->with('ActiveCustomer')->orderBy('id','desc')->get();
-        // return $customers;
-        $customers = Customer::with('GetCustomers')->where('status', '1')->get();
+        $customers = User::whereHas(
+            'roles',
+            function ($q) {
+                $q->where('name', 'customer');
+            }
+        )->where('status', 1)->orderBy('id', 'desc')->get();
         return view('admin.customer.active-customers', compact('customers'));
     }
 
     public function CustomerStatus(Request $request)
     {
-        if($request['status'] == '0'){
+        if ($request['status'] == '0') {
             $data['status'] = Customer::where('customer_id', $request['customer_id'])->update([
                 'status' => $request['status'],
                 'active_date' => null
             ]);
             return response()->json($data);
-        }else{
+        } else {
             $data['status'] = Customer::where('customer_id', $request['customer_id'])->update([
                 'status' => $request['status'],
-                'active_date'=> Carbon::now()
+                'active_date' => Carbon::now()
             ]);
             return response()->json($data);
         }
     }
 
-    public function CustomerProfile($customer_id)
+    public function CustomerProfile($id)
     {
-        $customer = Customer::with('GetCustomers')->where('customer_id', $customer_id)->first();
+        $customer = User::with('Customer')->where('id', $id)->first();
         return view('admin.customer.customer-profile', compact('customer'));
     }
 
@@ -150,29 +176,45 @@ class CustomerController extends Controller
         }
     }
 
-    public function EditCustomer($customer_id = null)
+    public function EditCustomer($id = null)
     {
-        $customer = Customer::with('GetCustomers')->where('customer_id', $customer_id)->first();
+        $customer = User::with('Customer')->where('id', $id)->first();
         return view('admin.customer.update-customer', compact('customer'));
     }
 
-    public function UpdateCustomer(Request $request, $customer_id = null)
+    public function UpdateCustomer(Request $request, $id = null)
     {
-        try {
-            $cust_id = Customer::where('customer_id', $customer_id)->first();
-            User::where('id', $cust_id->user_id)->update([
-                'name' => $request['customer_name']
-            ]);
+        $this->validate($request, [
+            'name'      => 'required',
+            'phone'     => 'required|integer|digits:10',
+        ]);
 
-            Customer::where('customer_id', $customer_id)->update([
-                'customer_name' => $request['customer_name'],
-                'payment_status' => $request['payment_status'],
-                'wp_msg' => $request['wp_msg'],
-                'ref_number' => $request['ref_number'],
-            ]);
-            return back()->with('success', 'Customer Updated Successfully');
-        } catch (\Exception $e) {
-            return back()->with('error', $e->getMessage());
+        $user               = User::where('id', $id)->where('phone', $request['phone'])->first();
+        $ref_id             = User::where('customer_id', $request['ref_number'])->first();
+        $ref_num            = User::where('phone', $request['ref_number'])->first();
+        if (empty($ref_id)) {
+            if (empty($ref_num)) {
+                return back()->with('error', 'Refer Id/Ref Number Invalid');
+            }
+        }
+        if ($user) {
+            try {
+                $cust_id = User::where('id', $id)->first();
+                User::where('id', $id)->update([
+                    'name' => $request['name'],
+                    'ref_number' => $request['ref_number']
+                ]);
+
+                Customer::where('user_id', $id)->update([
+                    'payment_status' => $request['payment_status'],
+                    'wp_msg' => $request['wp_msg'],
+                ]);
+                return back()->with('success', 'Customer Updated Successfully');
+            } catch (\Exception $e) {
+                return back()->with('error', $e->getMessage());
+            }
+        } else {
+            return back()->with('error', 'Inavlid User');
         }
     }
 

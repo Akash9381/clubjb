@@ -26,7 +26,7 @@
 
                         <div class="body">
                             <div class="table-responsive">
-                                <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                                <table id="table_id" class="table table-bordered table-striped table-hover js-basic-example dataTable">
                                     <thead>
                                         <tr>
                                             <th>Date</th>
@@ -39,7 +39,7 @@
                                     </thead>
 
                                     <tbody>
-                                        @forelse ($deals as $deal)
+                                        @foreach ($deals as $deal)
                                             <tr>
                                                 <td>{{ \Carbon\Carbon::parse($deal->created_at)->format('d-m-Y') }}</td>
                                                 <td>{{ $deal['GetUser']['name'] }}</td>
@@ -51,11 +51,7 @@
                                                             href="#"><i class="zmdi zmdi-eye"></i></a></button>
                                                 </td>
                                             </tr>
-                                        @empty
-                                            <tr>
-                                                <th class="text-center" colspan="6">No Data Available</th>
-                                            </tr>
-                                        @endforelse
+                                        @endforeach
 
                                     </tbody>
                                 </table>
@@ -76,4 +72,9 @@
     <script src="{{ asset('admin/assets/plugins/jquery-datatable/buttons/buttons.colVis.min.js') }}"></script>
     <script src="{{ asset('admin/assets/plugins/jquery-datatable/buttons/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('admin/assets/plugins/jquery-datatable/buttons/buttons.print.min.js') }}"></script>
+    <script>
+        $(function() {
+            $("#table_id").dataTable();
+        });
+    </script>
 @endsection

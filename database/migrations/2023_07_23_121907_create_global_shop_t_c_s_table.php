@@ -13,11 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('shop_passports', function (Blueprint $table) {
+        Schema::create('global_shop_t_c_s', function (Blueprint $table) {
             $table->id();
-            $table->string('user_id')->nullable();
-            $table->string('shop_id')->nullable();
-            $table->string('shop_passport')->nullable();
+            $table->text('tc');
             $table->timestamps();
         });
     }
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('shop_passports');
+        Schema::dropIfExists('global_shop_t_c_s');
     }
 };

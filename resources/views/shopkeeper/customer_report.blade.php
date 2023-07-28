@@ -1,5 +1,5 @@
 @extends('shopkeeper.layouts.shopkeeper_layouts')
-
+@section('title', 'Customer Report')
 @section('content')
     <section class="content">
         <div class="block-header">
@@ -26,7 +26,8 @@
 
                         <div class="body">
                             <div class="table-responsive">
-                                <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                                <table id="table_id"
+                                    class="table table-bordered table-striped table-hover js-basic-example dataTable">
                                     <thead>
                                         <tr>
                                             <th>Date</th>
@@ -40,7 +41,7 @@
                                     </thead>
 
                                     <tbody>
-                                        @forelse ($customers as $customer)
+                                        @foreach ($customers as $customer)
                                             <tr>
                                                 <td>{{ \Carbon\Carbon::parse($customer->created_at)->format('d-m-Y') }}</td>
                                                 <td>{{ $customer['customer_id'] }}</td>
@@ -56,18 +57,10 @@
                                                 </td>
                                                 <td>
                                                     <button class="btn btn-icon btn-neutral btn-icon-mini"><a
-                                                            href="#"><i
-                                                                class="zmdi zmdi-eye"></i></a></button>
-                                                    {{-- <button class="btn btn-icon btn-neutral btn-icon-mini"><a
-                                                            href="{{ url('employee/customer-profile/' . $customer->customer_id) }}"><i
-                                                                class="zmdi zmdi-eye"></i></a></button> --}}
+                                                            href="#"><i class="zmdi zmdi-eye"></i></a></button>
                                                 </td>
                                             </tr>
-                                        @empty
-                                            <tr>
-                                                <th class="text-center" colspan="7">No Data Available</th>
-                                            </tr>
-                                        @endforelse
+                                        @endforeach
 
                                     </tbody>
                                 </table>
@@ -88,4 +81,9 @@
     <script src="{{ asset('admin/assets/plugins/jquery-datatable/buttons/buttons.colVis.min.js') }}"></script>
     <script src="{{ asset('admin/assets/plugins/jquery-datatable/buttons/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('admin/assets/plugins/jquery-datatable/buttons/buttons.print.min.js') }}"></script>
+    <script>
+        $(function() {
+            $("#table_id").dataTable();
+        });
+    </script>
 @endsection

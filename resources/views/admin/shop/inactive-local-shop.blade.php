@@ -1,5 +1,5 @@
 @extends('admin.layouts.admin_layouts')
-
+@section('title', 'Inactive Local Shop')
 @section('css')
     <style>
         .switch {
@@ -69,14 +69,15 @@
         <div class="block-header">
             <div class="row">
                 <div class="col-lg-7 col-md-6 col-sm-12">
-                    <h2>Inactive Table
+                    <h2>Inactive Local Shop
                         <small>Welcome to Club Jb</small>
                     </h2>
                 </div>
                 <div class="col-lg-5 col-md-6 col-sm-12">
                     <ul class="breadcrumb float-md-right">
-                        <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item"><a href="javascript:void(0);">Inactive Table</a></li>
+                        <li class="breadcrumb-item"><a href="{{ url('admin/dashboard') }}"><i class="zmdi zmdi-home"></i></a>
+                        </li>
+                        <li class="breadcrumb-item"><a href="javascript:void(0);">Inactive Local Shop</a></li>
 
                     </ul>
                 </div>
@@ -90,10 +91,10 @@
 
                         <div class="body">
                             <div class="table-responsive">
-                                <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                                <table id="table_id"
+                                    class="table table-bordered table-striped table-hover js-basic-example dataTable">
                                     <thead>
                                         <tr>
-                                            <th>S.no</th>
                                             <th>Date</th>
                                             <th>Shop Id</th>
                                             <th>Name</th>
@@ -104,37 +105,35 @@
                                     </thead>
 
                                     <tbody>
-                                        @forelse ($inactive_shops as $customer)
+                                        @foreach ($inactive_shops as $customer)
+                                            @if (str_contains($customer['customer_id'], 'LS') == true)
                                             <tr>
-                                                <td>1</td>
                                                 <td>{{ \Carbon\Carbon::parse($customer->created_at)->format('d-m-Y') }}</td>
-                                                <td>{{ $customer['shop_id'] }}</td>
-                                                <td>{{ $customer['shop_name'] }}</td>
-                                                <td>{{ $customer['shop_number'] }}</td>
+                                                <td>{{ $customer['customer_id'] }}</td>
+                                                <td>{{ $customer['name'] }}</td>
+                                                <td>{{ $customer['phone'] }}</td>
 
                                                 <td>
                                                     <label class="switch">
-                                                        <input type="checkbox" value="{{ $customer['shop_id'] }}">
+                                                        <input type="checkbox" value="{{ $customer['id'] }}">
                                                         <span class="slider round"></span>
                                                     </label>
                                                 </td>
 
                                                 <td>
                                                     <button class="btn btn-icon btn-neutral btn-icon-mini"><a
-                                                            href="{{ url('admin/shop-profile/' . $customer->shop_id) }}"><i
+                                                            href="{{ url('admin/shop-profile/' . $customer->id) }}"><i
                                                                 class="zmdi zmdi-eye"></i></a></button>
                                                     <button class="btn btn-icon btn-neutral btn-icon-mini"><a
-                                                            href="{{ url('admin/local-shop/' . $customer->shop_id) }}"><i
+                                                            href="{{ url('admin/local-shop/' . $customer->id) }}"><i
                                                                 class="zmdi zmdi-edit"></i></a></button>
                                                     <button class="btn btn-icon btn-neutral btn-icon-mini"><i
                                                             class="zmdi zmdi-delete"></i></button>
                                                 </td>
                                             </tr>
-                                        @empty
-                                            <tr>
-                                                <th class="text-center" colspan="7">No Data Available</th>
-                                            </tr>
-                                        @endforelse
+
+                                            @endif
+                                        @endforeach
 
                                     </tbody>
                                 </table>
@@ -156,25 +155,30 @@
     <script src="{{ asset('admin/assets/plugins/jquery-datatable/buttons/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('admin/assets/plugins/jquery-datatable/buttons/buttons.print.min.js') }}"></script>
     <script>
+        $(function() {
+            $("#table_id").dataTable();
+        });
+    </script>
+    <script>
         $(document).ready(function() {
             var status = "0";
-            var shop_id = "";
+            var employee_id = "";
             $("input[type='checkbox']").change(function() {
                 if ($(this).is(":checked")) {
-                    shop_id = $(this).val();
+                    employee_id = $(this).val();
                     status = "1";
 
                 } else {
-                    var shop_id = $(this).val();
+                    var employee_id = $(this).val();
                     status = "0";
                 }
                 $.ajax({
-                    url: "/admin/shop_status",
+                    url: "/admin/employee_status",
                     type: "get",
                     dataType: 'json',
                     data: {
                         status: status,
-                        shop_id: shop_id
+                        employee_id: employee_id
                     },
                     success: function(result) {
                         alert('Status Updated Successfully');

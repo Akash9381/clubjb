@@ -13,11 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('shop_aadhars', function (Blueprint $table) {
+        Schema::create('local_shop_t_c_s', function (Blueprint $table) {
             $table->id();
-            $table->string('user_id')->nullable();
-            $table->string('shop_id')->nullable();
-            $table->string('shop_adahar')->nullable();
+            $table->text('tc');
             $table->timestamps();
         });
     }
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('shop_aadhars');
+        Schema::dropIfExists('local_shop_t_c_s');
     }
 };

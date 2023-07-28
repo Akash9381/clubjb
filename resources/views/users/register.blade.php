@@ -98,12 +98,11 @@
                         <form id="user-form" action="{{ url('user/insert') }}" method="post">
                             @csrf
                             <div class="form-group text-start mb-4"><span>Mob No</span>
-
                                 <input class="form-control" id="phone" value="{{ request()->get('phn') }}"
                                     name="phone" type="number">
-                                    @error('phone')
-                                <p class="text-warning">{{$message}}</p>
-                                    @enderror
+                                @error('phone')
+                                    <p class="text-warning">{{ $message }}</p>
+                                @enderror
                             </div>
                             <div class="form-group text-start mb-4"><span>Set Login Pin</span>
 
@@ -122,7 +121,8 @@
                             </div>
 
                             <div class="form-group text-start mb-4"><span>Address 2</span>
-                                <input class="input-psswd form-control" id="address_2" name="address_2" type="text">
+                                <input class="input-psswd form-control" id="address_2" name="address_2"
+                                    type="text">
                             </div>
 
                             <div class="form-group text-start mb-4"><span>Pincode</span>
@@ -136,10 +136,12 @@
                             </div>
 
                             <div class="form-group text-start mb-4">
-                                <select class="form-select" aria-label="Default select example" id="state" name="state">
+                                <select class="form-select" aria-label="Default select example" id="state"
+                                    name="state">
                                     <option value="none" selected>Please select state</option>
                                     @foreach ($states as $state)
-                                        <option class="value" value="{{$state['name']}}">{{ $state['name'] }}</option>
+                                        <option class="value" value="{{ $state['name'] }}">{{ $state['name'] }}
+                                        </option>
                                     @endforeach
                                 </select>
                                 <div style="color:red;" id="msg_id"></div>
@@ -305,8 +307,8 @@
                     ref_number: {
                         Ref: true
                     },
-                    pincode:{
-                        required:true
+                    pincode: {
+                        required: true
                     }
                 }
             });
@@ -314,4 +316,5 @@
         });
     </script>
 </body>
+
 </html>

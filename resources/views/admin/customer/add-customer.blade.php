@@ -10,8 +10,9 @@
                 </div>
                 <div class="col-lg-5 col-md-6 col-sm-12">
                     <ul class="breadcrumb float-md-right">
-                        <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i> Home</a></li>
-                        <li class="breadcrumb-item"><a href="javascript:void(0);">customer </a></li>
+                        <li class="breadcrumb-item"><a href="{{ url('admin/dashboard') }}"><i class="zmdi zmdi-home"></i>
+                                Home</a></li>
+                        <li class="breadcrumb-item"><a href="javascript:void(0);">Add Customer </a></li>
 
                     </ul>
                 </div>
@@ -41,15 +42,21 @@
                                     <div class="col-lg-6 col-md-6">
                                         <p> <b>Customer Name</b> </p>
                                         <div class="form-group">
-                                            <input type="text" class="form-control" name="customer_name"
-                                                placeholder="Customer Name" />
+                                            <input type="text" class="form-control" value="{{ old('name') }}"
+                                                name="name" placeholder="Customer Name" />
+                                            @error('name')
+                                                <div style="color:red;">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-6">
                                         <p> <b>Customer Mobile</b></p>
                                         <div class="form-group">
-                                            <input type="number" id="customer_number" name="customer_number"
-                                                class="form-control" placeholder="Customer Number" />
+                                            <input type="number" id="phone" value="{{old('phone')}}" name="phone" class="form-control"
+                                                placeholder="Customer Mobile" />
+                                            @error('phone')
+                                                <div style="color:red;">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
 
@@ -67,23 +74,32 @@
                             <div class="body">
                                 <div class="row clearfix">
 
-                                    <div class="col-lg-6 col-md-6">
-
-                                        <div class="form-group mt-5">
-                                            <div class="radio inlineblock">
-                                                <input type="radio" name="payment_status" id="unPaid" checked=""
-                                                    class="with-gap" value="Silver">
-                                                <label for="unPaid">Silver</label>
+                                    <div class="col-lg-12 col-md-12">
+                                        <p><b>Customer Type</b></p>
+                                        <div class="form-group">
+                                            <div class="radio inlineblock m-r-20">
+                                                <input type="radio" name="payment_status" id="Bronze" checked=""
+                                                    class="with-gap" value="Bronze">
+                                                <label for="Bronze">Bronze</label>
+                                            </div>
+                                            <div class="radio inlineblock m-r-20">
+                                                <input type="radio" name="payment_status" id="Silver" class="with-gap"
+                                                    value="Silver">
+                                                <label for="Silver">Silver</label>
                                             </div>
                                             <div class="radio inlineblock m-r-20">
                                                 <input type="radio" name="payment_status" id="Paid" class="with-gap"
                                                     value="Gold">
                                                 <label for="Paid">Gold</label>
                                             </div>
+                                            <div class="radio inlineblock">
+                                                <input type="radio" name="payment_status" id="Platinum" class="with-gap"
+                                                    value="Platinum">
+                                                <label for="Platinum">Platinum</label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -95,17 +111,15 @@
 
                             <div class="body">
                                 <div class="row clearfix">
-
-
                                     <div class="col-lg-6 col-md-6">
                                         <p> <b>Ref mobile number</b> </p>
                                         <div class="form-group">
-                                            <input type="number" id="ref_number" name="ref_number" value="9999999999"
-                                                class="form-control" placeholder="Ref mobile number" />
+                                            <input type="text" id="ref_number" name="ref_number" class="form-control"
+                                                placeholder="Ref mobile number" />
                                         </div>
                                     </div>
                                     <input type="number" hidden id="login_pin" name="login_pin" value="1111"
-                                    class="form-control" placeholder="Login Pin" />
+                                        class="form-control" placeholder="Login Pin" />
                                     <div class="col-sm-12">
 
                                         <div class="form-group">
@@ -140,18 +154,7 @@
     <script>
         // max 10 digits number and do n't accept zero as the first digit.
 
-        jQuery("#customer_number").keypress(function(e) {
-            var length = jQuery(this).val().length;
-            if (length > 9) {
-                return false;
-            } else if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
-                return false;
-            } else if ((length == 0) && (e.which == 48)) {
-                return false;
-            }
-        });
-
-        jQuery("#ref_number").keypress(function(e) {
+        jQuery("#phone").keypress(function(e) {
             var length = jQuery(this).val().length;
             if (length > 9) {
                 return false;
@@ -165,29 +168,20 @@
     <script>
         $(document).ready(function() {
 
-            jQuery.validator.addMethod("phoneUS", function(customer_number, element) {
-                customer_number = customer_number.replace(/\s+/g, "");
-                return this.optional(element) || customer_number.length > 9 && customer_number.match(
+            jQuery.validator.addMethod("phoneUS", function(phone, element) {
+                phone = phone.replace(/\s+/g, "");
+                return this.optional(element) || phone.length > 9 && phone.match(
                     /^(\+?1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/);
             }, "Please specify a valid phone number");
 
-            jQuery.validator.addMethod("Ref", function(ref_number, element) {
-                ref_number = ref_number.replace(/\s+/g, "");
-                return this.optional(element) || ref_number.length > 9 && ref_number.match(
-                    /^(\+?1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/);
-            }, "Please specify a valid phone number");
 
-            $('#user-form').validate({ // initialize the plugin
+            $('#user-form').validate({
                 rules: {
-                    customer_number: {
+                    phone: {
                         required: true,
                         phoneUS: true
                     },
-                    ref_number: {
-                        required: true,
-                        Ref: true
-                    },
-                    customer_name: {
+                    name: {
                         required: true
                     }
                 }

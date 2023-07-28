@@ -25,7 +25,8 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::view('admin/sign-in', 'admin.sign-in')->name('admin.login')->middleware('guest');
+// Route::view('admin/sign-in', 'admin.sign-in')->name('admin.login')->middleware('guest');
+Route::view('admin/login', 'admin.sign-in')->name('admin.login')->middleware('guest');
 Route::get('logout', [AuthController::class, 'Logout'])->name('logout');
 Route::post('admin/authenticate', [AuthController::class, 'authenticate']);
 Route::get('admin/get-city', [EmployeeController::class, 'GetCity']);
@@ -57,37 +58,45 @@ Route::group(['middleware' => ['role:admin', 'auth']], function () {
         Route::post('/new-customer', [CustomerController::class, 'NewCustomer']);
         Route::get('/inactive-customers', [CustomerController::class, 'InActiveCustomers']);
         Route::get('/active-customers', [CustomerController::class, 'ActiveCustomers']);
-        Route::get('/customer_status', [CustomerController::class, 'CustomerStatus']);
-        Route::get('/customer-profile/{customer_id}', [CustomerController::class, 'CustomerProfile']);
-        Route::get('/update-customer/{customer_id}', [CustomerController::class, 'EditCustomer']);
-        Route::post('/edit-customer/{customer_id}', [CustomerController::class, 'UpdateCustomer']);
+        Route::get('/customer-profile/{id}', [CustomerController::class, 'CustomerProfile']);
+        Route::get('/update-customer/{id}', [CustomerController::class, 'EditCustomer']);
+        Route::post('/edit-customer/{id}', [CustomerController::class, 'UpdateCustomer']);
 
-        // **************************** Admin Shop *********************************
+        // **************************** Admin Local Shop *********************************
 
         Route::get('/local-shop-form', [ShopKeeperController::class, 'ShopForm']);
         Route::post('/create-shop', [ShopKeeperController::class, 'StoreLocalShop']);
-        Route::get('/global-shop-form', [GlobalShopController::class, 'GlobalShop']);
-        Route::post('/create-global-shop', [GlobalShopController::class, 'GlobalShopStore']);
         Route::get('/inactive-local-shops', [ShopKeeperController::class, 'InactiveLocalShop']);
         Route::get('/active-local-shops', [ShopKeeperController::class, 'ActiveLocalShop']);
-        Route::get('/shop_status', [ShopKeeperController::class, 'ShopStatus']);
-        Route::get('/shop-profile/{shop_id}', [ShopKeeperController::class, 'ShopProfile']);
-        Route::get('/global-shop-profile/{shop_id}', [GlobalShopController::class, 'ShopProfile']);
-        Route::get('/local-shop/{shop_id}', [ShopKeeperController::class, 'ShopUpdate']);
-        Route::get('/global-shop/{shop_id}', [GlobalShopController::class, 'ShopUpdate']);
+        Route::get('/shop-profile/{id}', [ShopKeeperController::class, 'ShopProfile']);
+        Route::get('/local-shop/{id}', [ShopKeeperController::class, 'ShopUpdate']);
         Route::get('/shop/shop_menu/delete/{id}', [ShopKeeperController::class, 'ShopMenuDelete']);
         Route::get('/shop/shop_pic/delete/{id}', [ShopKeeperController::class, 'ShopPicDelete']);
-        Route::get('/shop/shop_aadhar_card/delete/{id}', [ShopKeeperController::class, 'ShopAdharDelete']);
-        Route::get('/shop/shop_pancard/delete/{id}', [ShopKeeperController::class, 'ShopPanDelete']);
-        Route::get('/shop/shop_driving/delete/{id}', [ShopKeeperController::class, 'ShopDrivingDelete']);
-        Route::get('/shop/shop_passport/delete/{id}', [ShopKeeperController::class, 'ShopPassportDelete']);
-        Route::get('/shop/shop_cv/delete/{id}', [ShopKeeperController::class, 'ShopCvDelete']);
         Route::get('/shop/shop_agreement/delete/{id}', [ShopKeeperController::class, 'ShopAgreementDelete']);
-        Route::post('/update-shop/{shop_id}', [ShopKeeperController::class, 'UpdateShop']);
-        Route::post('/update-global-shop/{shop_id}', [GlobalShopController::class, 'UpdateShop']);
-        Route::get('/global_shop_status', [GlobalShopController::class, 'GlobalShopStatus']);
+        Route::post('/update-shop/{id}', [ShopKeeperController::class, 'UpdateShop']);
+        Route::get('/local-shop-help', [ShopKeeperController::class, 'LocalShopHelp']);
+        Route::Post('/local-shop-help', [ShopKeeperController::class, 'StoreLocalShopHelp']);
+        Route::get('/local-shop-terms-conditions', [ShopKeeperController::class, 'LocalShopTerms']);
+        Route::Post('/local-shop-terms-conditions', [ShopKeeperController::class, 'StoreLocalShopTerms']);
+
+        // ************************************ Admin Global Shop *************************************
+        Route::get('/global-shop-form', [GlobalShopController::class, 'GlobalShop']);
+        Route::post('/create-global-shop', [GlobalShopController::class, 'GlobalShopStore']);
+        Route::get('/global-shop-profile/{id}', [GlobalShopController::class, 'ShopProfile']);
+        Route::get('/global-shop/{id}', [GlobalShopController::class, 'ShopUpdate']);
+        Route::post('/update-global-shop/{id}', [GlobalShopController::class, 'UpdateShop']);
         Route::get('/inactive-global-shops', [GlobalShopController::class, 'InactiveGlobal']);
         Route::get('/active-global-shops', [GlobalShopController::class, 'ActiveGlobal']);
+        Route::get('/global-shop-help', [GlobalShopController::class, 'GlobalShopHelp']);
+        Route::Post('/global-shop-help', [GlobalShopController::class, 'StoreGlobalShopHelp']);
+        Route::get('/global-shop-terms-conditions', [GlobalShopController::class, 'GlobalShopTerms']);
+        Route::Post('/global-shop-terms-conditions', [GlobalShopController::class, 'StoreGlobalShopTerms']);
+
+        // *********************************** Admin Common Function ***************************
+        Route::get('/shop-deal-update/{id}',[Dealcontroller::class,'AdminEditDeal']);
+        Route::post('/update-shop-deal/{id}',[Dealcontroller::class,'AdminUpdateDeal']);
+        Route::get('/deal-delete/{user_id}/{id}',[Dealcontroller::class,'AdminDealDelete']);
+
 
         //*********************** Banner *******************************
         Route::get('/add-banner', [BannerController::class, 'Banner']);
@@ -180,6 +189,10 @@ Route::group(['middleware' => ['role:customer', 'auth']], function () {
     Route::get('user/edit-profile', [UserController::class, 'UpdateUser']);
     Route::post('user/update-profile', [UserController::class, 'UpdateProfile']);
     Route::get('user/logout', [AuthController::class, 'UserLogout']);
+    Route::get('user/global-shops', [UserController::class, 'GlobalShop']);
+    Route::get('user/local-shops', [UserController::class, 'LocalShop']);
+    Route::get('user/hot-shops', [UserController::class, 'HotShop']);
+    Route::get('user/my-services', [UserController::class, 'Services']);
 });
 
 

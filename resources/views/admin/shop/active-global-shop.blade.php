@@ -90,10 +90,9 @@
 
                         <div class="body">
                             <div class="table-responsive">
-                                <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                                <table id="table_id" class="table table-bordered table-striped table-hover js-basic-example dataTable">
                                     <thead>
                                         <tr>
-                                            <th>S.no</th>
                                             <th>Date</th>
                                             <th>Shop Id</th>
                                             <th>Name</th>
@@ -104,39 +103,34 @@
                                     </thead>
 
                                     <tbody>
-                                        @forelse ($active_shops as $customer)
+                                        @foreach ($active_shops as $customer)
                                             <tr>
-                                                <td>1</td>
                                                 <td>{{ \Carbon\Carbon::parse($customer->created_at)->format('d-m-Y') }}</td>
-                                                <td>{{ $customer['shop_id'] }}</td>
-                                                <td>{{ $customer['shop_name'] }}</td>
-                                                <td>{{ $customer['shop_number'] }}</td>
+                                                <td>{{ $customer['customer_id'] }}</td>
+                                                <td>{{ $customer['name'] }}</td>
+                                                <td>{{ $customer['phone'] }}</td>
 
                                                 <td>
                                                     <label class="switch">
                                                         <input type="checkbox"
                                                             @if ($customer['status'] == '1') checked @endif
-                                                            value="{{ $customer['shop_id'] }}">
+                                                            value="{{ $customer['id'] }}">
                                                         <span class="slider round"></span>
                                                     </label>
                                                 </td>
 
                                                 <td>
                                                     <button class="btn btn-icon btn-neutral btn-icon-mini"><a
-                                                            href="{{ url('admin/global-shop-profile/' . $customer->shop_id) }}"><i
+                                                            href="{{ url('admin/global-shop-profile/' . $customer->id) }}"><i
                                                                 class="zmdi zmdi-eye"></i></a></button>
                                                     <button class="btn btn-icon btn-neutral btn-icon-mini"><a
-                                                            href="{{ url('admin/global-shop/' . $customer['shop_id']) }}"><i
+                                                            href="{{ url('admin/global-shop/' . $customer['id']) }}"><i
                                                                 class="zmdi zmdi-edit"></i></a></button>
                                                     <button class="btn btn-icon btn-neutral btn-icon-mini"><i
                                                             class="zmdi zmdi-delete"></i></button>
                                                 </td>
                                             </tr>
-                                        @empty
-                                            <tr>
-                                                <th class="text-center" colspan="7">No Data Available</th>
-                                            </tr>
-                                        @endforelse
+                                        @endforeach
 
                                     </tbody>
                                 </table>
@@ -158,25 +152,30 @@
     <script src="{{ asset('admin/assets/plugins/jquery-datatable/buttons/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('admin/assets/plugins/jquery-datatable/buttons/buttons.print.min.js') }}"></script>
     <script>
+        $(function() {
+            $("#table_id").dataTable();
+        });
+    </script>
+    <script>
         $(document).ready(function() {
             var status = "0";
-            var shop_id = "";
+            var employee_id = "";
             $("input[type='checkbox']").change(function() {
                 if ($(this).is(":checked")) {
-                    shop_id = $(this).val();
+                    employee_id = $(this).val();
                     status = "1";
 
                 } else {
-                    var shop_id = $(this).val();
+                    var employee_id = $(this).val();
                     status = "0";
                 }
                 $.ajax({
-                    url: "/admin/global_shop_status",
+                    url: "/admin/employee_status",
                     type: "get",
                     dataType: 'json',
                     data: {
                         status: status,
-                        shop_id: shop_id
+                        employee_id: employee_id
                     },
                     success: function(result) {
                         alert('Status Updated Successfully');

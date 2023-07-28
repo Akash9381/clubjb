@@ -1,5 +1,5 @@
 @extends('admin.layouts.admin_layouts')
-
+@section('title', 'Global Shop Profile')
 @section('content')
     <section class="content">
         <div class="block-header">
@@ -11,7 +11,8 @@
                 </div>
                 <div class="col-lg-5 col-md-6 col-sm-12">
                     <ul class="breadcrumb float-md-right">
-                        <li class="breadcrumb-item"><a href="{{url('admin/dashboard')}}"><i class="zmdi zmdi-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="{{ url('admin/dashboard') }}"><i class="zmdi zmdi-home"></i></a>
+                        </li>
                         <li class="breadcrumb-item"><a href="javascript:void(0);">Profile</a></li>
 
                     </ul>
@@ -19,31 +20,6 @@
             </div>
         </div>
         <div class="container-fluid">
-            <!-- Color Pickers -->
-            <!-- Advanced Select2 -->
-
-                <div class="row clearfix">
-                    <div class="col-lg-12 col-md-12 col-sm-12">
-                        <div class="card">
-
-                            <div class="body">
-                                <div class="row clearfix">
-                                    <div class="col-lg-6 col-md-6 col-6">
-                                        <h6 class="mt-2 m-b-0">State </h6>
-                                        <span class="job_post">{{ $shop['state'] ?? 'NA' }}</span>
-                                    </div>
-                                    <div class="col-lg-6 col-md-6 col-6">
-                                        <h6 class="mt-2 m-b-0">City </h6>
-                                        <span class="job_post">{{ $shop['city'] ?? 'NA' }}</span>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            <!-- #END# Select2 -->
-
             <!-- Advanced Select -->
             <div class="row clearfix">
                 <div class="col-lg-12 col-md-12 col-sm-12">
@@ -148,16 +124,15 @@
             <div class="row clearfix">
                 <div class="col-lg-12 col-md-12 col-sm-12">
                     <div class="card">
-
                         <div class="body">
                             <div class="row clearfix">
                                 <div class="col-md-12">
                                     <h6 class="mt-2 m-b-0">Help</h6>
-                                    <span class="job_post">{!! $shop['LocalShop']['shop_help'] ?? 'NA' !!}</span>
+                                    <span class="job_post">{!! $shop['GlobalShop']['shop_help'] ?? 'NA' !!}</span>
                                 </div>
                                 <div class=" col-md-12">
                                     <h6 class="mt-2 m-b-0">Terms & Conditions </h6>
-                                    <span class="job_post">{!! $shop['LocalShop']['shop_terms'] ?? 'NA' !!}</span>
+                                    <span class="job_post">{!! $shop['GlobalShop']['shop_terms'] ?? 'NA' !!}</span>
                                 </div>
                             </div>
                         </div>
@@ -177,10 +152,13 @@
                                     <hr>
                                 </div>
                                 <div class="col-lg-6 col-md-6 rounded border mb-5">
-                                    <p><h6>Shop Picture</h6></p>
+                                    <p>
+                                    <h6>Shop Picture</h6>
+                                    </p>
                                     @forelse ($shop['GetShopPicture'] as $key => $picture)
                                         <label for=""><b>{{ $key + 1 }}.</b></label>
-                                        <img src="{{ asset('/storage/shop/shop_pic/' . $picture['shop_picture']) }}" alt="{{ $picture['shop_picture'] }}" width="100" height="100">
+                                        <img src="{{ asset('/storage/shop/shop_pic/' . $picture['shop_picture']) }}"
+                                            alt="{{ $picture['shop_picture'] }}" width="100" height="100">
                                         <a href="{{ asset('/storage/shop/shop_pic/' . $picture['shop_picture']) }}"
                                             download="{{ $picture['shop_picture'] }}" title="Download"> <i
                                                 class="material-icons">move_to_inbox</i></a>
@@ -189,7 +167,9 @@
                                     @endforelse
                                 </div>
                                 <div class="col-lg-6 col-md-6 rounded border mb-5">
-                                    <p><h6>Shop Menu</h6></p>
+                                    <p>
+                                    <h6>Shop Menu</h6>
+                                    </p>
                                     @forelse ($shop['GetShopMenu'] as $key => $picture)
                                         <label for=""><b>{{ $key + 1 }}.</b>
                                             {{ $picture['shop_menu'] }}</label>
@@ -201,7 +181,9 @@
                                     @endforelse
                                 </div>
                                 <div class="col-lg-6 col-md-6 rounded border">
-                                    <p><h6> Agreement </h6></p>
+                                    <p>
+                                    <h6> Agreement </h6>
+                                    </p>
                                     @forelse ($shop['GetShopAgreement'] as $key => $picture)
                                         <label for=""><b>{{ $key + 1 }}.</b>
                                             {{ $picture['shop_agreement'] }}</label>
@@ -213,11 +195,10 @@
                                     @endforelse
                                 </div>
                                     <div class="col-sm-12 mt-3">
-                                        <a href="{{ url('admin/local-shop/' . $shop['id']) }}"
+                                        <a href="{{ url('admin/global-shop/' . $shop['id']) }}"
                                             class="btn btn-primary btn-round"> Edit </a>
 
                                     </div>
-
                                 <div style="visibility: hidden;" id="nouislider_basic_example"></div>
 
                                 <div style="visibility: hidden;" id="nouislider_range_example"></div>

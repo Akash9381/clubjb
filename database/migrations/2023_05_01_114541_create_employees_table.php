@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('employee_number')->unique()->nullable();
             $table->string('login_pin')->nullable();
             $table->string('ref_number')->nullable();
+            $table->string('ref_number_2')->nullable();
             $table->string('status')->nullable();
             $table->string('active_date')->nullable();
             $table->timestamps();

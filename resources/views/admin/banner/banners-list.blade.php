@@ -37,10 +37,10 @@
 
                         <div class="body">
                             <div class="table-responsive">
-                                <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                                <table id="table_id"
+                                    class="table table-bordered table-striped table-hover js-basic-example dataTable">
                                     <thead>
                                         <tr>
-                                            <th>S.no</th>
                                             <th>Date</th>
                                             <th>Shop Id</th>
                                             <th>Shop Name</th>
@@ -50,12 +50,11 @@
                                     </thead>
 
                                     <tbody>
-                                        @forelse ($banners as $banner)
+                                        @foreach ($banners as $banner)
                                             <tr>
-                                                <td>1</td>
                                                 <td>{{ \Carbon\Carbon::parse($banner->created_at)->format('d-m-Y') }}</td>
-                                                <td>{{ $banner['GetShop']['shop_id'] }}</td>
-                                                <td>{{ $banner['GetSHop']['shop_name'] }}</td>
+                                                <td>{{ $banner['GetShop']['customer_id'] }}</td>
+                                                <td>{{ $banner['GetSHop']['name'] }}</td>
                                                 <td>{{ $banner['banner_name'] }}</td>
                                                 <td>
                                                     <button class="btn btn-icon btn-neutral btn-icon-mini"><a
@@ -71,11 +70,7 @@
                                                                 class="zmdi zmdi-delete"></i></a></button>
                                                 </td>
                                             </tr>
-                                        @empty
-                                            <tr>
-                                                <th class="text-center" colspan="7">No Data Available</th>
-                                            </tr>
-                                        @endforelse
+                                        @endforeach
 
                                     </tbody>
                                 </table>
@@ -96,4 +91,9 @@
     <script src="{{ asset('admin/assets/plugins/jquery-datatable/buttons/buttons.colVis.min.js') }}"></script>
     <script src="{{ asset('admin/assets/plugins/jquery-datatable/buttons/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('admin/assets/plugins/jquery-datatable/buttons/buttons.print.min.js') }}"></script>
+    <script>
+        $(function() {
+            $("#table_id").dataTable();
+        });
+    </script>
 @endsection

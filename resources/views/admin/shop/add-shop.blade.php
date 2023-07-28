@@ -2,8 +2,6 @@
 @section('title', 'Create Local Shop')
 
 <!-- Chat-launcher -->
-
-
 @section('content')
     <section class="content">
         <div class="block-header">
@@ -15,7 +13,8 @@
                 </div>
                 <div class="col-lg-5 col-md-6 col-sm-12">
                     <ul class="breadcrumb float-md-right">
-                        <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i> Home</a></li>
+                        <li class="breadcrumb-item"><a href="{{ url('admin/dashboard') }}"><i class="zmdi zmdi-home"></i>
+                                Home</a></li>
                         <li class="breadcrumb-item"><a href="javascript:void(0);">Shopkeeper </a></li>
 
                     </ul>
@@ -54,6 +53,9 @@
 
                                         </select>
                                         <div style="color:red;" id="msg_id"></div>
+                                        @error('state')
+                                            <div style="color:red;">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                     <div class="col-lg-6 col-md-6">
                                         <p> <b>City</b> </p>
@@ -62,6 +64,9 @@
                                             <option value="none">Select City</option>
                                         </select>
                                         <div style="color:red;" id="msg_city"></div>
+                                        @error('city')
+                                            <div style="color:red;">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                     <input hidden name="ref_number" value="{{ Auth::user()->phone }}">
                                 </div>
@@ -130,34 +135,41 @@
                         <div class="card">
 
                             <div class="body">
+                                <div class="alert alert-primary">
+                                    <strong> Shop Details</strong>
+                                </div>
                                 <div class="row clearfix">
-
 
                                     <div class="col-lg-3 col-md-6">
                                         <p> <b> Shop Name</b> </p>
                                         <div class="form-group">
-                                            <input type="text" required name="shop_name" class="form-control"
-                                                placeholder="Shop Name" />
+                                            <input type="text" required value="{{ old('shop_name') }}" name="shop_name"
+                                                class="form-control" placeholder="Shop Name" />
+                                            @error('shop_name')
+                                                <div style="color:red;">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
 
                                     <div class="col-lg-3 col-md-6">
                                         <p> <b> Shop Number</b> </p>
                                         <div class="form-group">
-                                            <input type="number" value="{{ old('shop_number') }}" required
-                                                name="shop_number" id="shop_number" class="form-control" placeholder="Shop Number" />
+                                            <input type="number" value="{{ old('phone') }}" required name="phone"
+                                                id="phone" class="form-control" placeholder="Shop Number" />
+                                            @error('phone')
+                                                <div style="color:red;">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
-
-
                                     <div class="col-lg-3 col-md-6">
                                         <p> <b>Login Pin</b> </p>
-                                        <input class="form-control" value="1111" required name="login_pin" type="text"
-                                            maxlength="4" />
+                                        <input class="form-control" name="login_pin" type="text"
+                                            placeholder="Login Pin" maxlength="4" />
                                     </div>
                                     <div class="col-lg-3 col-md-6">
-                                        <p> <b>Ref Number</b> </p>
-                                        <input class="form-control" id="ref_number" value="9999999999" required name="ref_number" type="number"/>
+                                        <p> <b>Ref Id/Number</b> </p>
+                                        <input class="form-control" id="ref_number" placeholder="Ref Id/Number"
+                                            name="ref_number" type="text" />
                                     </div>
                                 </div>
                             </div>
@@ -173,6 +185,9 @@
                         <div class="card">
 
                             <div class="body">
+                                <div class="alert alert-primary">
+                                    <strong> Contact Details</strong>
+                                </div>
                                 <div class="row clearfix">
 
                                     <div class="col-lg-4 col-md-6">
@@ -186,12 +201,10 @@
                                     <div class="col-lg-4 col-md-6">
                                         <p> <b> Contact Number</b> </p>
                                         <div class="form-group">
-                                            <input type="number" id="contact_number" name="contact_number" class="form-control"
-                                                placeholder="Contact Number" />
+                                            <input type="number" id="contact_number" name="contact_number"
+                                                class="form-control" placeholder="Contact Number" />
                                         </div>
                                     </div>
-
-
 
 
                                     <div class="col-lg-4 col-md-6">
@@ -244,18 +257,28 @@
                                                     placeholder="Landmark" />
                                             </div>
                                         </div>
-                                        <div class="col-lg-6 col-md-6">
-
-                                            <div class="form-group mt-5">
-                                                <div class="radio inlineblock">
-                                                    <input type="radio" name="shop_type" id="unPaid"
-                                                        class="with-gap" checked="" value="Silver">
-                                                    <label for="unPaid">Silver</label>
+                                        <div class="col-lg-12 col-md-12">
+                                            <div class="form-group">
+                                                <p> <b>Shop Type</b> </p>
+                                                <div class="radio inlineblock m-r-20">
+                                                    <input type="radio" name="shop_type" id="Bronze" checked=""
+                                                        class="with-gap" value="Bronze">
+                                                    <label for="Bronze">Bronze</label>
+                                                </div>
+                                                <div class="radio inlineblock m-r-20">
+                                                    <input type="radio" name="shop_type" id="Silver"
+                                                        class="with-gap" value="Silver">
+                                                    <label for="Silver">Silver</label>
                                                 </div>
                                                 <div class="radio inlineblock m-r-20">
                                                     <input type="radio" name="shop_type" id="Paid"
-                                                        class="with-gap" value="Gold" >
+                                                        class="with-gap" value="Gold">
                                                     <label for="Paid">Gold</label>
+                                                </div>
+                                                <div class="radio inlineblock">
+                                                    <input type="radio" name="shop_type" id="Platinum"
+                                                        class="with-gap" value="Platinum">
+                                                    <label for="Platinum">Platinum</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -343,6 +366,9 @@
                             <div class="body">
                                 <div class="row clearfix">
                                     <br><br>
+                                    <div class="col-md-10">
+                                        <p> <b>Shop Deals</b> </p>
+                                    </div>
                                     <div class="form-group">
                                         <input type='button' class="btn btn-primary btn-round" value='Add Deal'
                                             id='addRow' name='addRow' />
@@ -357,6 +383,18 @@
                                             </tr>
                                         </thead>
                                         <tbody id="dynamic_field">
+                                            <tr>
+                                                <td id="row_num' + i + '">1
+                                                    <input type="hidden" class="form-control" name="task_number[]"
+                                                        value=' + i + '>
+                                                </td>
+                                                <td>
+                                                    <textarea class="form-control" required placeholder="Deal" name="deal[]" value=""></textarea>
+                                                </td>
+                                                <td> <input type="text" required class="form-control"
+                                                        placeholder="Saving Up to" name="saving_up_to[]" value="">
+                                                </td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -370,119 +408,38 @@
                         <div class="card">
 
                             <div class="body">
+                                <div class="alert alert-primary">
+                                    <strong> Shop Documents</strong>
+                                </div>
                                 <div class="row clearfix">
+                                    <div class="col-lg-6 col-md-6">
+                                        <p> <b>Upload Pic</b> </p>
+                                        <div class="form-group">
+                                            <input type="file" accept=".png, .jpg, .jpeg" name="shop_pic[]" multiple
+                                                class="form-control" placeholder="Upload Pic">
+                                        </div>
+                                    </div>
 
                                     <div class="col-lg-6 col-md-6">
                                         <p> <b>Upload Menu</b> </p>
                                         <div class="form-group">
-                                            <input type="file" name="shop_menu[]" multiple class="form-control"
+                                            <input type="file" accept=".png, .jpg, .jpeg, .pdf" name="shop_menu[]"
+                                                multiple class="form-control" placeholder="Upload Menu">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6">
+                                        <p> <b>Agreement</b> </p>
+                                        <div class="form-group">
+                                            <input type="file" name="shop_agreement[]" multiple class="form-control"
                                                 placeholder="Upload Menu">
                                         </div>
                                     </div>
 
-
-
-                                    <div class="col-lg-6 col-md-6">
-                                        <p> <b>Upload Pic</b> </p>
-                                        <div class="form-group">
-                                            <input type="file" name="shop_pic[]" multiple class="form-control"
-                                                placeholder="Upload Pic">
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <div class="row clearfix">
-                    <div class="col-lg-12 col-md-12 col-sm-12">
-                        <div class="card">
-
-                            <div class="body">
-                                <div class="row clearfix">
-
-                                    <div class="col-lg-6 col-md-6">
-                                        <div class="checkbox inlineblock m-r-20">
-                                            <input id="checkbox21" type="checkbox">
-                                            <label for="checkbox21">Aadhar card </label>
-
-                                            <input class="upload" name="shop_aadhar_card[]" multiple type="file">
-                                            <!--<i class="material-icons">file_upload</i>-->
-
-
-                                        </div>
-                                    </div>
-
-
-                                    <div class="col-lg-6 col-md-6">
-                                        <div class="checkbox inlineblock m-r-20">
-                                            <input id="checkbox22" type="checkbox">
-                                            <label for="checkbox22">Pan card </label>
-
-                                            <input class="upload" name="shop_pan_card[]" multiple type="file">
-                                            <!--<i class="material-icons">file_upload</i>-->
-
-
-                                        </div>
-                                    </div>
-
-
-                                    <div class="col-lg-6 col-md-6 ">
-                                        <div class="checkbox inlineblock m-r-20">
-                                            <input id="checkbox23" type="checkbox">
-                                            <label for="checkbox23">driving licence </label>
-
-                                            <input class="upload" name="shop_driving[]" multiple type="file">
-                                            <!--<i class="material-icons">file_upload</i>-->
-
-
-                                        </div>
-                                    </div>
-
-
-                                    <div class="col-lg-6 col-md-6 ">
-                                        <div class="checkbox inlineblock m-r-20">
-                                            <input id="checkbox24" type="checkbox">
-                                            <label for="checkbox24">passport </label>
-
-                                            <input class="upload" name="shop_passport[]" multiple type="file">
-                                            <!--<i class="material-icons">file_upload</i>-->
-
-
-                                        </div>
-                                    </div>
-
-
-                                    <div class="col-lg-6 col-md-6 ">
-                                        <div class="checkbox inlineblock m-r-20">
-                                            <input id="checkbox26" type="checkbox">
-                                            <label for="checkbox26">CV </label>
-
-                                            <input class="upload" name="shop_cv[]" multiple type="file">
-                                            <!--<i class="material-icons">file_upload</i>-->
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 col-md-6 ">
-                                        <div class="checkbox inlineblock m-r-20">
-                                            <input id="checkbox26" type="checkbox">
-                                            <label for="checkbox26">Agreement </label>
-                                            <input class="upload" name="shop_agreement[]" multiple type="file">
-                                            <!--<i class="material-icons">file_upload</i>-->
-                                        </div>
-                                    </div>
-
-                                    <div style="visibility: hidden;" id="nouislider_basic_example"></div>
-
-                                    <div style="visibility: hidden;" id="nouislider_range_example"></div>
-
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="row clearfix">
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <div class="card">
@@ -492,7 +449,7 @@
 
                                     <div class="col-lg-12 col-md-6">
                                         <p> <b>Help</b> </p>
-                                        <textarea rows="4" name="shop_help" class="form-control no-resize" placeholder="Please type "></textarea>
+                                        <textarea id="editor" name="shop_help">{{ $help['help'] ?? '' }}</textarea>
                                     </div>
                                 </div>
                             </div>
@@ -507,7 +464,7 @@
                                 <h2 class="float-left text-black"> Terms and conditions </h2>
                             </div>
                             <div class="body">
-                                <textarea rows="4" name="shop_terms" class="form-control no-resize" placeholder="Please type "></textarea>
+                                <textarea id="editor1" name="shop_terms">{{ $tc['tc'] ?? '' }}</textarea>
                             </div>
                         </div>
                     </div>
@@ -524,10 +481,25 @@
 @endsection
 @section('js')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/38.1.1/classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#editor'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#editor1'))
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
     <script>
         // max 10 digits number and do n't accept zero as the first digit.
 
-        jQuery("#shop_number").keypress(function(e) {
+        jQuery("#phone").keypress(function(e) {
             var length = jQuery(this).val().length;
             if (length > 9) {
                 return false;
@@ -548,10 +520,9 @@
                 return false;
             }
         });
-
-        jQuery("#contact_number").keypress(function(e) {
+        jQuery("#login_pin").keypress(function(e) {
             var length = jQuery(this).val().length;
-            if (length > 9) {
+            if (length > 3) {
                 return false;
             } else if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
                 return false;
@@ -560,7 +531,7 @@
             }
         });
 
-        jQuery("#ref_number").keypress(function(e) {
+        jQuery("#contact_number").keypress(function(e) {
             var length = jQuery(this).val().length;
             if (length > 9) {
                 return false;
@@ -606,33 +577,22 @@
         })
         $(document).ready(function() {
 
-            jQuery.validator.addMethod("phoneUS", function(shop_number, element) {
-                shop_number = shop_number.replace(/\s+/g, "");
-                return this.optional(element) || shop_number.length > 9 && shop_number.match(
-                    /^(\+?1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/);
-            }, "Please specify a valid phone number");
-
-            jQuery.validator.addMethod("Ref", function(ref_number, element) {
-                ref_number = ref_number.replace(/\s+/g, "");
-                return this.optional(element) || ref_number.length > 9 && ref_number.match(
+            jQuery.validator.addMethod("phoneUS", function(phone, element) {
+                phone = phone.replace(/\s+/g, "");
+                return this.optional(element) || phone.length > 9 && phone.match(
                     /^(\+?1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/);
             }, "Please specify a valid phone number");
 
             $('#user-form').validate({ // initialize the plugin
                 rules: {
-                    shop_number: {
+                    phone: {
                         required: true,
                         phoneUS: true
-                    },
-                    ref_number: {
-                        required: true,
-                        Ref: true
                     },
                     shop_name: {
                         required: true
                     },
                     login_pin: {
-                        required: true,
                         number: true,
                         minlength: 4,
                         maxlength: 4
@@ -682,12 +642,12 @@
         });
     </script>
     <script>
-        var i = 0;
+        var i = 1;
         $('#addRow').click(function() {
             i++;
             $('#dynamic_field').append('<tr><td id="row_num' + i + '">' + i +
                 '<input type="hidden" class="form-control" name="task_number[]" value=' + i + '></td>' +
-                '<td><input type="text" required class="form-control" placeholder="Deal" name="deal[]" value=""></td>' +
+                '<td><textarea class="form-control" required placeholder="Deal" name="deal[]" ></textarea></td>' +
                 '<td> <input type="text" required class="form-control" placeholder="Saving Up to" name="saving_up_to[]" value=""> </td>' +
                 '<td><button type="button" name="remove" class="btn btn-danger btn_remove">X</button></td></tr>'
             );

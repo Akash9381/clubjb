@@ -46,25 +46,21 @@
                                         <select name="shop_id" id="shop_id" class="form-control show-tick ms select2"
                                             data-placeholder="Select">
                                             @forelse ($shops as $shop)
-                                                <option value="{{ $shop['user_id'] }}" @if ($shop['user_id']==$banner['shop_id'])
+                                            @if (str_contains($shop['customer_id'], 'GS') == true)
+                                                <option value="{{ $shop['id'] }}" @if ($shop['id']==$banner['shop_id'])
                                         selected
-                                                @endif>{{ $shop['shop_name'] }}</option>
+                                                @endif>{{ $shop['name'] }}</option>
+                                                @endif
                                             @empty
-                                                <option value="none">No Shop Available</option>
+                                                <option value="none">Select Global Shop</option>
                                             @endforelse
                                         </select>
                                         <div style="color:red;" id="msg_shop"></div>
                                     </div>
                                     <div class="col-lg-6 col-md-6">
                                         <p> <b>Brand Name</b> </p>
-                                        <select name="brand_name" id="brand_name" class="form-control show-tick ms select2"
-                                            data-placeholder="Select">
-
-                                            <option value="{{$banner['brand_name']}}" selected>{{$banner['brand_name']}}</option>
-                                            <option>text</option>
-                                            <option>text</option>
-                                        </select>
-                                        <div style="color:red;" id="msg_brand"></div>
+                                        <input type="text" value="{{$banner['brand_name'] ?? 'NA'}}" required name="brand_name" id="brand_name" class="form-control"
+                                                placeholder="Brand Name" />
                                     </div>
                                 </div>
                             </div>
@@ -79,7 +75,7 @@
                                     <div class="col-lg-12 col-md-12">
                                         <p> <b>Banner Name</b> </p>
                                         <div class="form-group">
-                                            <input type="text" value="{{$banner['banner_name']}}" name="banner_name" id="banner_name" class="form-control"
+                                            <input type="text" required value="{{$banner['banner_name']}}" name="banner_name" id="banner_name" class="form-control"
                                                 placeholder="Banner Name" />
                                         </div>
                                     </div>
@@ -96,7 +92,7 @@
                                     <div class="col-lg-12 col-md-12">
                                         <p> <b>Banner Upload</b> <small>(upload banner in 1960*600px)</small> </p>
                                         <div class="form-group">
-                                            <input type="file" name="banner_image" class="form-control"
+                                            <input type="file" accept=".png, .jpg, .jpeg, .webp" name="banner_image" class="form-control"
                                                 placeholder="Banner Name" />
                                         </div>
                                         <img src="{{ asset('/storage/shopbanner/' . $banner['banner_image']) }}"
@@ -123,8 +119,6 @@
         $('#user-form').submit(function(e) {
             var shop = $("#msg_shop");
             var msg_shop = "Please select shop name";
-            var brand = $("#msg_brand");
-            var msg_brand = "Please select Brand";
             if ($('#shop_id').val() == "none") {
                 shop.append(msg_shop);
                 e.preventDefault();
@@ -132,23 +126,11 @@
             } else {
                 $("#msg_shop").html('');
             }
-            if ($('#brand_name').val() == "none") {
-                brand.append(msg_brand);
-                e.preventDefault();
-                return false;
-            } else {
-                $("#msg_brand").html('');
-            }
         });
 
         $("#shop_id").on('change', function() {
             if ($("#shop_id").val() != "none") {
                 $("#msg_shop").html('');
-            }
-        })
-        $("#brand_name").on('change', function() {
-            if ($("#brand_name").val() != "none") {
-                $("#msg_brand").html('');
             }
         })
         $(document).ready(function() {

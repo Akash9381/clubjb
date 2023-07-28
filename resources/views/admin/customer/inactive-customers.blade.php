@@ -69,14 +69,14 @@
         <div class="block-header">
             <div class="row">
                 <div class="col-lg-7 col-md-6 col-sm-12">
-                    <h2>Inactive Table
+                    <h2>Inactive Customer
                         <small>Welcome to Club Jb</small>
                     </h2>
                 </div>
                 <div class="col-lg-5 col-md-6 col-sm-12">
                     <ul class="breadcrumb float-md-right">
-                        <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item"><a href="javascript:void(0);">Inactive Table</a></li>
+                        <li class="breadcrumb-item"><a href="{{url('admin/dashboard')}}"><i class="zmdi zmdi-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="javascript:void(0);">Inactive Customer</a></li>
 
                     </ul>
                 </div>
@@ -90,52 +90,57 @@
 
                         <div class="body">
                             <div class="table-responsive">
-                                <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                                <table id="table_id" class="table table-bordered table-striped table-hover js-basic-example dataTable">
                                     <thead>
                                         <tr>
-                                            <th>S.no</th>
                                             <th>Date</th>
-                                            <th>Emp Id</th>
+                                            <th>Cust Id</th>
                                             <th>Name</th>
                                             <th>Number</th>
-
                                             <th>Status</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
 
                                     <tbody>
-                                        @forelse ($customers as $customer)
+                                        @foreach ($customers as $customer)
                                             <tr>
-                                                <td>1</td>
                                                 <td>{{ \Carbon\Carbon::parse($customer->created_at)->format('d-m-Y') }}</td>
                                                 <td>{{ $customer['customer_id'] }}</td>
-                                                <td>{{ $customer['customer_name'] }}</td>
-                                                <td>{{ $customer['customer_number'] }}</td>
+                                                <td>{{ $customer['name'] }}</td>
+                                                <td>{{ $customer['phone'] }}</td>
 
                                                 <td>
                                                     <label class="switch">
-                                                        <input type="checkbox" value="{{ $customer['customer_id'] }}">
+                                                        <input type="checkbox" value="{{ $customer['id'] }}">
                                                         <span class="slider round"></span>
                                                     </label>
                                                 </td>
 
                                                 <td>
-                                                    <button class="btn btn-icon btn-neutral btn-icon-mini"><a
-                                                            href="{{ url('admin/customer-profile/' . $customer->customer_id) }}"><i
-                                                                class="zmdi zmdi-eye"></i></a></button>
-                                                    <button class="btn btn-icon btn-neutral btn-icon-mini">
-                                                    <a href="{{ url('admin/update-customer/' . $customer['customer_id']) }}"><i
-                                                            class="zmdi zmdi-edit"></i></a></button>
+                                                    @if (str_contains($customer['customer_id'], 'C-') == true)
+                                                        <button class="btn btn-icon btn-neutral btn-icon-mini"><a
+                                                                href="{{ url('admin/customer-profile/' . $customer->id) }}"><i
+                                                                    class="zmdi zmdi-eye"></i></a></button>
+                                                    @else
+                                                        <button class="btn btn-icon btn-neutral btn-icon-mini"><a
+                                                                href="{{ url('admin/employee-profile/' . $customer->id) }}"><i
+                                                                    class="zmdi zmdi-eye"></i></a></button>
+                                                    @endif
+                                                    @if (str_contains($customer['customer_id'], 'C-') == true)
+                                                        <button class="btn btn-icon btn-neutral btn-icon-mini">
+                                                            <a href="{{ url('admin/update-customer/' . $customer['id']) }}"><i
+                                                                    class="zmdi zmdi-edit"></i></a></button>
+                                                    @else
+                                                        <button class="btn btn-icon btn-neutral btn-icon-mini">
+                                                            <a href="{{ url('admin/edit-employee/' . $customer['id']) }}"><i
+                                                                    class="zmdi zmdi-edit"></i></a></button>
+                                                    @endif
                                                     <button class="btn btn-icon btn-neutral btn-icon-mini"><i
                                                             class="zmdi zmdi-delete"></i></button>
                                                 </td>
                                             </tr>
-                                        @empty
-                                            <tr>
-                                                <th class="text-center" colspan="7">No Data Available</th>
-                                            </tr>
-                                        @endforelse
+                                        @endforeach
 
                                     </tbody>
                                 </table>
@@ -156,29 +161,31 @@
     <script src="{{ asset('admin/assets/plugins/jquery-datatable/buttons/buttons.colVis.min.js') }}"></script>
     <script src="{{ asset('admin/assets/plugins/jquery-datatable/buttons/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('admin/assets/plugins/jquery-datatable/buttons/buttons.print.min.js') }}"></script>
-
-    {{-- <script src="{{asset('admin/light/assets/bundles/mainscripts.bundle.js')}}"></script><!-- Custom Js -->
-<script src="{{asset('admin/light/assets/js/pages/tables/jquery-datatable.js')}}"></script> --}}
+    <script>
+        $(function() {
+            $("#table_id").dataTable();
+        });
+    </script>
     <script>
         $(document).ready(function() {
             var status = "0";
-            var customer_id = "";
+            var employee_id = "";
             $("input[type='checkbox']").change(function() {
                 if ($(this).is(":checked")) {
-                    customer_id = $(this).val();
+                    employee_id = $(this).val();
                     status = "1";
 
                 } else {
-                    var customer_id = $(this).val();
+                    var employee_id = $(this).val();
                     status = "0";
                 }
                 $.ajax({
-                    url: "/admin/customer_status",
+                    url: "/admin/employee_status",
                     type: "get",
                     dataType: 'json',
                     data: {
                         status: status,
-                        customer_id: customer_id
+                        employee_id: employee_id
                     },
                     success: function(result) {
                         alert('Status Updated Successfully');

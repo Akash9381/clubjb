@@ -55,7 +55,6 @@
     <script src="{{ asset('users/js/no-internet.js')}}"></script>
     <script src="{{ asset('users/js/active.js')}}"></script>
     <script src="{{ asset('users/js/pwa.js')}}"></script>
+    @yield('js')
 </body>
-
-
 </html>

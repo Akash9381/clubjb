@@ -75,7 +75,8 @@
                 </div>
                 <div class="col-lg-5 col-md-6 col-sm-12">
                     <ul class="breadcrumb float-md-right">
-                        <li class="breadcrumb-item"><a href="index.html"><i class="zmdi zmdi-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="{{ url('admin/dashboard') }}"><i class="zmdi zmdi-home"></i></a>
+                        </li>
                         <li class="breadcrumb-item"><a href="javascript:void(0);">Inactive Table</a></li>
 
                     </ul>
@@ -90,7 +91,8 @@
 
                         <div class="body">
                             <div class="table-responsive">
-                                <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                                <table id="table_id"
+                                    class="table table-bordered table-striped table-hover js-basic-example dataTable">
                                     <thead>
                                         <tr>
                                             <th>S.no</th>
@@ -105,36 +107,33 @@
                                     </thead>
 
                                     <tbody>
-                                        @forelse ($employees as $employee)
+                                        @foreach ($employees as $employee)
                                             <tr>
                                                 <td>1</td>
                                                 <td>{{ \Carbon\Carbon::parse($employee->created_at)->format('d-m-Y') }}</td>
-                                                <td>{{ $employee['employee_id'] }}</td>
-                                                <td>{{ $employee['employee_name'] }}</td>
-                                                <td>{{ $employee['employee_number'] }}</td>
+                                                <td>{{ $employee['customer_id'] }}</td>
+                                                <td>{{ $employee['name'] }}</td>
+                                                <td>{{ $employee['phone'] }}</td>
 
                                                 <td>
                                                     <label class="switch">
-                                                        <input type="checkbox" value="{{ $employee['employee_id'] }}">
+                                                        <input type="checkbox" value="{{ $employee['id'] }}">
                                                         <span class="slider round"></span>
                                                     </label>
                                                 </td>
 
                                                 <td>
                                                     <button class="btn btn-icon btn-neutral btn-icon-mini"><a
-                                                            href="{{ url('admin/employee-profile/' . $employee->employee_id) }}"><i
+                                                            href="{{ url('admin/employee-profile/' . $employee->id) }}"><i
                                                                 class="zmdi zmdi-eye"></i></a></button>
-                                                    <a href="{{ url('admin/edit-employee/' . $employee['employee_id']) }}" class="btn btn-icon btn-neutral btn-icon-mini"><i
-                                                            class="zmdi zmdi-edit"></i></a>
+                                                    <button class="btn btn-icon btn-neutral btn-icon-mini">
+                                                        <a href="{{ url('admin/edit-employee/' . $employee['id']) }}"><i
+                                                                class="zmdi zmdi-edit"></i></a></button>
                                                     <button class="btn btn-icon btn-neutral btn-icon-mini"><i
                                                             class="zmdi zmdi-delete"></i></button>
                                                 </td>
                                             </tr>
-                                        @empty
-                                            <tr>
-                                                <th colspan="8">No Data Available</th>
-                                            </tr>
-                                        @endforelse
+                                        @endforeach
 
                                     </tbody>
                                 </table>
@@ -159,9 +158,11 @@
     <script src="{{ asset('admin/assets/plugins/jquery-datatable/buttons/buttons.colVis.min.js') }}"></script>
     <script src="{{ asset('admin/assets/plugins/jquery-datatable/buttons/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('admin/assets/plugins/jquery-datatable/buttons/buttons.print.min.js') }}"></script>
-
-    {{-- <script src="{{asset('admin/light/assets/bundles/mainscripts.bundle.js')}}"></script><!-- Custom Js -->
-<script src="{{asset('admin/light/assets/js/pages/tables/jquery-datatable.js')}}"></script> --}}
+    <script>
+        $(function() {
+            $("#table_id").dataTable();
+        });
+    </script>
     <script>
         $(document).ready(function() {
             var status = "0";

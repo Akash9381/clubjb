@@ -72,8 +72,6 @@
                             <span class="product-title">Entertainment</span>
 
                         </div>
-
-
                     </div>
 
                     <!-- Flash Sale Card -->
@@ -161,14 +159,8 @@
                             </a>
                         </div>
                     </div>
-
-
-
                 </div>
-
             </div>
-
-
         </div>
     </div>
     <!-- Dark Mode -->
@@ -197,7 +189,7 @@
             <div class="section-heading d-flex align-items-center justify-content-between dir-rtl mt-n3">
                 <h6 class="d-flex align-items-center rtl-flex-d-row-r"><i
                         class="fa-solid fa-bolt-lightning me-1 text-danger lni-flashing-effect"></i>Global Store</h6>
-                <a class="btn p-0" href="{{url('user/global-shops')}}">
+                <a class="btn p-0" href="{{ url('user/global-stores') }}">
                     View All<i class="ms-1 fa-solid fa-arrow-right-long"></i></a>
             </div>
             <div class="container">
@@ -207,10 +199,11 @@
                             <!-- Single Vendor -->
                             <div class="single-vendor-wrap bg-img p-4 bg-overlay"
                                 style="background-image: url({{ asset('users/img/bg-img/store.jpg') }})">
-                                <h5 class="vendor-title text-white">{{ $globalstore['shop_name'] }}</h5>
+                                <h5 class="vendor-title text-white">{{ $globalstore['name'] }}</h5>
                                 <div class="vendor-info">
                                     <div class="ratings lh-1"><strong class="text-warning">Category :</strong> <span
-                                            class="text-white">{{ $globalstore['category'] }}</span></div>
+                                            class="text-white">{{ $globalstore['LocalShop']['category'] }}</span>
+                                    </div>
 
                                     <div class="ratings lh-1 mt-1"><strong class="text-warning">Deal :</strong> <span
                                             class="text-white">{{ count($globalstore['GetShopDeals']) }}</span></div>
@@ -218,7 +211,7 @@
                                 <!-- Vendor Profile-->
                                 <div class="vendor-profile shadow">
                                     <a class="btn btn-warning btn-sm mt-3"
-                                        href="{{ url('user/global-store/' . $globalstore['shop_id']) }}"><i
+                                        href="{{ url('user/store/' . $globalstore['id']) }}"><i
                                             class="fa-solid fa-arrow-right-long ms-1"></i></a>
                                 </div>
                             </div>
@@ -246,32 +239,36 @@
             <div class="section-heading d-flex align-items-center justify-content-between dir-rtl mt-n30">
                 <h6 class="d-flex align-items-center rtl-flex-d-row-r"><i
                         class="fa-solid fa-bolt-lightning me-1 text-danger lni-flashing-effect"></i>Hot Store</h6>
-                <a class="btn p-0" href="{{url('user/hot-shops')}}">
+                <a class="btn p-0" href="{{ url('user/hot-stores') }}">
                     View All<i class="ms-1 fa-solid fa-arrow-right-long"></i></a>
             </div>
             <div class="container">
                 <div class="row gy-3">
-                    @forelse ($hotstores as $localstore)
-                        <div class="col-12">
-                            <!-- Single Vendor -->
-                            <div class="single-vendor-wrap bg-img p-4 bg-overlay"
-                                style="background-image: url({{ asset('users/img/bg-img/store.jpg') }})">
-                                <h5 class="vendor-title text-white">{{ $localstore['shop_name'] }}</h5>
-                                <div class="vendor-info">
-                                    <div class="ratings lh-1"><strong class="text-warning">Category :</strong> <span
-                                            class="text-white">{{ $localstore['category'] }}</span></div>
+                    @forelse ($localstores as $localstore)
+                        @if ($localstore['LocalShop']['hot_store'])
+                            <div class="col-12">
+                                <!-- Single Vendor -->
+                                <div class="single-vendor-wrap bg-img p-4 bg-overlay"
+                                    style="background-image: url({{ asset('users/img/bg-img/store.jpg') }})">
+                                    <h5 class="vendor-title text-white">{{ $localstore['name'] }}</h5>
+                                    <div class="vendor-info">
+                                        <div class="ratings lh-1"><strong class="text-warning">Category :</strong>
+                                            <span class="text-white">{{ $localstore['LocalShop']['category'] }}</span>
+                                        </div>
 
-                                    <div class="ratings lh-1 mt-1"><strong class="text-warning">Deal :</strong> <span
-                                            class="text-white">{{ count($localstore['GetShopDeals']) }}</span></div>
-                                </div>
-                                <!-- Vendor Profile-->
-                                <div class="vendor-profile shadow">
-                                    <a class="btn btn-warning btn-sm mt-3"
-                                        href="{{ url('user/local-store/' . $localstore['shop_id']) }}"><i
-                                            class="fa-solid fa-arrow-right-long ms-1"></i></a>
+                                        <div class="ratings lh-1 mt-1"><strong class="text-warning">Deal :</strong>
+                                            <span class="text-white">{{ count($localstore['GetShopDeals']) }}</span>
+                                        </div>
+                                    </div>
+                                    <!-- Vendor Profile-->
+                                    <div class="vendor-profile shadow">
+                                        <a class="btn btn-warning btn-sm mt-3"
+                                            href="{{ url('user/store/' . $localstore['id']) }}"><i
+                                                class="fa-solid fa-arrow-right-long ms-1"></i></a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        @endif
                     @empty
                         <div class="col-12">
                             <!-- Single Vendor -->
@@ -285,25 +282,26 @@
             </div>
         </div>
     </div>
-    <div class="weekly-best-seller-area py-3 mt-2">
+    <div class="weekly-best-seller-area py-3 mt-2 mb-5">
         <div class="container">
             <div class="section-heading d-flex align-items-center justify-content-between dir-rtl mt-n30">
                 <h6 class="d-flex align-items-center rtl-flex-d-row-r"><i
                         class="fa-solid fa-bolt-lightning me-1 text-danger lni-flashing-effect"></i>Local Store</h6>
-                <a class="btn p-0" href="{{url('user/local-shops')}}">
+                <a class="btn p-0" href="{{ url('user/local-stores') }}">
                     View All<i class="ms-1 fa-solid fa-arrow-right-long"></i></a>
             </div>
             <div class="container">
                 <div class="row gy-3">
                     @forelse ($localstores as $localstore)
+                    @if ($localstore['LocalShop']['hot_store'] == null)
                         <div class="col-12">
                             <!-- Single Vendor -->
                             <div class="single-vendor-wrap bg-img p-4 bg-overlay"
                                 style="background-image: url({{ asset('users/img/bg-img/store.jpg') }})">
-                                <h5 class="vendor-title text-white">{{ $localstore['shop_name'] }}</h5>
+                                <h5 class="vendor-title text-white">{{ $localstore['name'] }}</h5>
                                 <div class="vendor-info">
                                     <div class="ratings lh-1"><strong class="text-warning">Category :</strong> <span
-                                            class="text-white">{{ $localstore['category'] }}</span></div>
+                                            class="text-white">{{ $localstore['LocalShop']['category'] }}</span></div>
 
                                     <div class="ratings lh-1 mt-1"><strong class="text-warning">Deal :</strong> <span
                                             class="text-white">{{ count($localstore['GetShopDeals']) }}</span></div>
@@ -311,11 +309,12 @@
                                 <!-- Vendor Profile-->
                                 <div class="vendor-profile shadow">
                                     <a class="btn btn-warning btn-sm mt-3"
-                                        href="{{ url('user/local-store/' . $localstore['shop_id']) }}"><i
+                                        href="{{ url('user/store/' . $localstore['id']) }}"><i
                                             class="fa-solid fa-arrow-right-long ms-1"></i></a>
                                 </div>
                             </div>
                         </div>
+                        @endif
                     @empty
                         <div class="col-12">
                             <!-- Single Vendor -->

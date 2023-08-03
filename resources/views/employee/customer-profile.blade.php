@@ -32,16 +32,11 @@
 
                         <div class="body">
                             <div class="row clearfix">
-                                <div class="col-lg-3 col-md-6">
+                                <div class="col-lg-4 col-md-6">
                                     <h6 class="mt-2 m-b-0">Customer ID </h6>
                                     <span class="job_post">{{ $customer['customer_id'] }}</span>
                                 </div>
-                                <div class="col-lg-3 col-md-6">
-                                    <h6 class="mt-2 m-b-0">Add date </h6>
-                                    <span
-                                        class="job_post">{{ \Carbon\Carbon::parse($customer->created_at)->format('d-m-Y') }}</span>
-                                </div>
-                                <div class="col-lg-3 col-md-6">
+                                <div class="col-lg-4 col-md-6">
                                     <h6 class="mt-2 m-b-0">Active date </h6>
                                     @if ($customer->active_date)
                                         {
@@ -52,17 +47,22 @@
                                         Pending
                                     @endif
                                 </div>
-                                <div class="col-lg-3 col-md-6">
+                                <div class="col-lg-4 col-md-6">
+                                    <h6 class="mt-2 m-b-0">Add date </h6>
+                                    <span
+                                        class="job_post">{{ \Carbon\Carbon::parse($customer->created_at)->format('d-m-Y') }}</span>
+                                </div>
+                                <div class="col-lg-4 col-md-6">
                                     <h6 class="mt-2 m-b-0">Customer Name </h6>
-                                    <span class="job_post">{{ $customer['customer_name'] }}</span>
+                                    <span class="job_post">{{ $customer['name'] }}</span>
                                 </div>
-                                <div class="col-lg-3 col-md-6">
+                                <div class="col-lg-4 col-md-6">
                                     <h6 class="mt-2 m-b-0">Customer Number</h6>
-                                    <span class="job_post">{{ $customer['customer_number'] }}</span>
+                                    <span class="job_post">{{ preg_replace('~[+\d-](?=[\d-]{4})~', '*', $customer['phone'])}}</span>
                                 </div>
-                                <div class="col-lg-3 col-md-6">
+                                <div class="col-lg-4 col-md-6">
                                     <h6 class="mt-2 m-b-0">Customer Type</h6>
-                                    <span class="job_post">{{ $customer['payment_status'] }}</span>
+                                    <span class="job_post">{{ $customer['Customer']['payment_status'] }}</span>
                                 </div>
 
                             </div>
@@ -82,23 +82,11 @@
 
                         <div class="body">
                             <div class="row clearfix">
-
-
                                 <div class="col-lg-3 col-md-6">
-                                    <h6 class="mt-2 m-b-0">Login Pin </h6>
-                                    <span class="job_post">****</span>
-
-                                </div>
-
-
-                                <div class="col-lg-3 col-md-6">
-                                    <h6 class="mt-2 m-b-0">Ref mobile number </h6>
+                                    <h6 class="mt-2 m-b-0">Ref ID/mobile number </h6>
                                     <span class="job_post">{{ $customer['ref_number'] }}</span>
 
                                 </div>
-
-
-
 
                                 <div style="visibility: hidden;" id="nouislider_basic_example"></div>
 

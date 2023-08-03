@@ -59,7 +59,11 @@ if(!function_exists('GetCity')){
 if(!function_exists('ProfileImage')){
     function ProfileImage(){
        $picture_image =  EmployePictureDocument::where('user_id',Auth::user()->id)->first('picture_document');
-       return $picture_image['picture_document'];
+       if($picture_image){
+           return $picture_image['picture_document'];
+       }else{
+        return $picture_image;
+       }
     }
 }
 

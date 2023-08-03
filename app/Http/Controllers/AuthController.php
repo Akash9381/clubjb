@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\state as ModelsState;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use NunoMaduro\Collision\Adapters\Phpunit\State;
 
 class AuthController extends Controller
 {
@@ -64,10 +66,10 @@ class AuthController extends Controller
                 $request->session()->regenerate();
                 return redirect('/employee/dashboard');
             } else {
-                return back()->with('error', 'Whoops! invalid number and login pin.');
+                return back()->with('error', 'OOPS! You Are Not Valid!');
             }
         } else {
-            return back()->with('error', 'Whoops! invalid number and login pin.');
+            return back()->with('error', 'OOPS! invalid number and login pin.');
         }
     }
 
@@ -80,7 +82,7 @@ class AuthController extends Controller
     public function ShopKeeperAuth(Request $request)
     {
         $this->Validate($request, [
-            'phone'     => 'required',
+            'phone'     => 'required|numeric|digits:10',
             'login_pin' => 'required'
         ]);
 
@@ -92,28 +94,33 @@ class AuthController extends Controller
                     $request->session()->regenerate();
                     return Redirect::route('ShopDashboard');
                 } else {
-                    return back()->with('error', 'Whoops! invalid number and login pin.');
+                    return back()->with('error', 'OOPS! You Are Not Valid!');
                 }
             } catch (\Exception $e) {
                 return back()->with('error', $e->getMessage());
             }
         } else {
-            return back()->with('error', 'Whoops! invalid number and login pin.');
+            return back()->with('error', 'OOPS! invalid number and login pin.');
         }
     }
 
     public function UserAuth(Request $request)
     {
         $this->Validate($request, [
-            'phone_number' => 'required|numeric|digits:10',
+            'phone' => 'required|numeric|digits:10',
         ]);
-        $user   = User::with('GetCustomer')->where('phone', $request['phone_number'])->first();
-        $phone  = $request['phone_number'];
-        // return $user['GetCustomer']['status'];
-        if ($user) {
-            return Redirect::route('loginpin', ['phn' => $phone]);
-        } else {
-            return Redirect::route('register', ['phn' => $phone]);
+        $states = ModelsState::all();
+        $phone = $request['phone'];
+        $user   = User::where('phone', $phone)->first();
+        if($user){
+            if ($user['status']) {
+                return view('users.login-pin',compact('phone'));
+            } else{
+                return view('users.existing-user-register',compact('user','states'));
+            }
+
+        }else{
+            return view('users.register',compact('phone','states'));
         }
     }
 
@@ -124,10 +131,10 @@ class AuthController extends Controller
             'pin2' => 'required|numeric|digits:1',
             'pin3' => 'required|numeric|digits:1',
             'pin4' => 'required|numeric|digits:1',
-            'phn'  => 'required|numeric|digits:10',
+            'phone'  => 'required|numeric|digits:10',
         ]);
         $login = $request['pin1'] . $request['pin2'] . $request['pin3'] . $request['pin4'];
-        $user = User::where('phone', $request['phn'])->where('login_pin', $login)->first();
+        $user = User::where('phone', $request['phone'])->where('login_pin', $login)->first();
         if ($user) {
             try {
                 if ($user->hasRole('customer')) {

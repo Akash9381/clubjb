@@ -79,9 +79,7 @@
                                             data-placeholder="Select">
                                             <option value="none">Select Shop</option>
                                             @forelse ($shops as $shop)
-                                            @if (str_contains($shop['customer_id'], 'LS')==true)
                                                 <option value="{{ $shop['id'] }}">{{ $shop['name'] }}</option>
-                                                @endif
                                             @empty
                                                 <option value="none">No Shop Available</option>
                                             @endforelse

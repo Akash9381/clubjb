@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('shop_id')->nullable();
             $table->string('shop_deal')->nullable();
             $table->string('saving_up_to')->nullable();
+            $table->string('status')->default(1);
             $table->timestamps();
         });
     }

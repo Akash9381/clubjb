@@ -1,4 +1,6 @@
 @extends('users.layouts.user_layouts')
+@section('title','Global Stores')
+@section('deal','Global Stores')
 @section('content')
     @include('users.layouts.dealheader')
     @include('users.layouts.sidebar')
@@ -12,10 +14,10 @@
                             <!-- Single Vendor -->
                             <div class="single-vendor-wrap bg-img p-4 bg-overlay"
                                 style="background-image: url({{ asset('users/img/bg-img/store.jpg') }})">
-                                <h5 class="vendor-title text-white">{{ $globalstore['shop_name'] }}</h5>
+                                <h5 class="vendor-title text-white">{{ $globalstore['name'] }}</h5>
                                 <div class="vendor-info">
                                     <div class="ratings lh-1"><strong class="text-warning">Category :</strong> <span
-                                            class="text-white">{{ $globalstore['category'] }}</span></div>
+                                            class="text-white">{{ $globalstore['LocalShop']['category'] }}</span></div>
 
                                     <div class="ratings lh-1 mt-1"><strong class="text-warning">Deal :</strong> <span
                                             class="text-white">{{ count($globalstore['GetShopDeals']) }}</span></div>
@@ -23,7 +25,7 @@
                                 <!-- Vendor Profile-->
                                 <div class="vendor-profile shadow">
                                     <a class="btn btn-warning btn-sm mt-3"
-                                        href="{{ url('user/global-store/' . $globalstore['shop_id']) }}"><i
+                                        href="{{ url('user/store/' . $globalstore['id']) }}"><i
                                             class="fa-solid fa-arrow-right-long ms-1"></i></a>
                                 </div>
                             </div>

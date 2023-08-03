@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\GlobalShop;
 use App\Models\GlobalShopHelp;
 use App\Models\GlobalShopTC;
+use App\Models\Shop;
 use App\Models\ShopAadhar;
 use App\Models\ShopAgreement;
 use App\Models\ShopCv;
@@ -23,12 +24,13 @@ class GlobalShopController extends Controller
 
     public function InactiveGlobal()
     {
+        $globalstore_id = 'GS';
         $inactive_shops = User::whereHas(
             'roles',
             function ($q) {
                 $q->where('name', 'shopkeeper');
             }
-        )->where('status', 0)->orderBy('id', 'desc')->get();
+        )->where('status', 0)->where('customer_id','LIKE',"%{$globalstore_id}%")->orderBy('id', 'desc')->get();
         return view('admin.shop.inactive-global-shop', compact('inactive_shops'));
     }
 
@@ -51,12 +53,13 @@ class GlobalShopController extends Controller
 
     public function ActiveGlobal()
     {
+        $globalstore_id = 'GS';
         $active_shops = User::whereHas(
             'roles',
             function ($q) {
                 $q->where('name', 'shopkeeper');
             }
-        )->where('status', 1)->orderBy('id', 'desc')->get();
+        )->where('status', 1)->where('customer_id','LIKE',"%{$globalstore_id}%")->orderBy('id', 'desc')->get();
         return view('admin.shop.active-global-shop', compact('active_shops'));
     }
     public function GlobalShop()
@@ -108,7 +111,7 @@ class GlobalShopController extends Controller
                 $user->save();
                 $user->assignRole(['shopkeeper', 'customer']);
 
-                $shop               = new GlobalShop();
+                $shop               = new Shop();
                 $shop->user_id      = $user->id;
                 $shop->shop_id      = $shop_id;
                 $shop->category     = $request->category;
@@ -186,13 +189,13 @@ class GlobalShopController extends Controller
 
     public function ShopProfile($id = null)
     {
-        $shop = User::with('GlobalShop')->with('GetShopPicture')->with('GetShopMenu')->with('GetShopDeals')->with('GetShopAgreement')->where('id', $id)->first();
+        $shop = User::with('LocalShop')->with('GetShopPicture')->with('GetShopMenu')->with('GetShopDeals')->with('GetShopAgreement')->where('id', $id)->first();
         return view('admin.shop.global-shop-profile', compact('shop'));
     }
 
     public function ShopUpdate($id = null)
     {
-        $shop = User::with('GlobalShop')->with('GetShopPicture')->with('GetShopMenu')->with('GetShopDeals')->with('GetShopAgreement')->where('id', $id)->first();
+        $shop = User::with('LocalShop')->with('GetShopPicture')->with('GetShopMenu')->with('GetShopDeals')->with('GetShopAgreement')->where('id', $id)->first();
         return view('admin.shop.update-global-shop', compact('shop'));
     }
 
@@ -217,7 +220,7 @@ class GlobalShopController extends Controller
                     'pincode'       => $request->pincode,
                     'landmark'      => $request->landmark,
                 ]);
-                GlobalShop::where('user_id', $id)->update([
+                Shop::where('user_id', $id)->update([
                     'category'      => $request->category,
                     'sub_category'  => $request->sub_category,
                     'hot_store'     => $request->hot_store,

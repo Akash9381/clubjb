@@ -11,9 +11,9 @@
                 <!-- User Information-->
                 <div class="card user-info-card">
                     <div class="card-body p-4 d-flex align-items-center">
-                        <div class="user-profile me-3"><img src="{{ asset('users/img/bg-img/9.jpg')}}" alt=""></div>
+                        <div class="user-profile me-3"><img src="{{ asset('users/img/icons/Person.ico')}}" alt=""></div>
                         <div class="user-info">
-                            <p class="mb-0 text-dark">@designing-world</p>
+                            <p class="mb-0 text-dark">{{Auth::user()->customer_id}}</p>
                             <h5 class="mb-0">{{Auth::user()->name}}</h5>
                         </div>
                     </div>
@@ -24,7 +24,7 @@
                         <div class="single-profile-data d-flex align-items-center justify-content-between">
                             <div class="title d-flex align-items-center"><i class="fa-solid fa-at"></i><span>Username</span>
                             </div>
-                            <div class="data-content">{{$user['GetCustomer']['customer_id'] ?? 'NA'}}</div>
+                            <div class="data-content">{{$user['customer_id']}}</div>
                         </div>
                         <div class="single-profile-data d-flex align-items-center justify-content-between">
                             <div class="title d-flex align-items-center"><i class="fa-solid fa-user"></i><span>Full
@@ -44,12 +44,12 @@
                         <div class="single-profile-data d-flex align-items-center justify-content-between">
                             <div class="title d-flex align-items-center"><i
                                     class="fa-solid fa-location-dot"></i><span>Shipping Address</span></div>
-                            <div class="data-content">{{$user['GetCustomer']['address_1'] ?? 'NA'}}</div>
+                            <div class="data-content">{{$user['address_1'] ?? 'NA'}}</div>
                         </div>
                         <div class="single-profile-data d-flex align-items-center justify-content-between">
                             <div class="title d-flex align-items-center"><i class="fa-solid fa-star"></i><span>My
                                     Orders</span></div>
-                            <div class="data-content"><a class="btn btn-success btn-sm" href="my-order.html">View
+                            <div class="data-content"><a class="btn btn-success btn-sm" href="#">View
                                     Status</a></div>
                         </div>
                         <!-- Edit Profile-->

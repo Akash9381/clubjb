@@ -48,20 +48,16 @@
                                             data-placeholder="Select">
                                             <option value="">Select Global Shop</option>
                                             @forelse ($shops as $shop)
-                                            @if (str_contains($shop['customer_id'], 'GS')==true)
-                                            <option value="{{ $shop['id'] }}">{{ $shop['name'] }}</option>
-
-                                            @endif
+                                                <option value="{{ $shop['id'] }}">{{ $shop['name'] }}</option>
                                             @empty
                                                 <option value="none">No Shop Available</option>
                                             @endforelse
                                         </select>
-                                        {{-- <div style="color:red;" id="msg_shop"></div> --}}
                                     </div>
                                     <div class="col-lg-6 col-md-6">
                                         <p> <b>Brand Name</b> </p>
-                                        <input type="text" required name="brand_name" id="brand_name" class="form-control"
-                                                placeholder="Brand Name" />
+                                        <input type="text" required name="brand_name" id="brand_name"
+                                            class="form-control" placeholder="Brand Name" />
                                     </div>
                                 </div>
                             </div>
@@ -93,8 +89,8 @@
                                     <div class="col-lg-12 col-md-12">
                                         <p> <b>Banner Upload</b> <small>(upload banner in 1960*600px)</small> </p>
                                         <div class="form-group">
-                                            <input type="file" required accept=".png, .jpg, .jpeg, .webp" name="banner_image" class="form-control"
-                                                placeholder="Banner Name" />
+                                            <input type="file" required accept=".png, .jpg, .jpeg, .webp"
+                                                name="banner_image" class="form-control" placeholder="Banner Name" />
                                         </div>
                                     </div>
                                 </div>
@@ -115,7 +111,6 @@
 @section('js')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
     <script>
-
         $(document).ready(function() {
 
             $('#user-form').validate({ // initialize the plugin

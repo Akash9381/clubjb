@@ -47,29 +47,29 @@
                                         <p> <b>Category</b> </p>
                                         <select class="form-control show-tick ms select2" name="category"
                                             data-placeholder="Select">
-                                            <option @if ($shop['GlobalShop']['category'] == 'Entertainment') selected @endif value="Entertainment">
+                                            <option @if ($shop['LocalShop']['category'] == 'Entertainment') selected @endif value="Entertainment">
                                                 Entertainment</option>
-                                            <option @if ($shop['GlobalShop']['category'] == 'Salon & Spa') selected @endif value="Salon & Spa">
+                                            <option @if ($shop['LocalShop']['category'] == 'Salon & Spa') selected @endif value="Salon & Spa">
                                                 Salon & Spa</option>
-                                            <option @if ($shop['GlobalShop']['category'] == 'Cafe & Restaurant') selected @endif
+                                            <option @if ($shop['LocalShop']['category'] == 'Cafe & Restaurant') selected @endif
                                                 value="Cafe & Restaurant">Cafe & Restaurant</option>
-                                            <option @if ($shop['GlobalShop']['category'] == 'Retail') selected @endif value="Retail">Retail
+                                            <option @if ($shop['LocalShop']['category'] == 'Retail') selected @endif value="Retail">Retail
                                             </option>
-                                            <option @if ($shop['GlobalShop']['category'] == 'Hotel') selected @endif value="Hotel">Hotel
+                                            <option @if ($shop['LocalShop']['category'] == 'Hotel') selected @endif value="Hotel">Hotel
                                             </option>
-                                            <option @if ($shop['GlobalShop']['category'] == 'Services') selected @endif value="Services">
+                                            <option @if ($shop['LocalShop']['category'] == 'Services') selected @endif value="Services">
                                                 Services</option>
-                                            <option @if ($shop['GlobalShop']['category'] == 'Education') selected @endif value="Education">
+                                            <option @if ($shop['LocalShop']['category'] == 'Education') selected @endif value="Education">
                                                 Education</option>
-                                            <option @if ($shop['GlobalShop']['category'] == 'Electrical') selected @endif value="Electrical">
+                                            <option @if ($shop['LocalShop']['category'] == 'Electrical') selected @endif value="Electrical">
                                                 Electrical</option>
-                                            <option @if ($shop['GlobalShop']['category'] == 'Real Estate') selected @endif value="Real Estate">
+                                            <option @if ($shop['LocalShop']['category'] == 'Real Estate') selected @endif value="Real Estate">
                                                 Real Estate</option>
-                                            <option @if ($shop['GlobalShop']['category'] == 'Immigration') selected @endif value="Immigration">
+                                            <option @if ($shop['LocalShop']['category'] == 'Immigration') selected @endif value="Immigration">
                                                 Immigration</option>
-                                            <option @if ($shop['GlobalShop']['category'] == 'Tour & Travel') selected @endif
+                                            <option @if ($shop['LocalShop']['category'] == 'Tour & Travel') selected @endif
                                                 value="Tour & Travel">Tour & Travel</option>
-                                            <option @if ($shop['GlobalShop']['category'] == 'Other') selected @endif value="Other">Other
+                                            <option @if ($shop['LocalShop']['category'] == 'Other') selected @endif value="Other">Other
                                             </option>
                                         </select>
                                     </div>
@@ -77,7 +77,7 @@
                                     <div class="col-lg-4 col-md-6">
                                         <p> <b> Sub Category</b> </p>
                                         <div class="form-group">
-                                            <input type="text" value="{{ $shop['GlobalShop']['sub_category'] ?? 'NA' }}"
+                                            <input type="text" value="{{ $shop['LocalShop']['sub_category'] ?? 'NA' }}"
                                                 name="sub_category" class="form-control" placeholder="Type manually" />
                                         </div>
                                     </div>
@@ -88,7 +88,7 @@
                                     <div class="col-lg-4 col-md-6">
                                         <p style="visibility: hidden;"> <b>Add to hot Stores</b> </p>
                                         <div class="checkbox inlineblock">
-                                            <input id="remember_me_3" @if ($shop['GlobalShop']['hot_store']) checked @endif
+                                            <input id="remember_me_3" @if ($shop['LocalShop']['hot_store']) checked @endif
                                                 name="hot_store" type="checkbox">
                                             <label for="remember_me_3">
                                                 <b>Add to hot Stores</b>
@@ -157,7 +157,7 @@
                                     <div class="col-lg-4 col-md-6">
                                         <p> <b> Contact Person</b> </p>
                                         <div class="form-group">
-                                            <input type="text" value="{{ $shop['GlobalShop']['contact_person'] }}"
+                                            <input type="text" value="{{ $shop['LocalShop']['contact_person'] }}"
                                                 name="contact_person" class="form-control" placeholder="Contact Person" />
                                         </div>
                                     </div>
@@ -166,7 +166,7 @@
                                         <p> <b> Contact Number</b> </p>
                                         <div class="form-group">
                                             <input type="number" id="contact_number"
-                                                value="{{ $shop['GlobalShop']['contact_number'] }}" name="contact_number"
+                                                value="{{ $shop['LocalShop']['contact_number'] }}" name="contact_number"
                                                 class="form-control" placeholder="Contact Number" />
                                         </div>
                                     </div>
@@ -174,7 +174,7 @@
                                     <div class="col-lg-4 col-md-6">
                                         <p> <b> Designation</b> </p>
                                         <div class="form-group">
-                                            <input type="text" value="{{ $shop['GlobalShop']['designation'] }}"
+                                            <input type="text" value="{{ $shop['LocalShop']['designation'] }}"
                                                 name="designation" class="form-control" placeholder="Designation" />
                                         </div>
                                     </div>
@@ -241,14 +241,14 @@
                                     <div class="col-lg-3 col-md-6">
                                         <p> <b>IP</b> </p>
                                         <div class="form-group">
-                                            <input type="text" value="{{ $shop['GlobalShop']['ip_address'] }}" id="ip_address"
+                                            <input type="text" value="{{ $shop['LocalShop']['ip_address'] }}" id="ip_address"
                                                 name="ip_address" readonly class="form-control" placeholder="" />
                                         </div>
                                     </div>
                                     <div class="col-lg-3 col-md-6">
                                         <p> <b>Country Name</b> </p>
                                         <div class="form-group">
-                                            <input type="text" value="{{ $shop['GlobalShop']['country_name'] }}"
+                                            <input type="text" value="{{ $shop['LocalShop']['country_name'] }}"
                                                 name="country_name" id="country_name" readonly class="form-control"
                                                 placeholder="" />
                                         </div>
@@ -256,7 +256,7 @@
                                     <div class="col-lg-3 col-md-6">
                                         <p> <b>Country Code</b> </p>
                                         <div class="form-group">
-                                            <input type="text" value="{{ $shop['GlobalShop']['country_code'] }}"
+                                            <input type="text" value="{{ $shop['LocalShop']['country_code'] }}"
                                                 name="country_code" id="country_code" readonly class="form-control"
                                                 placeholder="" />
                                         </div>
@@ -265,28 +265,28 @@
                                         <p> <b>Region Code</b> </p>
                                         <div class="form-group">
                                             <input type="text" id="region_code" name="region_code"
-                                                value="{{ $shop['GlobalShop']['region_code'] }}" readonly class="form-control"
+                                                value="{{ $shop['LocalShop']['region_code'] }}" readonly class="form-control"
                                                 placeholder="" />
                                         </div>
                                     </div>
                                     <div class="col-lg-3 col-md-6">
                                         <p> <b>Region Name</b> </p>
                                         <div class="form-group">
-                                            <input type="text" value="{{ $shop['GlobalShop']['region_name'] }}" name="region_name"
+                                            <input type="text" value="{{ $shop['LocalShop']['region_name'] }}" name="region_name"
                                                 id="region_name" readonly class="form-control" placeholder="" />
                                         </div>
                                     </div>
                                     <div class="col-lg-3 col-md-6">
                                         <p> <b>City Name</b> </p>
                                         <div class="form-group">
-                                            <input type="text" value="{{ $shop['GlobalShop']['city_name'] }}" name="city_name"
+                                            <input type="text" value="{{ $shop['LocalShop']['city_name'] }}" name="city_name"
                                                 id="city_name" readonly class="form-control" placeholder="" />
                                         </div>
                                     </div>
                                     <div class="col-lg-3 col-md-6">
                                         <p> <b>Zip Code</b> </p>
                                         <div class="form-group">
-                                            <input type="text" value="{{ $shop['GlobalShop']['zip_code'] }}" name="zip_code"
+                                            <input type="text" value="{{ $shop['LocalShop']['zip_code'] }}" name="zip_code"
                                                 id="zip_code" readonly class="form-control" placeholder="" />
                                         </div>
                                     </div>
@@ -432,7 +432,7 @@
                                     <div class="col-lg-12 col-md-6">
                                         <p> <b>Help</b> </p>
 
-                                        <textarea id="editor" name="shop_help">{!! $shop['GlobalShop']['shop_help'] !!}</textarea>
+                                        <textarea id="editor" name="shop_help">{!! $shop['LocalShop']['shop_help'] !!}</textarea>
 
                                     </div>
                                 </div>
@@ -448,7 +448,7 @@
                                 <h2 class="float-left text-black"> Terms and conditions </h2>
                             </div>
                             <div class="body">
-                                <textarea id="editor1" name="shop_terms">{!! $shop['GlobalShop']['shop_terms'] !!}</textarea>
+                                <textarea id="editor1" name="shop_terms">{!! $shop['LocalShop']['shop_terms'] !!}</textarea>
 
                             </div>
                         </div>

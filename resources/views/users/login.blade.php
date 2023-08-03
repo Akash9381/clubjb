@@ -69,7 +69,6 @@
                         src="{{ asset('users/img/club-jb.png') }}" alt="">
                     <div class="text-start rtl-text-right">
                         <h5 class="mb-1 mt-3 text-white text-center">Login </h5>
-                        <!--<p class="mb-4 text-white">Enter the OTP code sent to<span class="mx-1">0123 456 7890</span></p>-->
                     </div>
                     <!-- Register Form-->
                     <div class="otp-form mt-5">
@@ -84,29 +83,25 @@
                             </div>
                         @endif
                         <form id="user-form" action="{{ url('user/login') }}" method="get">
+                            {{-- @csrf --}}
                             <div class="mb-4 d-flex rtl-flex-d-row-r">
                                 <select id="countryCodeSelect" aria-label="Default select example">
                                     <option value="">+91</option>
                                 </select>
-                                <input class="form-control ps-0" id="phone_number" name="phone_number" type="number" placeholder="Enter phone number">
-                                <label id="phone_number-error" class="error" for="phone_number">
-                                    @error('phone_number')
-                                        {{ $message }}
-                                    @enderror
-                                </label>
+                                <input class="form-control ps-0" id="phone" name="phone" type="number" placeholder="Enter phone number">
                             </div>
                             <button class="btn btn-warning btn-lg w-100" type="submit">Submit</button>
                         </form>
                     </div>
                     <!-- Login Meta-->
-                    <div class="login-meta-data">
+                    {{-- <div class="login-meta-data">
                         <a class="forgot-password d-block mt-3 mb-1" href="{{ url('shopkeeper/login') }}">Shopkeeper
                             Login</a>
                         <a class="forgot-password d-block mt-3 mb-1" href="{{ url('employee/login') }}">Employee
                             Login</a>
                         <a class="forgot-password d-block mt-3 mb-1" href="{{ url('admin/login') }}">Admin Login</a>
-                        {{-- <p class="mb-0 mt-3">Didn't have an account?<a class="mx-1" href="register.html">Register Now</a></p> --}}
-                    </div>
+                    </div> --}}
+                    {{-- <p class="mb-0 mt-3">Didn't have an account?<a class="mx-1" href="register.html">Register Now</a></p> --}}
                     <!-- View As Guest-->
 
                 </div>
@@ -129,7 +124,7 @@
     <script src="{{ asset('users/js/pwa.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
     <script>
-        jQuery("#phone_number").keypress(function(e) {
+        jQuery("#phone").keypress(function(e) {
             var length = jQuery(this).val().length;
             if (length > 9) {
                 return false;
@@ -142,15 +137,15 @@
 
         $(document).ready(function() {
 
-            jQuery.validator.addMethod("phoneUS", function(phone_number, element) {
-                phone_number = phone_number.replace(/\s+/g, "");
-                return this.optional(element) || phone_number.length > 9 && phone_number.match(
+            jQuery.validator.addMethod("phoneUS", function(phone, element) {
+                phone = phone.replace(/\s+/g, "");
+                return this.optional(element) || phone.length > 9 && phone.match(
                     /^(\+?1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/);
             }, "Please specify a valid phone number");
 
             $('#user-form').validate({ // initialize the plugin
                 rules: {
-                    phone_number: {
+                    phone: {
                         required: true,
                         phoneUS: true
                     }

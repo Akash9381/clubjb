@@ -11,7 +11,7 @@
 
     <title>Club House</title>
     <!-- Favicon-->
-    <link rel="icon" href="{{ asset('users/img/icons/fav.jpg')}}">
+    <link rel="icon" href="{{ asset('users/img/icons/fav.jpg') }}">
     <!-- Custom Css -->
 
     <link rel="stylesheet" href="{{ asset('employee/assets/plugins/bootstrap/css/bootstrap.min.css') }}">
@@ -30,7 +30,8 @@
         input[type=number] {
             -moz-appearance: textfield;
         }
-        .error{
+
+        .error {
             color: red;
         }
     </style>
@@ -58,16 +59,6 @@
         <div class="container">
             <div class="col-md-12 content-center">
                 <div class="card-plain">
-                    @if (session()->has('error'))
-                        <div class="alert alert-danger">
-                            {{ session()->get('error') }}
-                        </div>
-                    @endif
-                    @if (session()->has('success'))
-                        <div class="alert alert-success">
-                            {{ session()->get('success') }}
-                        </div>
-                    @endif
                     <form id="user-form" class="form" method="post" action="{{ url('employee/authenticate') }}">
                         @csrf
                         <div class="header">
@@ -75,31 +66,39 @@
                                 <img src="{{ asset('employee/light/assets/img/logo.png') }}" alt="">
                             </div>
                             <h5>Log in</h5>
+                            @if (session()->has('error'))
+                                <div class="alert alert-danger">
+                                    {{ session()->get('error') }}
+                                </div>
+                            @endif
+                            @if (session()->has('success'))
+                                <div class="alert alert-success">
+                                    {{ session()->get('success') }}
+                                </div>
+                            @endif
                         </div>
                         <div class="content">
                             <div class="input-group">
-                                <input type="number" class="form-control" id="phone" name="phone" placeholder="Enter Mobile No">
+                                <input type="number" class="form-control" id="phone" name="phone"
+                                    placeholder="Enter Mobile No">
                                 <span class="input-group-addon">
 
                                 </span>
                             </div>
-                            <label id="phone-error" class="error" for="phone"></label>
                         </div>
 
                         <div class="content">
                             <div class="input-group">
-                                <input type="number" name="login_pin" class="form-control"
+                                <input type="number" id="login_pin" name="login_pin" class="form-control"
                                     placeholder="Enter Login Pin">
                                 <span class="input-group-addon">
-
                                 </span>
                             </div>
-                            <label id="login_pin-error" class="error" for="login_pin"></label>
                         </div>
 
 
                         <div class="footer text-center">
-                            <button class="btn btn-primary btn-round btn-lg btn-block ">SUBMIT</button>
+                            <button class="btn btn-primary btn-round btn-block ">SUBMIT</button>
 
                         </div>
                     </form>
@@ -108,13 +107,6 @@
         </div>
         <footer class="footer">
             <div class="container">
-                {{-- <nav>
-                    <ul>
-
-                        <li><a href="#" target="_blank">Admin Login</a></li>
-
-                    </ul>
-                </nav> --}}
                 <div class="copyright">
                     &copy;
                     <script>
@@ -146,15 +138,25 @@
         $(document).ready(function() {
 
             jQuery("#phone").keypress(function(e) {
-            var length = jQuery(this).val().length;
-            if (length > 9) {
-                return false;
-            } else if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
-                return false;
-            } else if ((length == 0) && (e.which == 48)) {
-                return false;
-            }
-        });
+                var length = jQuery(this).val().length;
+                if (length > 9) {
+                    return false;
+                } else if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                    return false;
+                } else if ((length == 0) && (e.which == 48)) {
+                    return false;
+                }
+            });
+            jQuery("#login_pin").keypress(function(e) {
+                var length = jQuery(this).val().length;
+                if (length > 3) {
+                    return false;
+                } else if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                    return false;
+                } else if ((length == 0) && (e.which == 48)) {
+                    return false;
+                }
+            });
             jQuery.validator.addMethod("phoneUS", function(phone, element) {
                 phone = phone.replace(/\s+/g, "");
                 return this.optional(element) || phone.length > 9 && phone.match(
@@ -162,6 +164,9 @@
             }, "Please specify a valid phone number");
 
             $('#user-form').validate({ // initialize the plugin
+                errorPlacement: function() {
+                    return false; // suppresses error message text
+                },
                 rules: {
                     phone: {
                         required: true,

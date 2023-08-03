@@ -75,7 +75,8 @@
                 </div>
                 <div class="col-lg-5 col-md-6 col-sm-12">
                     <ul class="breadcrumb float-md-right">
-                        <li class="breadcrumb-item"><a href="{{url('admin/dashboard')}}"><i class="zmdi zmdi-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="{{ url('admin/dashboard') }}"><i class="zmdi zmdi-home"></i></a>
+                        </li>
                         <li class="breadcrumb-item"><a href="javascript:void(0);">Inactive Customer</a></li>
 
                     </ul>
@@ -90,7 +91,8 @@
 
                         <div class="body">
                             <div class="table-responsive">
-                                <table id="table_id" class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                                <table id="table_id"
+                                    class="table table-bordered table-striped table-hover js-basic-example dataTable">
                                     <thead>
                                         <tr>
                                             <th>Date</th>
@@ -122,18 +124,36 @@
                                                         <button class="btn btn-icon btn-neutral btn-icon-mini"><a
                                                                 href="{{ url('admin/customer-profile/' . $customer->id) }}"><i
                                                                     class="zmdi zmdi-eye"></i></a></button>
-                                                    @else
+                                                    @elseif(str_contains($customer['customer_id'], 'E-') == true)
                                                         <button class="btn btn-icon btn-neutral btn-icon-mini"><a
                                                                 href="{{ url('admin/employee-profile/' . $customer->id) }}"><i
                                                                     class="zmdi zmdi-eye"></i></a></button>
+                                                    @elseif (str_contains($customer['customer_id'], 'GS-') == true)
+                                                        <button class="btn btn-icon btn-neutral btn-icon-mini"><a
+                                                                href="{{ url('admin/global-shop-profile/' . $customer->id) }}"><i
+                                                                    class="zmdi zmdi-eye"></i></a></button>
+                                                    @else
+                                                        <button class="btn btn-icon btn-neutral btn-icon-mini"><a
+                                                                href="{{ url('admin/shop-profile/' . $customer->id) }}"><i
+                                                                    class="zmdi zmdi-eye"></i></a></button>
                                                     @endif
+
                                                     @if (str_contains($customer['customer_id'], 'C-') == true)
                                                         <button class="btn btn-icon btn-neutral btn-icon-mini">
-                                                            <a href="{{ url('admin/update-customer/' . $customer['id']) }}"><i
+                                                            <a
+                                                                href="{{ url('admin/update-customer/' . $customer['id']) }}"><i
                                                                     class="zmdi zmdi-edit"></i></a></button>
-                                                    @else
+                                                    @elseif(str_contains($customer['customer_id'], 'E-') == true)
                                                         <button class="btn btn-icon btn-neutral btn-icon-mini">
                                                             <a href="{{ url('admin/edit-employee/' . $customer['id']) }}"><i
+                                                                    class="zmdi zmdi-edit"></i></a></button>
+                                                    @elseif (str_contains($customer['customer_id'], 'GS-') == true)
+                                                        <button class="btn btn-icon btn-neutral btn-icon-mini"><a
+                                                                href="{{ url('admin/global-shop/' . $customer['id']) }}"><i
+                                                                    class="zmdi zmdi-edit"></i></a></button>
+                                                    @else
+                                                        <button class="btn btn-icon btn-neutral btn-icon-mini"><a
+                                                                href="{{ url('admin/local-shop/' . $customer->id) }}"><i
                                                                     class="zmdi zmdi-edit"></i></a></button>
                                                     @endif
                                                     <button class="btn btn-icon btn-neutral btn-icon-mini"><i
@@ -154,13 +174,6 @@
 @endsection
 
 @section('js')
-    <!-- Jquery DataTable Plugin Js -->
-    <script src="{{ asset('admin/light/assets/bundles/datatablescripts.bundle.js') }}"></script>
-    <script src="{{ asset('admin/assets/plugins/jquery-datatable/buttons/dataTables.buttons.min.js') }}"></script>
-    <script src="{{ asset('admin/assets/plugins/jquery-datatable/buttons/buttons.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('admin/assets/plugins/jquery-datatable/buttons/buttons.colVis.min.js') }}"></script>
-    <script src="{{ asset('admin/assets/plugins/jquery-datatable/buttons/buttons.html5.min.js') }}"></script>
-    <script src="{{ asset('admin/assets/plugins/jquery-datatable/buttons/buttons.print.min.js') }}"></script>
     <script>
         $(function() {
             $("#table_id").dataTable();

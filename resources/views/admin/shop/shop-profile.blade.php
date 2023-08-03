@@ -1,5 +1,5 @@
 @extends('admin.layouts.admin_layouts')
-
+@section('title','Shop Profile')
 @section('content')
     <section class="content">
         <div class="block-header">

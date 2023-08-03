@@ -56,33 +56,6 @@
                     </div>
                 </div>
             </div>
-
-            {{-- <div class="row clearfix">
-
-                <div class="col-lg-12 col-md-12 col-sm-12">
-
-                    <div class="card">
-                        <div class="body">
-                            @foreach ($data as $customer)
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <strong for="customer_edit">{{$customer['name']}}</strong>
-                                </div>
-                                <hr>
-                                <div class="col-md-6">
-                                    <a><i class="zmdi zmdi-edit"></i></a>
-
-                                </div>
-                            </div>
-                            @endforeach
-                            <div class="text-center">
-                                <strong>No Customer Found</strong><br>
-                                <a href="{{url('employee/add-customer')}}" class="btn btn-primary">Create New Customer</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> --}}
         </div>
     </section>
 
@@ -122,6 +95,9 @@
             }, "Please specify a valid phone number");
 
             $('#search-customer').validate({ // initialize the plugin
+                errorPlacement: function() {
+                    return false; // suppresses error message text
+                },
                 rules: {
                     phone: {
                         required: true,

@@ -95,52 +95,61 @@
                                 {{ session()->get('success') }}
                             </div>
                         @endif
-                        <form id="user-form" action="{{ url('user/insert') }}" method="post">
+                        <form id="user-form" action="{{ url('user/update-data') }}" method="post">
                             @csrf
                             <div class="form-group text-start mb-4"><span>Mob No</span>
-                                <input readonly class="form-control" id="phone" value="{{ $phone }}"
+                                <input readonly class="form-control" id="phone" value="{{ $user['phone'] }}"
                                     name="phone" type="number">
                                 @error('phone')
                                     <p class="text-warning">{{ $message }}</p>
                                 @enderror
                             </div>
                             <div class="form-group text-start mb-4"><span>Set Login Pin</span>
-
-                                <input class="form-control" id="login_pin" name="login_pin" type="number">
+                                <input required class="form-control" id="login_pin" name="login_pin" type="number">
+                                @error('login_pin')
+                                    <p class="text-warning">{{ $message }}</p>
+                                @enderror
                             </div>
                             <div class="form-group text-start mb-4"><span>Full Name</span>
-                                <input class="input-psswd form-control" name="name" id="name" type="text">
+                                <input class="input-psswd form-control" value="{{ $user['name'] }}"
+                                    name="name" id="name" type="text">
+                                    @error('name')
+                                    <p class="text-warning">{{ $message }}</p>
+                                @enderror
                             </div>
 
                             <div class="form-group text-start mb-4"><span>Email Id</span>
-                                <input class="input-psswd form-control" id="email" name="email" type="email">
+                                <input class="input-psswd form-control" value="{{ $user['email'] ?? '' }}" id="email"
+                                    name="email" type="email">
                             </div>
 
                             <div class="form-group text-start mb-4"><span>Address 1</span>
-                                <input class="input-psswd form-control" id="address_1" name="address_1" type="text">
+                                <input class="input-psswd form-control" value="{{ $user['address_1'] ?? '' }}"
+                                    id="address_1" name="address_1" type="text">
                             </div>
 
                             <div class="form-group text-start mb-4"><span>Address 2</span>
-                                <input class="input-psswd form-control" id="address_2" name="address_2"
-                                    type="text">
+                                <input class="input-psswd form-control" value="{{ $user['address_2'] ?? '' }}"
+                                    id="address_2" name="address_2" type="text">
                             </div>
 
                             <div class="form-group text-start mb-4"><span>Pincode</span>
-                                <input class="input-psswd form-control" id="pincode" name="pincode"
-                                    type="text">
+                                <input class="input-psswd form-control" value="{{ $user['pincode'] ?? '' }}"
+                                    id="pincode" name="pincode" type="text">
                             </div>
 
                             <div class="form-group text-start mb-4"><span>Landmark</span>
-                                <input class="input-psswd form-control" id="landmark" name="landmark"
-                                    type="text">
+                                <input class="input-psswd form-control" value="{{ $user['landmark'] ?? '' }}"
+                                    id="landmark" name="landmark" type="text">
                             </div>
 
                             <div class="form-group text-start mb-4">
                                 <select class="form-select" aria-label="Default select example" id="state"
                                     name="state">
-                                    <option value="none" selected>Please select state</option>
+                                    <option value="none" selected>Select State</option>
                                     @foreach ($states as $state)
-                                        <option class="value" value="{{ $state['name'] }}">{{ $state['name'] }}
+                                        <option @if ($user['state'] == $state) selected @endif class="value"
+                                            value="{{ $state['name'] }}">{{ $state['name'] }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -149,7 +158,12 @@
                             <div class="form-group text-start mb-4">
                                 <select class="form-select" aria-label="Default select example" name="city"
                                     id="city">
-                                    <option value="none">Please select City</option>
+                                    @if ($user['city'])
+                                    <option selected value="{{$user['city']}}">{{$user['city']}}</option>
+                                    @else
+
+                                    <option value="none">Select City</option>
+                                    @endif
                                 </select>
                                 <div style="color:red;" id="msg_city"></div>
                             </div>
@@ -160,17 +174,12 @@
                                     name="bussiness_profile" type="text">
                             </div> --}}
 
-                            <div class="form-group text-start mb-4"><span>Ref number</span>
-                                <input class="input-psswd form-control" id="ref_number" name="ref_number"
-                                    type="number">
+                            <div class="form-group text-start mb-4"><span>Ref ID/Number</span>
+                                <input class="input-psswd form-control" value="{{$user['ref_number']}}" id="ref_number" name="ref_number" type="text">
                             </div>
                             <button class="btn btn-warning btn-lg w-100" type="submit">Sign Up</button>
                         </form>
                     </div>
-                    <!-- Login Meta-->
-                    <!--<div class="login-meta-data">
-              <p class="mt-3 mb-0">Already have an account?<a class="mx-1" href="login.html">Sign In</a></p>
-            </div>-->
                 </div>
             </div>
         </div>
@@ -188,12 +197,11 @@
     <script src="{{ asset('users/js/jquery.nice-select.min.js') }}"></script>
     <script src="{{ asset('users/js/theme-switching.js') }}"></script>
     <script src="{{ asset('users/js/active.js') }}"></script>
-    {{-- <script src="{{ asset('users/js/pwa.js') }}"></script> --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
     <script>
-        jQuery("#phone").keypress(function(e) {
+        jQuery("#pincode").keypress(function(e) {
             var length = jQuery(this).val().length;
-            if (length > 9) {
+            if (length > 5) {
                 return false;
             } else if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
                 return false;
@@ -205,17 +213,6 @@
         jQuery("#login_pin").keypress(function(e) {
             var length = jQuery(this).val().length;
             if (length > 3) {
-                return false;
-            } else if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
-                return false;
-            } else if ((length == 0) && (e.which == 48)) {
-                return false;
-            }
-        });
-
-        jQuery("#pincode").keypress(function(e) {
-            var length = jQuery(this).val().length;
-            if (length > 5) {
                 return false;
             } else if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
                 return false;
@@ -286,10 +283,10 @@
                 },
                 rules: {
                     phone: {
-                        required: true,
+                        required: true
                     },
                     login_pin: {
-                        required: true,
+                        required: true
                     },
                     name: {
                         required: true

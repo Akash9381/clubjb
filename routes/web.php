@@ -93,9 +93,9 @@ Route::group(['middleware' => ['role:admin', 'auth']], function () {
         Route::Post('/global-shop-terms-conditions', [GlobalShopController::class, 'StoreGlobalShopTerms']);
 
         // *********************************** Admin Common Function ***************************
-        Route::get('/shop-deal-update/{id}',[Dealcontroller::class,'AdminEditDeal']);
-        Route::post('/update-shop-deal/{id}',[Dealcontroller::class,'AdminUpdateDeal']);
-        Route::get('/deal-delete/{user_id}/{id}',[Dealcontroller::class,'AdminDealDelete']);
+        Route::get('/shop-deal-update/{id}', [Dealcontroller::class, 'AdminEditDeal']);
+        Route::post('/update-shop-deal/{id}', [Dealcontroller::class, 'AdminUpdateDeal']);
+        Route::get('/deal-delete/{user_id}/{id}', [Dealcontroller::class, 'AdminDealDelete']);
 
 
         //*********************** Banner *******************************
@@ -148,8 +148,8 @@ Route::group(['middleware' => ['role:employee', 'auth']], function () {
     Route::get('employee/customer-search', [EmployeeController::class, 'CustomerSearch']);
     Route::get('employee/employee-search', [EmployeeController::class, 'EmployeeSearch']);
     Route::get('employee/profile', [EmployeeController::class, 'Profile']);
-    Route::get('employee/update-profile/{id}', [EmployeeController::class, 'UpdateProfile']);
-    Route::post('employee/edit-employee/{id}', [EmployeeController::class, 'UpdateProfileData']);
+    Route::get('employee/update-profile', [EmployeeController::class, 'UpdateProfile']);
+    Route::post('employee/edit-employee', [EmployeeController::class, 'UpdateProfileData']);
     Route::view('employee/add-customer', 'employee.add-customer');
     Route::get('employee/add-employee', [EmployeeController::class, 'EmployeeNewEmployee']);
     Route::post('employee/create-employee', [EmployeeController::class, 'EmployeeStoreEmployee']);
@@ -160,13 +160,13 @@ Route::group(['middleware' => ['role:employee', 'auth']], function () {
     Route::get('employee/shopkeeper-search', [EmployeeController::class, 'SearchShopKeeper']);
     Route::post('employee/create-shop', [ShopKeeperController::class, 'CreateShop']);
     Route::get('employee/shopkeeper-reports', [ShopKeeperController::class, 'ShopReport']);
-    Route::get('employee/shop-profile/{shop_id}', [ShopKeeperController::class, 'ShopEmployeeProfile']);
+    Route::get('employee/shop-profile/{id}', [ShopKeeperController::class, 'ShopEmployeeProfile']);
     Route::get('employee/edit-shopkeeper/{id}', [EmployeeController::class, 'EmployeeEditShopKeeper']);
     Route::post('employee/update-shop/{shop_id}', [EmployeeController::class, 'EmployeeUpdateShopKeeper']);
 
     //************************ / Employee Customer ********************************************
     Route::get('employee/customer-report', [CustomerController::class, 'CustomerReport']);
-    Route::get('employee/customer-profile/{customer_id}', [CustomerController::class, 'CustomerEmployeeProfile']);
+    Route::get('employee/customer-profile/{id}', [CustomerController::class, 'CustomerEmployeeProfile']);
 });
 
 // *********************************** Users **************************************
@@ -177,22 +177,24 @@ Route::get('/', function () {
 Route::get('user/login', [AuthController::class, 'UserAuth']);
 Route::get('user/register', [UserController::class, 'Register'])->name('register')->middleware('guest');
 Route::post('user/insert', [UserController::class, 'Store'])->middleware('guest');
+Route::post('user/update-data', [UserController::class, 'SignUp'])->middleware('guest');
 Route::get('user/login-pin', [UserController::class, 'LoginPin'])->name('loginpin')->middleware('guest');
 Route::post('users/authenticate', [AuthController::class, 'UserLogin']);
 Route::group(['middleware' => ['role:customer', 'auth']], function () {
     Route::get('user/home', [UserController::class, 'UserHome']);
     Route::get('user/profile', [UserController::class, 'UserProfile']);
-    Route::get('user/global-store/{id}', [DealController::class, 'UserDealList']);
+    Route::get('user/store/{id}', [DealController::class, 'UserDealList']);
     Route::get('user/local-store/{id}', [DealController::class, 'LocalDealList']);
     Route::get('user/deal/{id}', [DealController::class, 'UserDeal']);
     Route::get('user/dealdetail/{id}', [DealController::class, 'StoreDeal']);
     Route::get('user/edit-profile', [UserController::class, 'UpdateUser']);
     Route::post('user/update-profile', [UserController::class, 'UpdateProfile']);
     Route::get('user/logout', [AuthController::class, 'UserLogout']);
-    Route::get('user/global-shops', [UserController::class, 'GlobalShop']);
-    Route::get('user/local-shops', [UserController::class, 'LocalShop']);
-    Route::get('user/hot-shops', [UserController::class, 'HotShop']);
+    Route::get('user/global-stores', [UserController::class, 'GlobalShop']);
+    Route::get('user/local-stores', [UserController::class, 'LocalShop']);
+    Route::get('user/hot-stores', [UserController::class, 'HotShop']);
     Route::get('user/my-services', [UserController::class, 'Services']);
+    Route::get('user/invoice/{id}',[DealController::class,'Invoice']);
 });
 
 
@@ -216,11 +218,15 @@ Route::group(['middleware' => ['role:shopkeeper', 'auth']], function () {
         Route::get('/shopkeeper-reports', [ShopKeeperController::class, 'ShopkeeperCustomerReport']);
         Route::get('/give-services', [ShopKeeperController::class, 'GiveService']);
         Route::post('/take-service', [ShopKeeperController::class, 'TakeService']);
-        Route::get('/shop-update/{shop_id}', [ShopKeeperController::class, 'EditShop']);
-        Route::get('/given-deals', [ShopKeeperController::class, 'GivenDeals']);
+        Route::get('/shop-update', [ShopKeeperController::class, 'EditShop']);
+        Route::get('/given-deals', [ShopKeeperController::class, 'GivenDeals'])->name('givendeals');
         Route::get('/deals', [ShopKeeperController::class, 'Deals']);
+        Route::get('/given-deal-update/{id}', [DealController::class, 'GivenDealUpdate']);
+        Route::post('/given-deal-edit/{id}', [DealController::class, 'GivenDealEdited']);
         Route::get('/deal/edit/{id}', [DealController::class, 'EditDeal']);
+        Route::get('/deal-trash/{id}', [DealController::class, 'DealTrash']);
+        Route::get('/deal_status', [DealController::class, 'DealStatus']);
         Route::post('/update-deal/{id}', [DealController::class, 'UpdateDeal']);
-        Route::post('/update-shop/{shop_id}', [ShopKeeperController::class, 'UpdateShopkeeper']);
+        Route::post('/update-shop', [ShopKeeperController::class, 'UpdateShopkeeper']);
     });
 });

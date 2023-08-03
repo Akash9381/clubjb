@@ -38,11 +38,10 @@
 
                             <div class="body">
                                 <div class="row clearfix">
-
                                     <div class="col-lg-6 col-md-6">
                                         <p> <b>Customer Name</b> </p>
                                         <div class="form-group">
-                                            <input type="text" class="form-control" required name="customer_name"
+                                            <input type="text" value="{{old('name')}}" class="form-control" required name="name"
                                                 placeholder="Customer Name" />
                                         </div>
                                     </div>
@@ -50,7 +49,7 @@
                                         <p> <b>Customer Mobile</b></p>
                                         <div class="form-group">
                                             <input type="number" id
-                                            ="customer_number" value="{{$phone??''}}" name="customer_number" required class="form-control"
+                                            ="phone" value="{{$phone??''}}" name="phone" required class="form-control"
                                                 placeholder="Customer Number" />
                                         </div>
                                     </div>
@@ -68,19 +67,28 @@
 
                             <div class="body">
                                 <div class="row clearfix">
-
-                                    <div class="col-lg-6 col-md-6">
-
-                                        <div class="form-group mt-5">
-                                            <div class="radio inlineblock">
-                                                <input type="radio" name="payment_status" id="unPaid" checked="" class="with-gap"
-                                                    value="Silver" >
-                                                <label for="unPaid">Silver</label>
+                                    <div class="col-lg-12 col-md-12">
+                                        <p><b>Customer Type</b></p>
+                                        <div class="form-group">
+                                            <div class="radio inlineblock m-r-20">
+                                                <input type="radio" name="payment_status" id="Bronze" checked=""
+                                                    class="with-gap" value="Bronze">
+                                                <label for="Bronze">Bronze</label>
+                                            </div>
+                                            <div class="radio inlineblock m-r-20">
+                                                <input type="radio" name="payment_status" id="Silver" class="with-gap"
+                                                    value="Silver">
+                                                <label for="Silver">Silver</label>
                                             </div>
                                             <div class="radio inlineblock m-r-20">
                                                 <input type="radio" name="payment_status" id="Paid" class="with-gap"
-                                                    value="Gold" >
+                                                    value="Gold">
                                                 <label for="Paid">Gold</label>
+                                            </div>
+                                            <div class="radio inlineblock">
+                                                <input type="radio" name="payment_status" id="Platinum" class="with-gap"
+                                                    value="Platinum">
+                                                <label for="Platinum">Platinum</label>
                                             </div>
                                         </div>
                                     </div>
@@ -98,14 +106,12 @@
                             <div class="body">
                                 <div class="row clearfix">
                                     <div class="col-lg-6 col-md-6">
-                                        <p> <b>Ref mobile number</b> </p>
+                                        <p> <b>Ref ID/Mobile number</b> </p>
                                         <div class="form-group">
-                                            <input type="text" name="ref_number" value="{{ Auth::user()->phone }}" class="form-control" placeholder="Ref mobile number" />
+                                            <input type="text" required name="ref_number" value="{{ Auth::user()->phone }}" class="form-control" placeholder="Ref mobile number" />
                                         </div>
                                     </div>
-                                    <input type="hidden" name="login_pin" value="1111">
                                     <div class="col-sm-12">
-
                                         <div class="form-group">
                                             <div class="checkbox">
                                                 <input id="checkbox" name="wp_msg" type="checkbox">
@@ -116,13 +122,12 @@
 
                                     </div>
                                     <div class="col-sm-12">
-                                        <button type="submit" class="btn btn-primary btn-round"> Add Employee</button>
+                                        <button type="submit" class="btn btn-primary btn-round"> Add Customer</button>
 
                                     </div>
                                     <div style="visibility: hidden;" id="nouislider_basic_example"></div>
 
                                     <div style="visibility: hidden;" id="nouislider_range_example"></div>
-
 
                                 </div>
                             </div>
@@ -136,7 +141,7 @@
 @section('js')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
     <script>
-        jQuery("#customer_number").keypress(function(e) {
+        jQuery("#phone").keypress(function(e) {
             var length = jQuery(this).val().length;
             if (length > 9) {
                 return false;
@@ -148,36 +153,23 @@
         });
         $(document).ready(function() {
 
-            jQuery.validator.addMethod("phoneUS", function(customer_number, element) {
-                customer_number = customer_number.replace(/\s+/g, "");
-                return this.optional(element) || customer_number.length > 9 && customer_number.match(
-                    /^(\+?1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/);
-            }, "Please specify a valid phone number");
-
-            jQuery.validator.addMethod("Ref", function(ref_number, element) {
-                ref_number = ref_number.replace(/\s+/g, "");
-                return this.optional(element) || ref_number.length > 9 && ref_number.match(
+            jQuery.validator.addMethod("phoneUS", function(phone, element) {
+                phone = phone.replace(/\s+/g, "");
+                return this.optional(element) || phone.length > 9 && phone.match(
                     /^(\+?1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/);
             }, "Please specify a valid phone number");
 
             $('#user-form').validate({ // initialize the plugin
                 rules: {
-                    customer_number: {
+                    phone: {
                         required: true,
                         phoneUS: true
                     },
                     ref_number: {
-                        required: true,
-                        Ref: true
-                    },
-                    customer_name: {
                         required: true
                     },
-                    login_pin: {
-                        required: true,
-                        number: true,
-                        minlength: 4,
-                        maxlength: 4
+                    name: {
+                        required: true
                     }
                 }
             });

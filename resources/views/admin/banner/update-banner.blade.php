@@ -80,11 +80,9 @@
                                         <select name="shop_id" id="shop_id" class="form-control show-tick ms select2"
                                             data-placeholder="Select">
                                             @forelse ($shops as $shop)
-                                                @if (str_contains($shop['customer_id'], 'LS') == true)
-                                                    <option value="{{ $shop['id'] }}"
-                                                        @if ($shop['id'] == $banner['shop_id']) selected @endif>
-                                                        {{ $shop['name'] }}</option>
-                                                @endif
+                                                <option value="{{ $shop['id'] }}"
+                                                    @if ($shop['id'] == $banner['shop_id']) selected @endif>
+                                                    {{ $shop['name'] }}</option>
                                             @empty
                                                 <option value="none">Select Local Shop</option>
                                             @endforelse
@@ -93,8 +91,9 @@
                                     </div>
                                     <div class="col-lg-6 col-md-6">
                                         <p> <b>Brand Name</b> </p>
-                                        <input type="text" value="{{$banner['brand_name'] ?? 'NA'}}" required name="brand_name" id="brand_name" class="form-control"
-                                                placeholder="Brand Name" />
+                                        <input type="text" value="{{ $banner['brand_name'] ?? 'NA' }}" required
+                                            name="brand_name" id="brand_name" class="form-control"
+                                            placeholder="Brand Name" />
                                     </div>
                                 </div>
                             </div>
@@ -109,8 +108,9 @@
                                     <div class="col-lg-12 col-md-12">
                                         <p> <b>Banner Name</b> </p>
                                         <div class="form-group">
-                                            <input type="text" required value="{{ $banner['banner_name'] }}" name="banner_name"
-                                                id="banner_name" class="form-control" placeholder="Banner Name" />
+                                            <input type="text" required value="{{ $banner['banner_name'] }}"
+                                                name="banner_name" id="banner_name" class="form-control"
+                                                placeholder="Banner Name" />
                                         </div>
                                     </div>
                                 </div>
@@ -126,8 +126,8 @@
                                     <div class="col-lg-12 col-md-12">
                                         <p> <b>Banner Upload</b> <small>(upload banner in 1960*600px)</small> </p>
                                         <div class="form-group">
-                                            <input type="file" accept=".png, .jpg, .jpeg, .webp" name="banner_image" class="form-control"
-                                                placeholder="Banner Name" />
+                                            <input type="file" accept=".png, .jpg, .jpeg, .webp" name="banner_image"
+                                                class="form-control" placeholder="Banner Name" />
                                         </div>
                                         <img src="{{ asset('/storage/shopbanner/' . $banner['banner_image']) }}"
                                             alt="{{ $banner['banner_image'] }}">

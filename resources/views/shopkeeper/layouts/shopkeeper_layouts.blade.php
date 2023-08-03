@@ -10,10 +10,10 @@
     <meta name="author" content="">
 
     <title>@yield('title')</title>
-    <link rel="icon" href="{{asset('employee/assets/images/fav.jpg')}}" type="image/x-icon"> <!-- Favicon-->
-    <link rel="stylesheet" href="{{asset('employee/assets/plugins/bootstrap/css/bootstrap.min.css')}}">
-    <link rel="stylesheet" href="{{asset('employee/assets/plugins/charts-c3/plugin.css')}}" />
-    <link rel="stylesheet" href="{{asset('employee/assets/plugins/jvectormap/jquery-jvectormap-2.0.3.min.css')}}" />
+    <link rel="icon" href="{{ asset('employee/assets/images/fav.jpg') }}" type="image/x-icon"> <!-- Favicon-->
+    <link rel="stylesheet" href="{{ asset('employee/assets/plugins/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('employee/assets/plugins/charts-c3/plugin.css') }}" />
+    <link rel="stylesheet" href="{{ asset('employee/assets/plugins/jvectormap/jquery-jvectormap-2.0.3.min.css') }}" />
 
 
     <!--Google font-->
@@ -30,10 +30,11 @@
 
 
     <!-- Custom Css -->
-    <link rel="stylesheet" href="{{ asset('employee/light/assets/css/main.css')}}">
-    <link rel="stylesheet" href="{{asset('employee/light/coustam.css')}}">
-    <link rel="stylesheet" href="{{ asset('employee/light/assets/css/color_skins.css')}}">
-    <link rel="stylesheet" type="text/css" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css" />
+    <link rel="stylesheet" href="{{ asset('employee/light/assets/css/main.css') }}">
+    <link rel="stylesheet" href="{{ asset('employee/light/coustam.css') }}">
+    <link rel="stylesheet" href="{{ asset('employee/light/assets/css/color_skins.css') }}">
+    <link rel="stylesheet" type="text/css"
+        href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css" />
     @yield('css')
 </head>
 
@@ -49,20 +50,20 @@
     @yield('content')
 
     <!-- Jquery Core Js -->
-    <script src="{{ asset('employee/light/assets/bundles/libscripts.bundle.js')}}"></script>
-    <script src="{{ asset('employee/light/assets/bundles/vendorscripts.bundle.js')}}"></script>
+    <script src="{{ asset('employee/light/assets/bundles/libscripts.bundle.js') }}"></script>
+    <script src="{{ asset('employee/light/assets/bundles/vendorscripts.bundle.js') }}"></script>
 
-    <script src="{{ asset('employee/light/assets/bundles/c3.bundle.js')}}"></script>
-    <script src="{{ asset('employee/light/assets/bundles/jvectormap.bundle.js')}}"></script>
-    <script src="{{ asset('employee/light/assets/bundles/knob.bundle.js')}}"></script>
+    <script src="{{ asset('employee/light/assets/bundles/c3.bundle.js') }}"></script>
+    <script src="{{ asset('employee/light/assets/bundles/jvectormap.bundle.js') }}"></script>
+    <script src="{{ asset('employee/light/assets/bundles/knob.bundle.js') }}"></script>
 
-    <script src="{{ asset('employee/light/assets/bundles/mainscripts.bundle.js')}}"></script>
-    <script src="{{ asset('employee/light/assets/js/pages/index.js')}}"></script>
+    <script src="{{ asset('employee/light/assets/bundles/mainscripts.bundle.js') }}"></script>
+    <script src="{{ asset('employee/light/assets/js/pages/index.js') }}"></script>
     <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js"></script>
+
     <script src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"></script>
     @yield('js')
 </body>
 
 
 </html>
-

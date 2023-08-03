@@ -20,17 +20,29 @@
         </div>
         <div class="container-fluid">
             <!-- Basic Examples -->
+            @if (session()->has('error'))
+                <div class="alert alert-danger">
+                    {{ session()->get('error') }}
+                </div>
+            @endif
+            @if (session()->has('success'))
+                <div class="alert alert-success">
+                    {{ session()->get('success') }}
+                </div>
+            @endif
             <div class="row clearfix">
                 <div class="col-lg-12">
                     <div class="card">
 
                         <div class="body">
                             <div class="table-responsive">
-                                <table id="table_id" class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                                <table id="table_id"
+                                    class="table table-bordered table-striped table-hover js-basic-example dataTable">
                                     <thead>
                                         <tr>
                                             <th>Date</th>
                                             <th>Customer Name</th>
+                                            <th>Customer ID</th>
                                             <th>Deal Name</th>
                                             <th>Bill</th>
                                             <th>Amount</th>
@@ -43,12 +55,16 @@
                                             <tr>
                                                 <td>{{ \Carbon\Carbon::parse($deal->created_at)->format('d-m-Y') }}</td>
                                                 <td>{{ $deal['GetUser']['name'] }}</td>
+                                                <td>{{ $deal['GetUser']['customer_id'] }}</td>
                                                 <td>{{ $deal['GetDeal']['shop_deal'] }}</td>
                                                 <td>{{ $deal['bill_number'] ?? 'NA' }}</td>
                                                 <td>{{ $deal['amount'] ?? 'NA' }}</td>
                                                 <td>
                                                     <button class="btn btn-icon btn-neutral btn-icon-mini"><a
-                                                            href="#"><i class="zmdi zmdi-eye"></i></a></button>
+                                                            href="{{ url('shopkeeper/given-deal-update/' . $deal['id']) }}"><i
+                                                                class="zmdi zmdi-edit"></i></a></button>
+                                                    <button class="btn btn-icon btn-neutral btn-icon-mini"><i
+                                                            class="zmdi zmdi-delete"></i></button>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -65,13 +81,6 @@
 @endsection
 
 @section('js')
-    <!-- Jquery DataTable Plugin Js -->
-    <script src="{{ asset('admin/light/assets/bundles/datatablescripts.bundle.js') }}"></script>
-    <script src="{{ asset('admin/assets/plugins/jquery-datatable/buttons/dataTables.buttons.min.js') }}"></script>
-    <script src="{{ asset('admin/assets/plugins/jquery-datatable/buttons/buttons.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('admin/assets/plugins/jquery-datatable/buttons/buttons.colVis.min.js') }}"></script>
-    <script src="{{ asset('admin/assets/plugins/jquery-datatable/buttons/buttons.html5.min.js') }}"></script>
-    <script src="{{ asset('admin/assets/plugins/jquery-datatable/buttons/buttons.print.min.js') }}"></script>
     <script>
         $(function() {
             $("#table_id").dataTable();

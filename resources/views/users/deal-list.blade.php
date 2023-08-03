@@ -1,4 +1,6 @@
 @extends('users.layouts.user_layouts')
+@section('title','Deal List')
+@section('deal','Deals for '. $shop_name['name'])
 @section('content')
     @include('users.layouts.dealheader')
     @include('users.layouts.sidebar')

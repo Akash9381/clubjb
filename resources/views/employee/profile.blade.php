@@ -1,29 +1,27 @@
 ﻿@extends('employee.layouts.employe_layouts')
 @section('title', 'Profile')
-
-<!-- Chat-launcher -->
-
-
 @section('content')
     <section class="content">
         <div class="block-header">
             <div class="row">
                 <div class="col-lg-7 col-md-6 col-sm-12">
-                    <h2>profile
+                    <h2>{{ Auth::user()->name }}
                         <small>Welcome to Club Jb</small>
                     </h2>
                 </div>
                 <div class="col-lg-5 col-md-6 col-sm-12">
                     <ul class="breadcrumb float-md-right">
-                        <li class="breadcrumb-item"><a href="{{ url('employee/dashboard') }}"><i
-                                    class="zmdi zmdi-home"></i></a></li>
-                        <li class="breadcrumb-item"><a href="javascript:void(0);">profile</a></li>
+                        <li class="breadcrumb-item"><a href="{{ url('admin/dashboard') }}"><i class="zmdi zmdi-home"></i></a>
+                        </li>
+                        <li class="breadcrumb-item"><a href="javascript:void(0);">Profile</a></li>
 
                     </ul>
                 </div>
             </div>
         </div>
         <div class="container-fluid">
+
+            <!-- Advanced Select2 -->
             <div class="row clearfix">
                 <div class="col-lg-12 col-md-12 col-sm-12">
                     <div class="card">
@@ -32,11 +30,11 @@
                             <div class="row clearfix">
                                 <div class="col-lg-4 col-md-6 col-6">
                                     <h6 class="mt-2 m-b-0">State </h6>
-                                    <span class="job_post">{{ $employee['state'] }}</span>
+                                    <span class="job_post">{{ $employee['state'] ?? 'NA' }}</span>
                                 </div>
                                 <div class="col-lg-4 col-md-6 col-6">
                                     <h6 class="mt-2 m-b-0">City </h6>
-                                    <span class="job_post">{{ $employee['city'] }}</span>
+                                    <span class="job_post">{{ $employee['city'] ?? 'NA' }}</span>
                                 </div>
                             </div>
 
@@ -57,7 +55,7 @@
                             <div class="row clearfix">
                                 <div class="col-lg-4 col-md-6">
                                     <h6 class="mt-2 m-b-0">Emp id </h6>
-                                    <span class="job_post">{{ $employee['employee_id'] }}</span>
+                                    <span class="job_post">{{ $employee['customer_id'] }}</span>
                                 </div>
                                 <div class="col-lg-4 col-md-6">
                                     <h6 class="mt-2 m-b-0">Add date </h6>
@@ -91,18 +89,16 @@
                         <div class="body">
                             <div class="row clearfix">
                                 <div class="col-lg-4 col-md-6">
-                                    <h6 class="mt-2 m-b-0">Employee type </h6>
-                                    <span class="job_post">{{ $employee['employee_type'] }}</span>
-                                </div>
-                                <div class="col-lg-4 col-md-6">
                                     <h6 class="mt-2 m-b-0">Employee Name </h6>
-                                    <span class="job_post">{{ $employee['employee_name'] }}</span>
+                                    <span class="job_post">{{ $employee['name'] }}</span>
                                 </div>
                                 <div class="col-lg-4 col-md-6">
                                     <h6 class="mt-2 m-b-0">Employee Number </h6>
-                                    <span class="job_post">{{ $employee['employee_number'] }}</span>
+                                    <span class="job_post">{{ $employee['phone'] }}</span>
                                 </div>
+
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -115,14 +111,21 @@
 
                         <div class="body">
                             <div class="row clearfix">
+
+
                                 <div class="col-lg-4 col-md-6">
                                     <h6 class="mt-2 m-b-0">Login Pin </h6>
-                                    <span class="job_post">XXXX</span>
+                                    <span class="job_post">{{ $employee['login_pin'] ?? 'NA' }}</span>
+
                                 </div>
+
+
                                 <div class="col-lg-4 col-md-6">
                                     <h6 class="mt-2 m-b-0">Ref mobile number </h6>
-                                    <span class="job_post">{{ $employee['ref_number'] }}</span>
+                                    <span class="job_post">{{ $employee['ref_number'] ?? 'NA' }}</span>
+
                                 </div>
+
                                 <div class="col-lg-4 col-md-6">
                                     <h6 class="mt-2 m-b-0"> Agreement </h6>
                                     @forelse ($employee['GetEmployeeAgreement'] as $key => $picture)
@@ -132,15 +135,20 @@
                                             download="{{ $picture['agreement_document'] }}" title="Download"> <i
                                                 class="material-icons">move_to_inbox</i></a>
                                     @empty
-                                    NA
+                                        NA
                                     @endforelse
                                 </div>
+                                <div style="visibility: hidden;" id="nouislider_basic_example"></div>
+
+                                <div style="visibility: hidden;" id="nouislider_range_example"></div>
+
+
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- #END# Input Slider -->
+
             <div class="row clearfix">
                 <div class="col-lg-12 col-md-12 col-sm-12">
                     <div class="card">
@@ -155,8 +163,8 @@
                                     <p> <b>Uploaded Pictures</b> </p>
                                     <div class="form-group">
                                         @forelse ($employee['GetEmployeePicture'] as $key => $picture)
-                                            <label for=""><b>{{ $key + 1 }}.</b>
-                                                {{ $picture['picture_document'] }}</label>
+                                            <img src="{{ asset('/storage/employee/picture_document/' . $picture['picture_document']) }}"
+                                                alt="{{ $picture['picture_document'] }}" width="100" height="100">
                                             <a href="{{ asset('/storage/employee/picture_document/' . $picture['picture_document']) }}"
                                                 download="{{ $picture['picture_document'] }}" title="Download"> <i
                                                     class="material-icons">move_to_inbox</i></a>
@@ -214,15 +222,16 @@
                                             <label for=""><b>{{ $key + 1 }}.</b>
                                                 {{ $picture['passport_document'] }}</label>
                                             <a href="{{ asset('/storage/employee/passport_document/' . $picture['passport_document']) }}"
-                                                download="{{ $picture['passport_document'] }}" title="Download"> <i class="material-icons">move_to_inbox</i></a>
+                                                download="{{ $picture['passport_document'] }}" title="Download"> <i
+                                                    class="material-icons">move_to_inbox</i></a>
                                         @empty
                                             NA
                                         @endforelse
                                     </div>
                                 </div>
-                                <div class="col-sm-12">
-                                    <a class="btn btn-primary btn-round"
-                                        href="{{ url('employee/update-profile/' . $employee['employee_id']) }}"> Edit </a>
+                                <div class="col-sm-12 mt-3">
+                                    <a class="btn btn-primary btn-round" href="{{ url('employee/update-profile') }}">
+                                        Edit </a>
                                 </div>
 
                             </div>
@@ -231,22 +240,7 @@
                     </div>
                 </div>
             </div>
+            <!-- #END# Input Slider -->
         </div>
     </section>
-
-@endsection
-<!-- Jquery Core Js -->
-@section('js')
-
-    <script src="{{ asset('employee/assets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js') }}"></script> <!-- Bootstrap Colorpicker Js -->
-    <script src="{{ asset('employee/assets/plugins/jquery-inputmask/jquery.inputmask.bundle.js') }}"></script> <!-- Input Mask Plugin Js -->
-    <script src="{{ asset('employee/assets/plugins/multi-select/js/jquery.multi-select.js') }}"></script> <!-- Multi Select Plugin Js -->
-    <script src="{{ asset('employee/assets/plugins/jquery-spinner/js/jquery.spinner.js') }}"></script> <!-- Jquery Spinner Plugin Js -->
-    <script src="{{ asset('employee/assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js') }}"></script> <!-- Bootstrap Tags Input Plugin Js -->
-    <script src="{{ asset('employee/assets/plugins/nouislider/nouislider.js') }}"></script> <!-- noUISlider Plugin Js -->
-    <script src="{{ asset('employee/assets/plugins/select2/select2.min.js') }}"></script> <!-- Select2 Js -->
-
-    <script src="{{ asset('employee/light/assets/bundles/mainscripts.bundle.js') }}"></script><!-- Custom Js -->
-    <script src="{{ asset('employee/light/assets/js/pages/forms/advanced-form-elements.js') }}"></script>
-
 @endsection

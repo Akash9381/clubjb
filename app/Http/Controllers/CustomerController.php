@@ -66,31 +66,41 @@ class CustomerController extends Controller
 
     public function ShopKeeperNewCustomer(Request $request)
     {
-        $request->validate([
-            'customer_name'     => 'required',
-            'phone'             => 'required|unique:users',
+        $this->validate($request, [
+            'name'      => 'required',
+            'phone'     => 'required|integer|digits:10',
+            'ref_number' => 'required'
         ]);
-        $user = User::where('phone', $request['phone'])->first();
+        $user               = User::where('phone', $request['phone'])->first();
+        $ref_id             = User::where('customer_id', $request['ref_number'])->first();
+        $ref_num            = User::where('phone', $request['ref_number'])->first();
+        if (empty($ref_id)) {
+            if (empty($ref_num)) {
+                return back()->with('error', 'Refer Id/Ref Number Invalid');
+            }
+        }
         if ($user) {
-            return back()->with('error', 'User Already Exist');
+            return back()->with('error', 'Already Exist!');
         } else {
             try {
-                $data = new User();
-                $data->name         = $request['customer_name'];
-                $data->phone        = $request['phone'];
-                $data->login_pin    = '1111';
+                $customer_id            = 'C-' . sprintf("%06d", mt_rand(1, 999999));
+
+                $data                   = new User();
+                $data->name             = $request['name'];
+                $data->phone            = $request['phone'];
+                $data->customer_id      = $customer_id;
+                $data->login_pin        = '1111';
+                $data->ref_number       = $request['ref_number'];
+                $data->status           = 0;
                 $data->save();
+
                 $data->assignRole(['customer']);
-                $customer_id                = 'C-' . sprintf("%06d", mt_rand(1, 999999));
+
                 $customer                   = new Customer();
                 $customer->user_id          = $data->id;
                 $customer->customer_id      = $customer_id;
-                $customer->customer_name    = $request['customer_name'];
-                $customer->customer_number  = $request['phone'];
                 $customer->payment_status   = $request['payment_status'];
-                $customer->ref_number       = $request['ref_number'];
                 $customer->wp_msg           = $request['wp_msg'];
-                $customer->status           = '0';
                 $customer->save();
                 return redirect('shopkeeper/give-services?phone=' . $request['phone']);
             } catch (\Exception $e) {
@@ -146,28 +156,41 @@ class CustomerController extends Controller
 
     public function EmployeeNewCustomer(Request $request)
     {
-        // return $request->all();
-        $user = User::where('phone', $request['customer_number'])->first();
+        $this->validate($request, [
+            'name'      => 'required',
+            'phone'     => 'required|integer|digits:10',
+            'ref_number' => 'required'
+        ]);
+        $user               = User::where('phone', $request['phone'])->first();
+        $ref_id             = User::where('customer_id', $request['ref_number'])->first();
+        $ref_num            = User::where('phone', $request['ref_number'])->first();
+        if (empty($ref_id)) {
+            if (empty($ref_num)) {
+                return back()->with('error', 'Refer Id/Ref Number Invalid');
+            }
+        }
         if ($user) {
-            return back()->with('error', 'User Already Exist');
+            return back()->with('error', 'Already Exist!');
         } else {
             try {
-                $data = new User();
-                $data->name = $request['customer_name'];
-                $data->phone = $request['customer_number'];
-                $data->login_pin = $request['login_pin'];
+                $customer_id            = 'C-' . sprintf("%06d", mt_rand(1, 999999));
+
+                $data                   = new User();
+                $data->name             = $request['name'];
+                $data->phone            = $request['phone'];
+                $data->customer_id      = $customer_id;
+                $data->login_pin        = '1111';
+                $data->ref_number       = $request['ref_number'];
+                $data->status           = 0;
                 $data->save();
+
                 $data->assignRole(['customer']);
-                $customer_id = 'C-' . sprintf("%06d", mt_rand(1, 999999));
-                $customer = new Customer();
-                $customer->user_id = $data->id;
-                $customer->customer_id = $customer_id;
-                $customer->customer_name = $request['customer_name'];
-                $customer->customer_number = $request['customer_number'];
-                $customer->payment_status = $request['payment_status'];
-                $customer->ref_number = $request['ref_number'];
-                $customer->wp_msg = $request['wp_msg'];
-                $customer->status = '0';
+
+                $customer                   = new Customer();
+                $customer->user_id          = $data->id;
+                $customer->customer_id      = $customer_id;
+                $customer->payment_status   = $request['payment_status'];
+                $customer->wp_msg           = $request['wp_msg'];
                 $customer->save();
                 return redirect('employee/customer-search')->with('success', 'Customer Added Successfully');
             } catch (\Exception $e) {
@@ -204,7 +227,6 @@ class CustomerController extends Controller
                     'name' => $request['name'],
                     'ref_number' => $request['ref_number']
                 ]);
-
                 Customer::where('user_id', $id)->update([
                     'payment_status' => $request['payment_status'],
                     'wp_msg' => $request['wp_msg'],
@@ -220,7 +242,12 @@ class CustomerController extends Controller
 
     public function CustomerReport()
     {
-        $customers = Customer::where('ref_number', Auth::user()->phone)->get();
+        $customers = User::whereHas(
+            'roles',
+            function ($q) {
+                $q->where('name', 'customer');
+            }
+        )->whereIn('ref_number', [Auth::user()->phone, Auth::user()->customer_id])->get();
         return view('employee.customer_report', compact('customers'));
     }
     public function ShopkeeperCustomerReport()
@@ -228,9 +255,10 @@ class CustomerController extends Controller
         $customers = Customer::where('ref_number', Auth::user()->phone)->get();
         return view('shopkeeper.customer_report', compact('customers'));
     }
-    public function CustomerEmployeeProfile($customer_id = null)
+    public function CustomerEmployeeProfile($id = null)
     {
-        $customer = Customer::where('ref_number', Auth::user()->phone)->where('customer_id', $customer_id)->first();
+        $customer = User::where('id', $id)->with('Customer')->first();
+        // $customer = Customer::where('ref_number', Auth::user()->phone)->where('customer_id', $customer_id)->first();
         return view('employee.customer-profile', compact('customer'));
     }
 }

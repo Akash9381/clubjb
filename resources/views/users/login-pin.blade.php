@@ -114,13 +114,8 @@
                                         {{ $message }}
                                     </label>
                                 @enderror
-                                <input type="hidden" type="number" name="phn"
-                                    value="{{ request()->get('phn') }}">
-                                @error('phone_number')
-                                    <label class="error" for="phn">
-                                        {{ $message }}
-                                    </label>
-                                @enderror
+                                <input type="hidden" type="number" name="phone"
+                                    value="{{ $phone }}">
                             </div>
                             <button class="btn btn-warning btn-lg w-100" type="submit">Verify &amp; Proceed</button>
                         </form>

@@ -354,7 +354,7 @@
                                     <div class="col-lg-6 col-md-6">
                                         <p> <b>Upload Shop Picture</b> </p>
                                         <div class="form-group">
-                                            <input type="file" accept=".png, .jpg, .jpeg" name="shop_pic"
+                                            <input type="file" multiple accept=".png, .jpg, .jpeg" name="shop_pic[]"
                                                 class="form-control" placeholder="Upload Pic">
                                         </div>
                                     </div>
@@ -362,7 +362,7 @@
                                     <div class="col-lg-6 col-md-6">
                                         <p> <b>Upload Shop Menu</b> </p>
                                         <div class="form-group">
-                                            <input type="file" accept=".png, .jpg, .jpeg, .pdf" name="shop_menu"
+                                            <input type="file" multiple accept=".png, .jpg, .jpeg, .pdf" name="shop_menu[]"
                                                 class="form-control" placeholder="Upload Menu">
                                         </div>
                                     </div>
@@ -370,7 +370,7 @@
                                     <div class="col-lg-6 col-md-6">
                                         <p> <b>Agreement</b> </p>
                                         <div class="form-group">
-                                            <input type="file" name="shop_agreement[]" multiple class="form-control"
+                                            <input type="file" multiple name="shop_agreement[]" multiple class="form-control"
                                                 placeholder="Upload Menu">
                                         </div>
                                     </div>

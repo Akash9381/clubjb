@@ -128,11 +128,11 @@
                             <div class="row clearfix">
                                 <div class="col-md-12">
                                     <h6 class="mt-2 m-b-0">Help</h6>
-                                    <span class="job_post">{!! $shop['GlobalShop']['shop_help'] ?? 'NA' !!}</span>
+                                    <span class="job_post">{!! $shop['LocalShop']['shop_help'] ?? 'NA' !!}</span>
                                 </div>
                                 <div class=" col-md-12">
                                     <h6 class="mt-2 m-b-0">Terms & Conditions </h6>
-                                    <span class="job_post">{!! $shop['GlobalShop']['shop_terms'] ?? 'NA' !!}</span>
+                                    <span class="job_post">{!! $shop['LocalShop']['shop_terms'] ?? 'NA' !!}</span>
                                 </div>
                             </div>
                         </div>

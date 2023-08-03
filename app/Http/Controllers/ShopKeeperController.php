@@ -26,8 +26,10 @@ class ShopKeeperController extends Controller
 {
     public function EmployeeAddShop()
     {
-        $states = ModelsState::all();
-        return view('employee.shopkeeper', compact('states'));
+        $states     = ModelsState::all();
+        $help       = LocalShopHelp::where('id', 1)->first();
+        $tc         = LocalShopTC::where('id', 1)->first();
+        return view('employee.shopkeeper', compact('states','help','tc'));
     }
 
     public function GetLocation(Request $request)
@@ -40,40 +42,55 @@ class ShopKeeperController extends Controller
 
     public function CreateShop(Request $request)
     {
-        $shop = User::where('phone', $request['shop_number'])->first();
+        $this->validate($request, [
+            'shop_name'    => 'required',
+            'phone'        => 'required|integer|digits:10',
+            'city'         => 'required',
+            'state'        => 'required',
+            'ref_number'   => 'required'
+        ]);
+
+        $shop               = User::where('phone', $request['phone'])->first();
+        $ref_id             = User::where('customer_id', $request['ref_number'])->first();
+        $ref_num            = User::where('phone', $request['ref_number'])->first();
+        if (empty($ref_id)) {
+            if (empty($ref_num)) {
+                return back()->with('error', 'Refer Id/Number Invalid!');
+            }
+        }
         if ($shop) {
-            return back()->with('error', 'User already exist');
+            return back()->with('error', 'Already Exist!');
         } else {
             try {
-                $user = new User();
-                $user->name = $request['shop_name'];
-                $user->phone = $request['shop_number'];
-                $user->state = $request['state'];
-                $user->city = $request['city'];
-                $user->login_pin = '1111';
-
-                $user->save();
-                $user->assignRole(['shopkeeper', 'customer']);
                 $shop_id = 'LS-' . sprintf("%06d", mt_rand(1, 999999));
+
+                $user = new User();
+                $user->name         = $request['shop_name'];
+                $user->phone        = $request['phone'];
+                $user->login_pin    = '1111';
+                $user->customer_id  = $shop_id;
+                $user->state        = $request['state'];
+                $user->city         = $request['city'];
+                $user->ref_number   = $request['ref_number'];
+                $user->address_1    = $request['address_1'];
+                $user->address_2    = $request['address_2'];
+                $user->pincode      = $request['pincode'];
+                $user->landmark     = $request['landmark'];
+                $user->status       = 0;
+                $user->save();
+
+                $user->assignRole(['shopkeeper', 'customer']);
+
                 $shop               = new Shop();
                 $shop->user_id      = $user->id;
                 $shop->shop_id      = $shop_id;
-                $shop->ref_number   = $request->ref_number;
-                $shop->state        = $request->state;
-                $shop->city         = $request->city;
                 $shop->category     = $request->category;
+                $shop->shop_type    = $request->shop_type;
                 $shop->sub_category = $request->sub_category;
                 $shop->hot_store    = $request->hot_store;
-                $shop->shop_name    = $request->shop_name;
-                $shop->shop_number  = $request->shop_number;
                 $shop->contact_person = $request->contact_person;
                 $shop->contact_number = $request->contact_number;
                 $shop->designation  = $request->designation;
-                $shop->address_1    = $request->address_1;
-                $shop->address_2    = $request->address_2;
-                $shop->pincode      = $request->pincode;
-                $shop->shop_type    = $request->shop_type;
-                $shop->landmark     = $request->landmark;
                 $shop->ip_address   = $request->ip_address;
                 $shop->country_name = $request->country_name;
                 $shop->country_code = $request->country_code;
@@ -83,8 +100,8 @@ class ShopKeeperController extends Controller
                 $shop->zip_code     = $request->zip_code;
                 $shop->shop_help    = $request->shop_help;
                 $shop->shop_terms   = $request->shop_terms;
-                $shop->status       = '0';
                 $shop->save();
+
                 if (!empty($request['deal'])) {
                     foreach ($request['deal'] as $key => $deal) {
                         $dl = new ShopDeal();
@@ -131,97 +148,26 @@ class ShopKeeperController extends Controller
                     }
                 };
 
-                if ($request->hasFile('shop_aadhar_card')) {
-                    foreach ($request->file('shop_aadhar_card') as $image) {
+
+                if ($request->hasFile('shop_agreement')) {
+                    foreach ($request->file('shop_agreement') as $image) {
                         $filenamewithextension = $image->getClientOriginalName();
                         $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
 
                         $extension = $image->getClientOriginalExtension();
                         $filenametostore = $filename . '_' . time() . '.' . $extension;
-                        $image->storeAs('public/shop/shop_aadhar_card', $filenametostore);
+                        $image->storeAs('public/shop/shop_agreement', $filenametostore);
 
-                        $featureimagepath = public_path('storage/shop/shop_aadhar_card/' . $filenametostore);
-                        $data = new ShopAadhar();
+                        $featureimagepath = public_path('storage/shop/shop_agreement/' . $filenametostore);
+                        $data = new ShopAgreement();
                         $data->user_id = $user->id;
                         $data->shop_id = $shop_id;
-                        $data->shop_adahar = $filenametostore;
+                        $data->shop_agreement = $filenametostore;
                         $data->save();
                     }
                 };
 
-                if ($request->hasFile('shop_pan_card')) {
-                    foreach ($request->file('shop_pan_card') as $image) {
-                        $filenamewithextension = $image->getClientOriginalName();
-                        $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
-
-                        $extension = $image->getClientOriginalExtension();
-                        $filenametostore = $filename . '_' . time() . '.' . $extension;
-                        $image->storeAs('public/shop/shop_pan_card', $filenametostore);
-
-                        $featureimagepath = public_path('storage/shop/shop_pan_card/' . $filenametostore);
-                        $data = new ShopPanCard();
-                        $data->user_id = $user->id;
-                        $data->shop_id = $shop_id;
-                        $data->shop_pancard = $filenametostore;
-                        $data->save();
-                    }
-                };
-
-                if ($request->hasFile('shop_driving')) {
-                    foreach ($request->file('shop_driving') as $image) {
-                        $filenamewithextension = $image->getClientOriginalName();
-                        $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
-
-                        $extension = $image->getClientOriginalExtension();
-                        $filenametostore = $filename . '_' . time() . '.' . $extension;
-                        $image->storeAs('public/shop/shop_driving', $filenametostore);
-
-                        $featureimagepath = public_path('storage/shop/shop_driving/' . $filenametostore);
-                        $data = new ShopDriving();
-                        $data->user_id = $user->id;
-                        $data->shop_id = $shop_id;
-                        $data->shop_driving = $filenametostore;
-                        $data->save();
-                    }
-                };
-
-                if ($request->hasFile('shop_passport')) {
-                    foreach ($request->file('shop_passport') as $image) {
-                        $filenamewithextension = $image->getClientOriginalName();
-                        $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
-
-                        $extension = $image->getClientOriginalExtension();
-                        $filenametostore = $filename . '_' . time() . '.' . $extension;
-                        $image->storeAs('public/shop/shop_passport', $filenametostore);
-
-                        $featureimagepath = public_path('storage/shop/shop_passport/' . $filenametostore);
-                        $data = new ShopPassport();
-                        $data->user_id = $user->id;
-                        $data->shop_id = $shop_id;
-                        $data->shop_passport = $filenametostore;
-                        $data->save();
-                    }
-                };
-
-                if ($request->hasFile('shop_cv')) {
-                    foreach ($request->file('shop_cv') as $image) {
-                        $filenamewithextension = $image->getClientOriginalName();
-                        $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
-
-                        $extension = $image->getClientOriginalExtension();
-                        $filenametostore = $filename . '_' . time() . '.' . $extension;
-                        $image->storeAs('public/shop/shop_cv', $filenametostore);
-
-                        $featureimagepath = public_path('storage/shop/shop_cv/' . $filenametostore);
-                        $data = new ShopCv();
-                        $data->user_id = $user->id;
-                        $data->shop_id = $shop_id;
-                        $data->shop_cv = $filenametostore;
-                        $data->save();
-                    }
-                };
-
-                return redirect('employee/shopkeeper-search')->with('success', 'Shop Added Successfully');
+                return redirect('employee/shopkeeper-search')->with('success', 'Shop Created Successfully');
             } catch (\Exception $e) {
                 return redirect('employee/shopkeeper-search')->with('error', $e->getMessage());
             }
@@ -242,7 +188,7 @@ class ShopKeeperController extends Controller
             'shop_name'    => 'required',
             'phone'        => 'required|integer|digits:10',
             'city'         => 'required',
-            'state'        => 'required',
+            'state'        => 'required'
         ]);
 
         $shop               = User::where('phone', $request['phone'])->first();
@@ -379,23 +325,25 @@ class ShopKeeperController extends Controller
 
     public function InactiveLocalShop()
     {
+        $localstore_id = 'LS';
         $inactive_shops = User::whereHas(
             'roles',
             function ($q) {
                 $q->where('name', 'shopkeeper');
             }
-        )->where('status', 0)->orderBy('id', 'desc')->get();
+        )->where('status', 0)->where('customer_id','LIKE',"%{$localstore_id}%")->orderBy('id', 'desc')->get();
         return view('admin.shop.inactive-local-shop', compact('inactive_shops'));
     }
 
     public function ActiveLocalShop()
     {
+        $localstore_id = 'LS';
         $active_shops = User::whereHas(
             'roles',
             function ($q) {
                 $q->where('name', 'shopkeeper');
             }
-        )->where('status', 1)->orderBy('id', 'desc')->get();
+        )->where('status', 1)->where('customer_id','LIKE',"%{$localstore_id}%")->orderBy('id', 'desc')->get();
         return view('admin.shop.active-local-shop', compact('active_shops'));
     }
 
@@ -432,7 +380,7 @@ class ShopKeeperController extends Controller
     public function EditShop($shop_id = null)
     {
         $states = ModelsState::all();
-        $shop = Shop::with('GetLocalShop')->with('GetShopPicture')->with('GetShopMenu')->with('GetShopAdhar')->with('GetShopPanCard')->with('GetShopDriving')->with('GetShopPassport')->with('GetShopCv')->with('GetShopDeals')->with('GetShopAgreement')->where('shop_id', $shop_id)->first();
+        $shop = User::with('LocalShop')->with('GetShopPicture')->with('GetShopMenu')->with('GetShopDeals')->with('GetShopAgreement')->where('id', Auth::user()->id)->first();
         return view('shopkeeper.update-shop', compact('states', 'shop'));
     }
 
@@ -584,7 +532,12 @@ class ShopKeeperController extends Controller
 
     public function ShopReport()
     {
-        $shops = Shop::where('ref_number', Auth::user()->phone)->get();
+        $shops = User::whereHas(
+            'roles',
+            function ($q) {
+                $q->where('name', 'shopkeeper');
+            }
+        )->whereIn('ref_number',[Auth::user()->phone,Auth::user()->customer_id])->get();
         return view('employee.shopkeeper_report', compact('shops'));
     }
 
@@ -594,9 +547,9 @@ class ShopKeeperController extends Controller
         return view('shopkeeper.shopkeeper_report', compact('shops'));
     }
 
-    public function ShopEmployeeProfile($shop_id = null)
+    public function ShopEmployeeProfile($id = null)
     {
-        $shop = Shop::with('GetLocalShop')->with('GetShopPicture')->with('GetShopMenu')->with('GetShopAdhar')->with('GetShopPanCard')->with('GetShopDriving')->with('GetShopPassport')->with('GetShopCv')->with('GetShopDeals')->with('GetShopAgreement')->where('shop_id', $shop_id)->where('ref_number', Auth::user()->phone)->first();
+        $shop = User::with('LocalShop')->with('GetShopPicture')->with('GetShopMenu')->with('GetShopDeals')->with('GetShopAgreement')->where('id', $id)->first();
         return view('employee.shopkeeper-profile', compact('shop'));
     }
 
@@ -845,7 +798,6 @@ class ShopKeeperController extends Controller
         $id = Auth::user()->id;
         $shop = Shop::where('user_id', $id)->first();
         $user = User::where('phone', $request['phone'])->first();
-        // return $request->all();
         try {
             $deal = new Deal();
             $deal->user_id          = $id;
@@ -856,7 +808,7 @@ class ShopKeeperController extends Controller
             $deal->bill_number      = $request['bill_number'];
             $deal->amount           = $request['amount'];
             $deal->save();
-            return back()->with('success', 'Deal Given Successfully');
+            return redirect(route('givendeals'))->with('success', 'Deal Given Successfully');
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }
@@ -864,38 +816,39 @@ class ShopKeeperController extends Controller
 
     public function Profile()
     {
-        $shop = Shop::with('GetLocalShop')->with('GetShopPicture')->with('GetShopMenu')->with('GetShopAdhar')->with('GetShopPanCard')->with('GetShopDriving')->with('GetShopPassport')->with('GetShopCv')->with('GetShopDeals')->with('GetShopAgreement')->where('user_id', Auth::user()->id)->first();
+        $shop = User::with('LocalShop')->with('GetShopPicture')->with('GetShopMenu')->with('GetShopDeals')->with('GetShopAgreement')->where('id', Auth::user()->id)->first();
         return view('shopkeeper.profile', compact('shop'));
     }
 
-    public function UpdateShopkeeper(Request $request, $shop_id = null)
+    public function UpdateShopkeeper(Request $request)
     {
-        $shop = Shop::where('shop_id', $shop_id)->first();
+        $shop               = User::where('id', Auth::user()->id)->first();
+        $ref_id             = User::where('customer_id', $request['ref_number'])->first();
+        $ref_num            = User::where('phone', $request['ref_number'])->first();
+        if (empty($ref_id)) {
+            if (empty($ref_num)) {
+                return back()->with('error', 'Refer Id/Ref Number Invalid');
+            }
+        }
         if ($shop) {
             try {
-                User::where('id', $shop->user_id)->update([
-                    'name' => $request['shop_name'],
-                    'login_pin' => $request['login_pin'],
+                User::where('id', Auth::user()->id)->update([
+                    'name'          => $request['shop_name'],
+                    'login_pin'     => $request['login_pin'],
                     'state'         => $request->state,
                     'city'          => $request->city,
-                ]);
-                Shop::where('shop_id', $shop_id)->update([
                     'ref_number'    => $request->ref_number,
-                    'state'         => $request->state,
-                    'city'          => $request->city,
-                    'category'      => $request->category,
-                    'sub_category'  => $request->sub_category,
-                    'hot_store'     => $request->hot_store,
-                    'shop_name'     => $request->shop_name,
-                    'shop_number'   => $request->shop_number,
-                    'contact_person' => $request->contact_person,
-                    'contact_number' => $request->contact_number,
-                    'designation'  => $request->designation,
                     'address_1'    => $request->address_1,
                     'address_2'    => $request->address_2,
                     'pincode'      => $request->pincode,
-                    'shop_type'    => $request->shop_type,
                     'landmark'     => $request->landmark,
+                ]);
+                Shop::where('user_id', Auth::user()->id)->update([
+                    'category'      => $request->category,
+                    'sub_category'  => $request->sub_category,
+                    'contact_person' => $request->contact_person,
+                    'contact_number' => $request->contact_number,
+                    'designation'  => $request->designation,
                     'ip_address'   => $request->ip_address,
                     'country_name' => $request->country_name,
                     'country_code' => $request->country_code,
@@ -910,8 +863,8 @@ class ShopKeeperController extends Controller
                 if (!empty($request['deal'])) {
                     foreach ($request['deal'] as $key => $deal) {
                         $dl = new ShopDeal();
-                        $dl->user_id = $shop['user_id'];
-                        $dl->shop_id = $shop_id;
+                        $dl->user_id = Auth::user()->id;
+                        $dl->shop_id = $shop['customer_id'];
                         $dl->shop_deal = $request['deal'][$key];
                         $dl->saving_up_to = $request['saving_up_to'][$key];
                         $dl->save();
@@ -928,8 +881,8 @@ class ShopKeeperController extends Controller
 
                         $featureimagepath = public_path('storage/shop/shop_menu/' . $filenametostore);
                         $data = new ShopMenu();
-                        $data->user_id = $shop['user_id'];
-                        $data->shop_id = $shop_id;
+                        $data->user_id = Auth::user()->id;
+                        $data->shop_id = $shop['customer_id'];
                         $data->shop_menu = $filenametostore;
                         $data->save();
                     }
@@ -946,115 +899,26 @@ class ShopKeeperController extends Controller
 
                         $featureimagepath = public_path('storage/shop/shop_pic/' . $filenametostore);
                         $data = new ShopPicture();
-                        $data->user_id = $shop['user_id'];
-                        $data->shop_id = $shop_id;
+                        $data->user_id = Auth::user()->id;
+                        $data->shop_id = $shop['customer_id'];
                         $data->shop_picture = $filenametostore;
                         $data->save();
                     }
                 };
 
-                if ($request->hasFile('shop_aadhar_card')) {
-                    foreach ($request->file('shop_aadhar_card') as $image) {
-                        $filenamewithextension = $image->getClientOriginalName();
-                        $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
-
-                        $extension = $image->getClientOriginalExtension();
-                        $filenametostore = $filename . '_' . time() . '.' . $extension;
-                        $image->storeAs('public/shop/shop_aadhar_card', $filenametostore);
-
-                        $featureimagepath = public_path('storage/shop/shop_aadhar_card/' . $filenametostore);
-                        $data = new ShopAadhar();
-                        $data->user_id = $shop['user_id'];
-                        $data->shop_id = $shop_id;
-                        $data->shop_adahar = $filenametostore;
-                        $data->save();
-                    }
-                };
-
-                if ($request->hasFile('shop_pan_card')) {
-                    foreach ($request->file('shop_pan_card') as $image) {
-                        $filenamewithextension = $image->getClientOriginalName();
-                        $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
-
-                        $extension = $image->getClientOriginalExtension();
-                        $filenametostore = $filename . '_' . time() . '.' . $extension;
-                        $image->storeAs('public/shop/shop_pan_card', $filenametostore);
-
-                        $featureimagepath = public_path('storage/shop/shop_pan_card/' . $filenametostore);
-                        $data = new ShopPanCard();
-                        $data->user_id = $shop['user_id'];
-                        $data->shop_id = $shop_id;
-                        $data->shop_pancard = $filenametostore;
-                        $data->save();
-                    }
-                };
-
-                if ($request->hasFile('shop_driving')) {
-                    foreach ($request->file('shop_driving') as $image) {
-                        $filenamewithextension = $image->getClientOriginalName();
-                        $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
-                        $extension = $image->getClientOriginalExtension();
-                        $filenametostore = $filename . '_' . time() . '.' . $extension;
-                        $image->storeAs('public/shop/shop_driving', $filenametostore);
-
-                        $featureimagepath = public_path('storage/shop/shop_driving/' . $filenametostore);
-                        $data = new ShopDriving();
-                        $data->user_id = $shop['user_id'];
-                        $data->shop_id = $shop_id;
-                        $data->shop_driving = $filenametostore;
-                        $data->save();
-                    }
-                };
-
-                if ($request->hasFile('shop_passport')) {
-                    foreach ($request->file('shop_passport') as $image) {
-                        $filenamewithextension = $image->getClientOriginalName();
-                        $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
-
-                        $extension = $image->getClientOriginalExtension();
-                        $filenametostore = $filename . '_' . time() . '.' . $extension;
-                        $image->storeAs('public/shop/shop_passport', $filenametostore);
-
-                        $featureimagepath = public_path('storage/shop/shop_passport/' . $filenametostore);
-                        $data = new ShopPassport();
-                        $data->user_id = $shop['user_id'];
-                        $data->shop_id = $shop_id;
-                        $data->shop_passport = $filenametostore;
-                        $data->save();
-                    }
-                };
-
-                if ($request->hasFile('shop_cv')) {
-                    foreach ($request->file('shop_cv') as $image) {
-                        $filenamewithextension = $image->getClientOriginalName();
-                        $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
-
-                        $extension = $image->getClientOriginalExtension();
-                        $filenametostore = $filename . '_' . time() . '.' . $extension;
-                        $image->storeAs('public/shop/shop_cv', $filenametostore);
-
-                        $featureimagepath = public_path('storage/shop/shop_cv/' . $filenametostore);
-                        $data = new ShopCv();
-                        $data->user_id = $shop['user_id'];
-                        $data->shop_id = $shop_id;
-                        $data->shop_cv = $filenametostore;
-                        $data->save();
-                    }
-                };
 
                 if ($request->hasFile('shop_agreement')) {
                     foreach ($request->file('shop_agreement') as $image) {
                         $filenamewithextension = $image->getClientOriginalName();
                         $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
-
                         $extension = $image->getClientOriginalExtension();
                         $filenametostore = $filename . '_' . time() . '.' . $extension;
                         $image->storeAs('public/shop/shop_agreement', $filenametostore);
 
                         $featureimagepath = public_path('storage/shop/shop_agreement/' . $filenametostore);
                         $data = new ShopAgreement();
-                        $data->user_id = $shop['user_id'];
-                        $data->shop_id = $shop_id;
+                        $data->user_id = Auth::user()->id;
+                        $data->shop_id = $shop['customer_id'];
                         $data->shop_agreement = $filenametostore;
                         $data->save();
                     }

@@ -27,7 +27,7 @@
 
                         <div class="body">
                             <div class="table-responsive">
-                                <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                                <table id="table_id" class="table table-bordered table-striped table-hover js-basic-example dataTable">
                                     <thead>
                                         <tr>
                                             <th>Date</th>
@@ -44,9 +44,9 @@
                                         @forelse ($shops as $shop)
                                             <tr>
                                                 <td>{{ \Carbon\Carbon::parse($shop->created_at)->format('d-m-Y') }}</td>
-                                                <td>{{ $shop['shop_id'] }}</td>
-                                                <td>{{ $shop['shop_name'] }}</td>
-                                                <td>{{ $shop['shop_number'] }}</td>
+                                                <td>{{ $shop['customer_id'] }}</td>
+                                                <td>{{ $shop['name'] }}</td>
+                                                <td>{{ preg_replace('~[+\d-](?=[\d-]{4})~', '*', $shop['phone'])}}</td>
                                                 <td>
                                                     @if ($shop['status'] == '1')
                                                         Verified
@@ -56,7 +56,7 @@
                                                 </td>
                                                 <td>
                                                     <button class="btn btn-icon btn-neutral btn-icon-mini"><a
-                                                            href="{{ url('employee/shop-profile/' . $shop->shop_id) }}"><i
+                                                            href="{{ url('employee/shop-profile/' . $shop->id) }}"><i
                                                                 class="zmdi zmdi-eye"></i></a></button>
                                                 </td>
                                             </tr>
@@ -82,12 +82,9 @@
 @endsection
 
 @section('js')
-    <!-- Jquery DataTable Plugin Js -->
-    <script src="{{ asset('admin/light/assets/bundles/datatablescripts.bundle.js') }}"></script>
-    <script src="{{ asset('admin/assets/plugins/jquery-datatable/buttons/dataTables.buttons.min.js') }}"></script>
-    <script src="{{ asset('admin/assets/plugins/jquery-datatable/buttons/buttons.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('admin/assets/plugins/jquery-datatable/buttons/buttons.colVis.min.js') }}"></script>
-    <script src="{{ asset('admin/assets/plugins/jquery-datatable/buttons/buttons.html5.min.js') }}"></script>
-    <script src="{{ asset('admin/assets/plugins/jquery-datatable/buttons/buttons.print.min.js') }}"></script>
-
+    <script>
+        $(function() {
+            $("#table_id").dataTable();
+        });
+    </script>
 @endsection

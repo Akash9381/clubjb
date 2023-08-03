@@ -104,7 +104,6 @@
 
                                     <tbody>
                                         @foreach ($inactive_shops as $customer)
-                                        @if (str_contains($customer['customer_id'], 'GS') == true)
                                             <tr>
                                                 <td>{{ \Carbon\Carbon::parse($customer->created_at)->format('d-m-Y') }}</td>
                                                 <td>{{ $customer['customer_id'] }}</td>
@@ -128,7 +127,6 @@
                                                             class="zmdi zmdi-delete"></i></button>
                                                 </td>
                                             </tr>
-                                        @endif
                                         @endforeach
 
                                     </tbody>
@@ -143,13 +141,6 @@
 @endsection
 
 @section('js')
-    <!-- Jquery DataTable Plugin Js -->
-    <script src="{{ asset('admin/light/assets/bundles/datatablescripts.bundle.js') }}"></script>
-    <script src="{{ asset('admin/assets/plugins/jquery-datatable/buttons/dataTables.buttons.min.js') }}"></script>
-    <script src="{{ asset('admin/assets/plugins/jquery-datatable/buttons/buttons.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('admin/assets/plugins/jquery-datatable/buttons/buttons.colVis.min.js') }}"></script>
-    <script src="{{ asset('admin/assets/plugins/jquery-datatable/buttons/buttons.html5.min.js') }}"></script>
-    <script src="{{ asset('admin/assets/plugins/jquery-datatable/buttons/buttons.print.min.js') }}"></script>
     <script>
         $(function() {
             $("#table_id").dataTable();

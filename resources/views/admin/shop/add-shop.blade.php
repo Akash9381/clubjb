@@ -68,7 +68,6 @@
                                             <div style="color:red;">{{ $message }}</div>
                                         @enderror
                                     </div>
-                                    <input hidden name="ref_number" value="{{ Auth::user()->phone }}">
                                 </div>
 
                             </div>

@@ -26,14 +26,13 @@
 
                         <div class="body">
                             <div class="table-responsive">
-                                <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                                <table id="table_id" class="table table-bordered table-striped table-hover js-basic-example dataTable">
                                     <thead>
                                         <tr>
                                             <th>Date</th>
                                             <th>Customer ID</th>
                                             <th>Customer Name</th>
                                             <th>Customer Number</th>
-                                            <th>Customer Type</th>
                                             <th>Status</th>
                                             <th>Action</th>
                                         </tr>
@@ -41,12 +40,12 @@
 
                                     <tbody>
                                         @forelse ($customers as $customer)
+                                        @if (str_contains($customer['customer_id'], 'C-') == true)
                                             <tr>
                                                 <td>{{ \Carbon\Carbon::parse($customer->created_at)->format('d-m-Y') }}</td>
                                                 <td>{{ $customer['customer_id'] }}</td>
-                                                <td>{{ $customer['customer_name'] }}</td>
-                                                <td>{{ $customer['customer_number'] }}</td>
-                                                <td>{{ $customer['payment_status'] }}</td>
+                                                <td>{{ $customer['name'] }}</td>
+                                                <td>{{ preg_replace('~[+\d-](?=[\d-]{4})~', '*', $customer['phone'])}}</td>
                                                 <td>
                                                     @if ($customer['status'] == '1')
                                                         Verified
@@ -56,10 +55,11 @@
                                                 </td>
                                                 <td>
                                                     <button class="btn btn-icon btn-neutral btn-icon-mini"><a
-                                                            href="{{ url('employee/customer-profile/' . $customer->customer_id) }}"><i
-                                                                class="zmdi zmdi-eye"></i></a></button>
+                                                        href="{{ url('employee/customer-profile/' . $customer->id) }}"><i
+                                                            class="zmdi zmdi-eye"></i></a></button>
                                                 </td>
                                             </tr>
+                                            @endif
                                         @empty
                                             <tr>
                                                 <th class="text-center" colspan="7">No Data Available</th>
@@ -78,11 +78,10 @@
 @endsection
 
 @section('js')
-    <!-- Jquery DataTable Plugin Js -->
-    <script src="{{ asset('admin/light/assets/bundles/datatablescripts.bundle.js') }}"></script>
-    <script src="{{ asset('admin/assets/plugins/jquery-datatable/buttons/dataTables.buttons.min.js') }}"></script>
-    <script src="{{ asset('admin/assets/plugins/jquery-datatable/buttons/buttons.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('admin/assets/plugins/jquery-datatable/buttons/buttons.colVis.min.js') }}"></script>
-    <script src="{{ asset('admin/assets/plugins/jquery-datatable/buttons/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('admin/assets/plugins/jquery-datatable/buttons/buttons.print.min.js') }}"></script>
+    <script>
+        $(function() {
+            $("#table_id").dataTable();
+        });
+    </script>
 @endsection

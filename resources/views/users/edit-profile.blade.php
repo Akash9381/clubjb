@@ -1,5 +1,5 @@
 @extends('users.layouts.user_layouts')
-@section('title', 'Profile | CLUB JS')
+@section('title', 'Edit Profile | CLUB JS')
 @section('content')
 
     @include('users.layouts.header')
@@ -23,12 +23,12 @@
                                     @endif
                                 </div>
                                 <div class="change-user-thumb">
-                                    <input class="form-control-file" id="image" name="image[]" type="file">
+                                    <input class="form-control-file" id="image" name="image[]" accept=".png, .jpg, .jpeg, .webp" type="file">
                                     <button><i class="fa-solid fa-pen"></i></button>
                                 </div>
                             </div>
                             <div class="user-info">
-                                <p class="mb-0 text-dark">{{ $user['GetCustomer']['customer_id'] }}</p>
+                                <p class="mb-0 text-dark">{{ $user['customer_id'] }}</p>
                                 <h5 class="mb-0">{{ Auth::user()->name }}</h5>
                             </div>
 
@@ -50,7 +50,7 @@
                             <div class="mb-3">
                                 <div class="title mb-2"><i class="fa-solid fa-at"></i><span>Username</span></div>
                                 <input class="form-control" disabled type="text"
-                                    value="{{ $user['GetCustomer']['customer_id'] }}">
+                                    value="{{ $user['customer_id'] }}">
                             </div>
                             <div class="mb-3">
                                 <div class="title mb-2"><i class="fa-solid fa-user"></i><span>Full Name</span></div>
@@ -59,19 +59,19 @@
                             </div>
                             <div class="mb-3">
                                 <div class="title mb-2"><i class="fa-solid fa-phone"></i><span>Phone</span></div>
-                                <input class="form-control" type="text" value="{{ Auth::user()->phone }}" disabled>
+                                <input class="form-control" type="number" value="{{ Auth::user()->phone }}" disabled>
                             </div>
                             <div class="mb-3">
                                 <div class="title mb-2"><i class="fa-solid fa-envelope"></i><span>Email Address</span>
                                 </div>
                                 <input class="form-control" name="email" type="email"
-                                    value="{{ Auth::user()->email ?? 'NA' }}">
+                                    value="{{ Auth::user()->email ?? '' }}">
                             </div>
                             <div class="mb-3">
                                 <div class="title mb-2"><i class="fa-solid fa-location-arrow"></i><span>Shipping
                                         Address</span></div>
                                 <input class="form-control" name="address_1" type="text"
-                                    value="{{ $user['GetCustomer']['address_1'] ?? 'NA' }}">
+                                    value="{{ $user['address_1'] ?? '' }}">
                             </div>
                             <button class="btn btn-success w-100" type="submit">Save All Changes</button>
                         </div>

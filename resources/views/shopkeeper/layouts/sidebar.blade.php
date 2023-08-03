@@ -30,9 +30,9 @@
                                  Customer Report</span></a>
                      </li>
 
-                     <li class="{{ setActiveClass('shopkeeper/shopkeeper-reports') }}"><a href="{{ url('shopkeeper/shopkeeper-reports') }}" class=" waves-effect waves-block"><i
+                     {{-- <li class="{{ setActiveClass('shopkeeper/shopkeeper-reports') }}"><a href="{{ url('shopkeeper/shopkeeper-reports') }}" class=" waves-effect waves-block"><i
                                  class="zmdi zmdi-eye"></i><span>
-                                 Shopkeeper Report</span></a>
+                                 Shopkeeper Report</span></a> --}}
                      <li class="{{ setActiveClass('shopkeeper/deals') }}"><a href="{{ url('shopkeeper/deals') }}" class=" waves-effect waves-block"><i
                                  class="zmdi zmdi-eye"></i><span>
                                  Deals</span></a>

@@ -1,5 +1,5 @@
 @extends('admin.layouts.admin_layouts')
-@section('title', 'Add Banner')
+@section('title', 'Update Global Banner')
 
 <!-- Chat-launcher -->
 
@@ -46,11 +46,9 @@
                                         <select name="shop_id" id="shop_id" class="form-control show-tick ms select2"
                                             data-placeholder="Select">
                                             @forelse ($shops as $shop)
-                                            @if (str_contains($shop['customer_id'], 'GS') == true)
                                                 <option value="{{ $shop['id'] }}" @if ($shop['id']==$banner['shop_id'])
                                         selected
                                                 @endif>{{ $shop['name'] }}</option>
-                                                @endif
                                             @empty
                                                 <option value="none">Select Global Shop</option>
                                             @endforelse

@@ -55,7 +55,7 @@
             </div>
             <!-- Page Title-->
             <div class="page-heading">
-                <h6 class="mb-0">Deals for Carnival Cinemas</h6>
+                <h6 class="mb-0">{{ $deal['shop_deal'] }} for {{ $deal['User']['name'] }}</h6>
             </div>
             <!-- Navbar Toggler-->
             <div class="suha-navbar-toggler ms-2" data-bs-toggle="offcanvas" data-bs-target="#suhaOffcanvas"
@@ -76,15 +76,14 @@
                 <div class="user-profile"><img src="{{ asset('users/img/icons/Person.ico') }}" alt=""></div>
                 <div class="user-info">
                     <h5 class="user-name mb-1 text-white">{{ Auth::user()->name }}</h5>
-                    <!-- <p class="available-balance text-white">Available points <span class="counter">499</span></p>-->
                 </div>
             </div>
             <!-- Sidenav Nav-->
             <ul class="sidenav-nav ps-0">
                 <li><a href="{{ url('user/profile') }}">My Profile</a></li>
-                <li><a href="my-services.html">My Services</a></li>
+                <li><a href="#">My Services</a></li>
                 <li><a href="#">Settings</a></li>
-                <li><a href="{{url('user/logout')}}">Sign Out</a></li>
+                <li><a href="{{ url('user/logout') }}">Sign Out</a></li>
             </ul>
         </div>
     </div>
@@ -104,8 +103,10 @@
                                     </div>
                                 </div>
                                 <div class="single-profile-data d-flex align-items-center justify-content-between">
-                                    <div class="title d-flex align-items-center"><span>Carnival Cimemas</span></div>
-                                    <div class="data-content"><a class="btn btn-primary" href="tel:{{$deal['GetShop']['shop_number']}}">Call Now</a>
+                                    <div class="title d-flex align-items-center">
+                                        <span>{{ $deal['User']['name'] }}</span></div>
+                                    <div class="data-content"><a class="btn btn-primary"
+                                            href="tel:{{ $deal['User']['phone'] }}">Call Now</a>
                                     </div>
                                 </div>
                                 <div class="single-profile-data d-flex align-items-center justify-content-between">
@@ -172,16 +173,16 @@
                     tabindex="0">Home</div>
                 <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab"
                     tabindex="0">
-                    <b>Address:</b> {{$deal['GetShop']['address_1'] ?? "NA"}}<br>
-                    <b>Landmark:</b> {{$deal['GetShop']['landmark'] ?? "NA"}}
+                    <b>Address:</b> {{ $deal['User']['address_1'] ?? 'NA' }}<br>
+                    <b>Landmark:</b> {{ $deal['User']['landmark'] ?? 'NA' }}
                 </div>
                 <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab"
-                    tabindex="0">{{$deal['GetShop']['shop_terms'] ?? "NA"}}</div>
+                    tabindex="0">{!! $deal['Shop']['shop_terms'] ?? 'NA' !!}</div>
                 <div class="tab-pane fade" id="menu-tab-pane" role="tabpanel" aria-labelledby="menu-tab"
                     tabindex="0">Menu</div>
 
                 <div class="tab-pane fade" id="help-tab-pane" role="tabpanel" aria-labelledby="help-tab"
-                    tabindex="0">{{$deal['GetShop']['shop_help'] ?? "NA"}}</div>
+                    tabindex="0">{!! $deal['Shop']['shop_help'] ?? 'NA' !!}</div>
 
             </div>
         </div>
@@ -191,8 +192,9 @@
     <!-- Footer Nav-->
     <div class="footer-nav-area" id="footerNav">
         <div class="suha-footer-nav">
-            <div class="data-content text-center"><a class="btn btn-primary call" href="tel:{{$deal['GetShop']['shop_number']}}"> <i
-                        class="fa-solid fa-phone"></i>&nbsp; Call Now</a></div>
+            <div class="data-content text-center"><a class="btn btn-primary call"
+                    href="tel:{{ $deal['User']['phone'] }}"> <i class="fa-solid fa-phone"></i>&nbsp; Call
+                    Now</a></div>
         </div>
     </div>
 

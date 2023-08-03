@@ -57,6 +57,8 @@
 
     <script src="{{ asset('employee/light/assets/bundles/mainscripts.bundle.js')}}"></script>
     <script src="{{ asset('employee/light/assets/js/pages/index.js')}}"></script>
+
+ <script src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"></script>
     @yield('js')
 </body>
 

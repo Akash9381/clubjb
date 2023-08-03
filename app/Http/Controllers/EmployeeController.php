@@ -230,9 +230,7 @@ class EmployeeController extends Controller
 
     public function Profile()
     {
-        $user_id = Auth::user()->id;
-        $employee_id = Employee::where('user_id', $user_id)->first();
-        $employee = Employee::with('GetEmployee')->with('GetEmployeeCV')->with('GetEmployeeAgreement')->with('GetEmployeeDriving')->with('GetEmployeePassPort')->with('GetEmployeeAadhar')->with('GetEmployeePicture')->where('employee_id', $employee_id['employee_id'])->first();
+        $employee = User::with('Employee')->with('GetEmployeeCV')->with('GetEmployeeAgreement')->with('GetEmployeeDriving')->with('GetEmployeePassPort')->with('GetEmployeeAadhar')->with('GetEmployeePicture')->where('id', Auth::user()->id)->first();
         return view('employee.profile', compact('employee'));
     }
 
@@ -595,11 +593,6 @@ class EmployeeController extends Controller
                                 'picture_document'  => $filenametostore
                             ]
                         );
-                        // $data = new EmployePictureDocument();
-                        // $data->user_id = $id;
-                        // $data->employee_id = $user->customer_id;
-                        // $data->picture_document = $filenametostore;
-                        // $data->save();
                     }
                 };
                 if ($request->hasFile('aadhar_document')) {
@@ -697,43 +690,45 @@ class EmployeeController extends Controller
         }
     }
 
-    public function UpdateProfile($id = null)
+    public function UpdateProfile()
     {
         try {
             $states = ModelsState::all();
-            $employee = Employee::with('GetEmployee')->with('GetEmployeeCV')->with('GetEmployeeAgreement')->with('GetEmployeeDriving')->with('GetEmployeePassPort')->with('GetEmployeeAadhar')->with('GetEmployeePicture')->where('employee_id', $id)->first();
+            $employee = User::with('Employee')->with('GetEmployeeCV')->with('GetEmployeeAgreement')->with('GetEmployeeDriving')->with('GetEmployeePassPort')->with('GetEmployeeAadhar')->with('GetEmployeePicture')->where('id', Auth::user()->id)->first();
             return view('employee.update-profile', compact('states', 'employee'));
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }
     }
 
-    public function UpdateProfileData(Request $request, $employee_id = null)
+    public function UpdateProfileData(Request $request, )
     {
-        $employee = Employee::where('employee_id', $employee_id)->first();
+        $employee           = User::where('id', Auth::user()->id)->first();
+        // $ref_id             = User::where('customer_id', $request['ref_number'])->first();
+        // $ref_num            = User::where('phone', $request['ref_number'])->first();
+        // if (empty($ref_id)) {
+        //     if (empty($ref_num)) {
+        //         return back()->with('error', 'Refer Id/Ref Number Invalid');
+        //     }
+        // }
+
         if ($employee) {
             $this->validate($request, [
                 'employee_name'      => 'required',
-                'employee_number'    => 'required|integer',
-                'login_pin'          => 'required|integer',
+                'employee_number'    => 'required|integer|digits:10',
+                'login_pin'          => 'required|integer|digits:4',
+                // 'ref_number'         => 'required',
             ]);
             try {
-                $user = User::where('id', $employee->user_id)->first();
-                User::where('id', $employee->user_id)->update([
-                    'name' => $request['employee_name'],
-                    'login_pin' => $request['login_pin'],
-                    'state' => $request['state'],
-                    'city' => $request['city'],
+                $user = User::where('id', Auth::user()->id)->first();
+                User::where('id', Auth::user()->id)->update([
+                    'name'           => $request['employee_name'],
+                    'login_pin'      => $request['login_pin'],
+                    'state'          => $request['state'],
+                    'city'           => $request['city'],
+                    'ref_number'     => $request['ref_number']
                 ]);
 
-                Employee::where('employee_id', $employee_id)->update([
-                    'employee_name' => $request['employee_name'],
-                    'state' => $request['state'],
-                    'city' => $request['city'],
-                    'employee_type' => $request['employee_type'],
-                    'employee_number' => $request['employee_number'],
-                    'ref_number' => $request['ref_number'],
-                ]);
                 if ($request->hasFile('picture_document')) {
                     foreach ($request->file('picture_document') as $image) {
                         $filenamewithextension = $image->getClientOriginalName();
@@ -744,11 +739,14 @@ class EmployeeController extends Controller
                         $image->storeAs('public/employee/picture_document', $filenametostore);
 
                         $featureimagepath = public_path('storage/employee/picture_document/' . $filenametostore);
-                        $data = new EmployePictureDocument();
-                        $data->user_id = $user->id;
-                        $data->employee_id = $employee_id;
-                        $data->picture_document = $filenametostore;
-                        $data->save();
+                        EmployePictureDocument::updateOrCreate(
+                            ['user_id' => Auth::user()->id],
+                            [
+                                'user_id'           => Auth::user()->id,
+                                'employee_id'       => $user->customer_id,
+                                'picture_document'  => $filenametostore
+                            ]
+                        );
                     }
                 };
                 if ($request->hasFile('aadhar_document')) {
@@ -762,8 +760,8 @@ class EmployeeController extends Controller
 
                         $featureimagepath = public_path('storage/employee/aadhar_document/' . $filenametostore);
                         $data = new EmployeAadharDocument();
-                        $data->user_id = $user->id;
-                        $data->employee_id = $employee_id;
+                        $data->user_id = Auth::user()->id;
+                        $data->employee_id = $user->customer_id;
                         $data->aadhar_document = $filenametostore;
                         $data->save();
                     }
@@ -779,8 +777,8 @@ class EmployeeController extends Controller
 
                         $featureimagepath = public_path('storage/employee/driving_document/' . $filenametostore);
                         $data = new EmployeDrivingDocument();
-                        $data->user_id = $user->id;
-                        $data->employee_id = $employee_id;
+                        $data->user_id = Auth::user()->id;
+                        $data->employee_id = $user->customer_id;
                         $data->driving_document = $filenametostore;
                         $data->save();
                     }
@@ -796,8 +794,8 @@ class EmployeeController extends Controller
 
                         $featureimagepath = public_path('storage/employee/cv_document/' . $filenametostore);
                         $data = new EmployeCVDocument();
-                        $data->user_id = $user->id;
-                        $data->employee_id = $employee_id;
+                        $data->user_id = Auth::user()->id;
+                        $data->employee_id = $user->customer_id;
                         $data->cv_document = $filenametostore;
                         $data->save();
                     }
@@ -813,8 +811,8 @@ class EmployeeController extends Controller
 
                         $featureimagepath = public_path('storage/employee/passport_document/' . $filenametostore);
                         $data = new EmployeePassportDocument();
-                        $data->user_id = $user->id;
-                        $data->employee_id = $employee_id;
+                        $data->user_id = Auth::user()->id;
+                        $data->employee_id = $user->customer_id;
                         $data->passport_document = $filenametostore;
                         $data->save();
                     }
@@ -830,14 +828,14 @@ class EmployeeController extends Controller
 
                         $featureimagepath = public_path('storage/employee/agreement_document/' . $filenametostore);
                         $data = new EmployeeAgrementDocument();
-                        $data->user_id = $user->id;
-                        $data->employee_id = $employee_id;
+                        $data->user_id = Auth::user()->id;
+                        $data->employee_id = $user->customer_id;
                         $data->agreement_document = $filenametostore;
                         $data->save();
                     }
                 };
 
-                return back()->with('success', 'Employee Updated Successfully');
+                return back()->with('success', 'Profile Updated Successfully');
             } catch (\Exception $e) {
                 return back()->with('error', $e->getMessage());
             }

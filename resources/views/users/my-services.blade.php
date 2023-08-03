@@ -1,4 +1,6 @@
 @extends('users.layouts.user_layouts')
+@section('title', 'User Service')
+@section('deal', 'My Services')
 @section('content')
     @include('users.layouts.dealheader')
     @include('users.layouts.sidebar')
@@ -8,9 +10,12 @@
 
                 <div class="container">
 
-
-
                     <table class="table table-success table-striped">
+                        @if (session()->has('error'))
+                            <div class="alert alert-danger">
+                                {{ session()->get('error') }}
+                            </div>
+                        @endif
                         <thead>
                             <tr>
 
@@ -21,12 +26,30 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @forelse ($deals as $deal)
+                                <tr>
+
+                                    <td>{{ $deal['id'] }}</td>
+                                    <td>{{ $deal['Shop']['name'] }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($deal->created_at)->format('d-m-Y') }}</td>
+                                    <td> <a class="text-dark" href="{{ url('user/invoice/' . $deal['id']) }}"><i
+                                                class="fa-sharp fa-solid fa-eye"></i></a></td>
+                                </tr>
+
+                            @empty
+                                <tr>
+
+                                    <td colspan="4">No Deals Available</td>
+                                </tr>
+                            @endforelse
+
+
                             <tr>
 
                                 <td>#123456</td>
                                 <td>Text</td>
                                 <td>02-06-2023</td>
-                                <td> <a class="text-dark" href="invoice.html"><i
+                                <td> <a class="text-dark" href="{{ url('user/invoice') }}"><i
                                             class="fa-sharp fa-solid fa-eye"></i></a></td>
                             </tr>
 
@@ -35,25 +58,7 @@
                                 <td>#123456</td>
                                 <td>Text</td>
                                 <td>02-06-2023</td>
-                                <td> <a class="text-dark" href="invoice.html"><i
-                                            class="fa-sharp fa-solid fa-eye"></i></a></td>
-                            </tr>
-
-                            <tr>
-
-                                <td>#123456</td>
-                                <td>Text</td>
-                                <td>02-06-2023</td>
-                                <td> <a class="text-dark" href="invoice.html"><i
-                                            class="fa-sharp fa-solid fa-eye"></i></a></td>
-                            </tr>
-
-                            <tr>
-
-                                <td>#123456</td>
-                                <td>Text</td>
-                                <td>02-06-2023</td>
-                                <td> <a class="text-dark" href="invoice.html"><i
+                                <td> <a class="text-dark" href="{{ url('user/invoice') }}"><i
                                             class="fa-sharp fa-solid fa-eye"></i></a></td>
                             </tr>
 

@@ -192,7 +192,7 @@ class UserController extends Controller
 
     public function UpdateProfile(Request $request)
     {
-        $request->validate($request, [
+        $this->validate($request, [
             'name' => 'required'
         ]);
 

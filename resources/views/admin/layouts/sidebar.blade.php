@@ -10,8 +10,9 @@
                         <div class="user-info">
                             <div class="image">
 
-                                <a href="{{url('admin/dashboard')}}"><img src="{{ asset('admin/light/assets/img/icon/Person.ico') }}"
-                                        alt="admin"> &nbsp;
+                                <a href="{{ url('admin/dashboard') }}"><img
+                                        src="{{ asset('admin/light/assets/img/icon/Person.ico') }}" alt="admin">
+                                    &nbsp;
                                     <small class="admin">Admin</small></a>
                             </div>
 
@@ -110,17 +111,25 @@
 
                         </ul>
                     </li>
+                    <li @if (strpos(Request::url(), 'admin/service') !== false) class="active" @endif><a href="javascript:void(0);"
+                            class="menu-toggle"><span>Service</span></a>
+                        <ul class="ml-menu">
+                            <li class="{{ setActiveClass('admin/service') }}"><a
+                                    href="{{ url('admin/service') }}">Give Service</a></li>
+
+                        </ul>
+                    </li>
                     <li @if (strpos(Request::url(), 'admin/local-shop-help') !== false) class="active" @endif>
-                        <a href="{{url('admin/local-shop-help')}}"><span>Local Shop Help</span></a>
+                        <a href="{{ url('admin/local-shop-help') }}"><span>Local Shop Help</span></a>
                     </li>
                     <li @if (strpos(Request::url(), 'admin/local-shop-terms-conditions') !== false) class="active" @endif>
-                        <a href="{{url('admin/local-shop-terms-conditions')}}"><span>Local Shop T & C</span></a>
+                        <a href="{{ url('admin/local-shop-terms-conditions') }}"><span>Local Shop T & C</span></a>
                     </li>
                     <li @if (strpos(Request::url(), 'admin/global-shop-help') !== false) class="active" @endif>
-                        <a href="{{url('admin/global-shop-help')}}"><span>Global Shop Help</span></a>
+                        <a href="{{ url('admin/global-shop-help') }}"><span>Global Shop Help</span></a>
                     </li>
                     <li @if (strpos(Request::url(), 'admin/global-shop-terms-conditions') !== false) class="active" @endif>
-                        <a href="{{url('admin/global-shop-terms-conditions')}}"><span>Global Shop T & C</span></a>
+                        <a href="{{ url('admin/global-shop-terms-conditions') }}"><span>Global Shop T & C</span></a>
                     </li>
                 </ul>
             </div>

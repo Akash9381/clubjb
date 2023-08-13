@@ -133,11 +133,16 @@ class DealController extends Controller
 
     public function Invoice($id = null)
     {
-        $deal = Deal::with('GetDeal')->with('Shop')->where('id',$id)->where('get_deal_user_id', Auth::user()->id)->orderBy('id', 'desc')->first();
-        if($deal){
-            return view('users.invoice',compact('deal'));
-        }else{
-            return back()->with('error','Something Went Wrong!');
+        $deal = Deal::with('GetDeal')->with('Shop')->where('id', $id)->where('get_deal_user_id', Auth::user()->id)->orderBy('id', 'desc')->first();
+        if ($deal) {
+            return view('users.invoice', compact('deal'));
+        } else {
+            return back()->with('error', 'Something Went Wrong!');
         }
+    }
+
+    public function Service()
+    {
+        return view('admin.shop.service');
     }
 }

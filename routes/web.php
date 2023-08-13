@@ -97,6 +97,8 @@ Route::group(['middleware' => ['role:admin', 'auth']], function () {
         Route::post('/update-shop-deal/{id}', [Dealcontroller::class, 'AdminUpdateDeal']);
         Route::get('/deal-delete/{user_id}/{id}', [Dealcontroller::class, 'AdminDealDelete']);
 
+        //*********************** Service *******************************
+        Route::get('/service',[DealController::class,'Service']);
 
         //*********************** Banner *******************************
         Route::get('/add-banner', [BannerController::class, 'Banner']);
